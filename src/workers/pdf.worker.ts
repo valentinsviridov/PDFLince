@@ -11,6 +11,7 @@ import {
     convertImagesToPdf,
     ProcessingResult,
     PdfToImagesArchiveResult,
+    rotatePages,
 } from '../lib/pdf-operations';
 
 // Polyfill document for PDF.js in worker environment
@@ -77,6 +78,13 @@ self.onmessage = async (e: MessageEvent) => {
                 break;
             case 'reorder':
                 result = await reorderPages(files[0], options.pageOrder, options);
+                break;
+            case 'rotate':
+                result = await rotatePages(
+                    files[0],
+                    options.pagesToRotate ?? [],
+                    options.rotationDegrees ?? 90,
+                    options );
                 break;
             case 'pageCount':
                 result = await getPDFPageCount(files[0]);

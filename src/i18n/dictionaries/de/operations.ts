@@ -1,4 +1,4 @@
-import { OperationContent } from "../operation-types";
+﻿import { OperationContent } from "../operation-types";
 import { OperationKey } from "../../../types/operations";
 
 const operationsDeContent: Record<OperationKey, OperationContent> = {

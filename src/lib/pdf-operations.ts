@@ -13,6 +13,7 @@ import {
   PDFNumber,
   degrees,
   rgb,
+  degrees,
 } from 'pdf-lib';
 
 // Type definitions
@@ -24,17 +25,18 @@ export type PDFProcessingMode =
   | 'crop'
   | 'rotate'
   | 'reorder'
+  | 'rotate'
   | 'pdfToImages'
   | 'imagesToPdf'
   | 'pageCount';
 
 export type PDFProcessingOptions = {
-  // General options
   compressionLevel?: 'low' | 'medium' | 'high';
   outputFormat?: 'pdf';
-  pageRange?: string; // e.g. "1-5,8,11-13"
+  pageRange?: string;
   metadata?: Record<string, string>;
   password?: string;
+
   pagesToExtract?: number[];
   pagesToCrop?: number[];
   pageOrder?: number[];
@@ -50,27 +52,22 @@ export type PDFProcessingOptions = {
   cropInputMode?: 'margins' | 'manual';
   bundleAsZip?: boolean;
 
-  // Compression options
   preserveMetadata?: boolean;
   stripAnnotations?: boolean;
   downscaleImages?: boolean;
   downscaleImagesDpi?: number;
   imageQuality?: number;
 
-  // Merge options
   bookmarkHandling?: 'merge' | 'first' | 'none';
   addPageDividers?: boolean;
 
-  // Split options
   splitMode?: 'pageCount' | 'bookmarks' | 'pageNumbers';
   pagesPerFile?: number;
   splitPoints?: string;
   outputNamePattern?: string;
 
-  // Extract options
   maintainOriginalSize?: boolean;
 
-  // Image conversion options
   imageOutputFormat?: 'png' | 'jpeg';
   imageOutputQuality?: number;
   imageRenderDpi?: number;
@@ -80,6 +77,7 @@ export type PDFProcessingOptions = {
   pageOrientation?: 'auto' | 'portrait' | 'landscape';
   pageMarginPoints?: number;
   backgroundColor?: string;
+  
 };
 
 export type ProcessingResult = {
@@ -880,6 +878,7 @@ function normalizeRotation(angle: number): 0 | 90 | 180 | 270 {
 
   throw new Error(`Invalid rotation angle: ${angle}`);
 }
+
 export async function getPDFPageCount(fileOrData: File | ArrayBuffer | Uint8Array): Promise<number> {
   try {
     const arrayBuffer = fileOrData instanceof File ? await fileOrData.arrayBuffer() : fileOrData;

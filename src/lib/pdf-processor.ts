@@ -7,7 +7,6 @@ export type PDFProcessingOptions = PDFOps.PDFProcessingOptions;
 export type ProcessingResult = PDFOps.ProcessingResult;
 export type PdfToImagesArchiveResult = PDFOps.PdfToImagesArchiveResult;
 
-
 /**
  * Compress a PDF file using the Web Worker
  */
@@ -29,21 +28,25 @@ export function processPDF(
   files: [File, ...File[]],
   options: PDFProcessingOptions
 ): Promise<ProcessingResult>;
+
 export function processPDF(
   mode: 'merge',
   files: [File, ...File[]],
   options: PDFProcessingOptions
 ): Promise<Blob>;
+
 export function processPDF(
   mode: 'split',
   files: [File, ...File[]],
   options: PDFProcessingOptions
 ): Promise<Blob[]>;
+
 export function processPDF(
   mode: 'extract',
   files: [File, ...File[]],
   options: PDFProcessingOptions
 ): Promise<Blob>;
+
 export function processPDF(
   mode: 'crop',
   files: [File, ...File[]],
@@ -60,16 +63,25 @@ export function processPDF(
   files: [File, ...File[]],
   options: PDFProcessingOptions
 ): Promise<Blob>;
+
+export function processPDF(
+  mode: 'rotate',
+  files: [File, ...File[]],
+  options: PDFProcessingOptions
+): Promise<Blob>;
+
 export function processPDF(
   mode: 'pdfToImages',
   files: [File, ...File[]],
   options: PDFProcessingOptions
 ): Promise<PdfToImagesArchiveResult>;
+
 export function processPDF(
   mode: 'imagesToPdf',
   files: [File, ...File[]],
   options: PDFProcessingOptions
 ): Promise<Blob>;
+
 export function processPDF(
   mode: PDFProcessingMode,
   files: File[],
@@ -82,10 +94,13 @@ export function processPDF(
   switch (mode) {
     case 'compress':
       return compressPDFFile(files[0] as File, options);
+
     case 'merge':
       return mergePDFsAsBlob(files, options);
+
     case 'split':
       return splitPDFAsBlobs(files[0] as File, options);
+
     case 'extract': {
       if (!options.pagesToExtract || options.pagesToExtract.length === 0) {
         throw new Error('No pages selected');
@@ -111,10 +126,20 @@ export function processPDF(
       }
       return reorderViaExtract(files[0] as File, options.pageOrder, options);
     }
+
+    case 'rotate': {
+      if (!options.pagesToRotate || options.pagesToRotate.length === 0) {
+        throw new Error('No pages selected');
+      }
+      return rotatePagesAsBlob(files[0] as File, options.pagesToRotate, options);
+    }
+
     case 'pdfToImages':
       return pdfWorkerClient.run('pdfToImages', [files[0] as File], options) as Promise<PdfToImagesArchiveResult>;
+
     case 'imagesToPdf':
       return convertImagesToPdfAsBlob(files, options);
+
     default:
       throw new Error('Unsupported mode');
   }
@@ -153,7 +178,11 @@ export async function splitPDFAsBlobs(file: File, options: PDFProcessingOptions)
  */
 export async function extractPagesAsBlob(file: File, pageNumbers: number[], options: PDFProcessingOptions): Promise<Blob> {
   try {
-    const pdfBytes = await pdfWorkerClient.run('extract', [file], { ...options, pagesToExtract: pageNumbers }) as Uint8Array;
+    const pdfBytes = await pdfWorkerClient.run('extract', [file], {
+      ...options,
+      pagesToExtract: pageNumbers,
+    }) as Uint8Array;
+
     return createPdfBlob(pdfBytes);
   } catch (error) {
     console.warn('Worker extract failed, falling back to main thread', error);
@@ -196,11 +225,38 @@ export async function rotatePagesAsBlob(file: File, pageNumbers: number[], optio
  */
 async function reorderViaExtract(file: File, order: number[], options: PDFProcessingOptions): Promise<Blob> {
   try {
-    const pdfBytes = await pdfWorkerClient.run('reorder', [file], { ...options, pageOrder: order }) as Uint8Array;
+    const pdfBytes = await pdfWorkerClient.run('reorder', [file], {
+      ...options,
+      pageOrder: order,
+    }) as Uint8Array;
+
     return createPdfBlob(pdfBytes);
   } catch (error) {
     console.warn('Worker reorder failed, falling back to main thread', error);
     const pdfBytes = await PDFOps.reorderPages(file, order, options);
+    return createPdfBlob(pdfBytes);
+  }
+}
+
+/**
+ * Rotate pages and return as Blob (via worker)
+ */
+export async function rotatePagesAsBlob(file: File, pageNumbers: number[], options: PDFProcessingOptions): Promise<Blob> {
+  try {
+    const pdfBytes = await pdfWorkerClient.run('rotate', [file], {
+      ...options,
+      pagesToRotate: pageNumbers,
+    }) as Uint8Array;
+
+    return createPdfBlob(pdfBytes);
+  } catch (error) {
+    console.warn('Worker rotate failed, falling back to main thread', error);
+    const pdfBytes = await PDFOps.rotatePages(
+      file,
+      pageNumbers,
+      options.rotationDegrees ?? 90,
+      options
+    );
     return createPdfBlob(pdfBytes);
   }
 }
