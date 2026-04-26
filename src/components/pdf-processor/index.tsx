@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import FileUploader from './FileUploader';
@@ -2053,7 +2053,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
                           </p>
                           <p className="text-xs text-[var(--tx-3)]">
                             {selectedCount > 0
-                              ? `${fileListStrings.pagesLabel(selectedCount)} • ${fileListStrings.selected}`
+                              ? `${fileListStrings.pagesLabel(selectedCount)} â€¢ ${fileListStrings.selected}`
                               : errorStrings.noPagesSelected}
                           </p>
                         </div>

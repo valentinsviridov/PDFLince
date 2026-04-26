@@ -6,5 +6,6 @@ export type OperationKey =
 	| "crop"
 	| "rotate"
 	| "reorder"
+	| "rotate"
 	| "pdfToImages"
 	| "imagesToPdf";
