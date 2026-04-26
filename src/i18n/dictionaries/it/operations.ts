@@ -334,10 +334,10 @@ const operationsItContent: Record<OperationKey, OperationContent> = {
         "Ritaglia pagine PDF e rimuovi i margini in eccesso direttamente nel browser. Tutto resta locale e privato.",
       keywords: [
         "ritaglia pdf",
+        "ritagliare pdf online",
         "taglia margini pdf",
         "riduci margini pdf",
-        "crop pdf",
-        "ritaglia pagine pdf",
+        "eliminare bordi pdf",
       ],
       ogTitle: "Ritaglia pagine PDF in locale | PDFLince",
       ogDescription:

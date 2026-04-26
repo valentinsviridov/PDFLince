@@ -442,6 +442,7 @@ export const esDictionary: Dictionary = {
           margins: "Establecer márgenes",
           manual: "Seleccion manual",
         },
+        marginsTitle: "Márgenes",
         marginLabels: {
           top: "Margen superior (pt)",
           right: "Margen derecho (pt)",

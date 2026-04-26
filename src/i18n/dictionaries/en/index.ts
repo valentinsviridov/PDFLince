@@ -448,6 +448,7 @@ export const enDictionary: Dictionary = {
           margins: "Set margins",
           manual: "Manual selection",
         },
+        marginsTitle: "Margins",
         marginLabels: {
           top: "Top margin (pts)",
           right: "Right margin (pts)",

@@ -310,6 +310,7 @@ export interface ProcessingOptionsStrings {
       margins: string;
       manual: string;
     };
+    marginsTitle: string;
     marginLabels: {
       top: string;
       right: string;

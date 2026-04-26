@@ -448,6 +448,7 @@ export const ptDictionary: Dictionary = {
           margins: "Definir margens",
           manual: "Selecao manual",
         },
+        marginsTitle: "Margens",
         marginLabels: {
           top: "Margem superior (pt)",
           right: "Margem direita (pt)",
