@@ -280,10 +280,10 @@ const operationsEsContent: Record<OperationKey, OperationContent> = {
         "Recorta páginas PDF y elimina márgenes sobrantes directamente en tu navegador. Todo el proceso ocurre en local y sin subidas al servidor.",
       keywords: [
         "recortar pdf",
+        "recortar pdf online",
         "quitar margenes pdf",
-        "ajustar pdf",
-        "crop pdf",
-        "recortar paginas pdf",
+        "recortador de pdf",
+        "recortar bordes pdf",
       ],
       ogTitle: "Recorta páginas PDF de forma privada | PDFLince",
       ogDescription:

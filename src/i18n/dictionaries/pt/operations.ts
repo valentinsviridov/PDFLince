@@ -281,8 +281,8 @@ const operationsPtContent: Record<OperationKey, OperationContent> = {
       keywords: [
         "recortar pdf",
         "cortar margens pdf",
-        "ajustar pdf",
-        "crop pdf",
+        "cortar pdf online",
+        "tirar margem pdf",
         "recortar paginas pdf",
       ],
       ogTitle: "Recorte páginas PDF com privacidade | PDFLince",

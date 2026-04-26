@@ -347,9 +347,11 @@ const operationsEnContent: Record<OperationKey, OperationContent> = {
         "Crop PDF pages and trim excess margins directly in your browser. Select the pages, define the crop area, and download the result privately.",
       keywords: [
         "crop pdf",
+        "crop pdf online",
         "trim pdf margins",
         "cut pdf pages",
         "pdf crop tool",
+        "free pdf cropper",
         "remove white space pdf",
       ],
       ogTitle: "Crop PDF pages locally in your browser | PDFLince",

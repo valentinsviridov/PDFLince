@@ -737,15 +737,47 @@ export async function cropPages(
     for (const pageIndex of validPageIndices) {
       const page = pdfDoc.getPage(pageIndex);
       const mediaBox = page.getMediaBox();
-      const nextWidth = mediaBox.width - left - right;
-      const nextHeight = mediaBox.height - top - bottom;
+      const rotationAngle = page.getRotation().angle;
+      const normalizedRotation = ((rotationAngle % 360) + 360) % 360;
 
-      if (nextWidth <= 0 || nextHeight <= 0) {
-        throw new Error(`Crop margins exceed page bounds on page ${pageIndex + 1}`);
+      let logicalTop = top;
+      let logicalRight = right;
+      let logicalBottom = bottom;
+      let logicalLeft = left;
+
+      if (normalizedRotation === 90) {
+        logicalTop = right;
+        logicalRight = bottom;
+        logicalBottom = left;
+        logicalLeft = top;
+      } else if (normalizedRotation === 180) {
+        logicalTop = bottom;
+        logicalRight = left;
+        logicalBottom = top;
+        logicalLeft = right;
+      } else if (normalizedRotation === 270) {
+        logicalTop = left;
+        logicalRight = top;
+        logicalBottom = right;
+        logicalLeft = bottom;
       }
 
-      const nextX = mediaBox.x + left;
-      const nextY = mediaBox.y + bottom;
+      const nextWidth = mediaBox.width - logicalLeft - logicalRight;
+      const nextHeight = mediaBox.height - logicalTop - logicalBottom;
+
+      if (nextWidth <= 0 || nextHeight <= 0) {
+        throw new Error(
+          `Crop margins exceed page bounds on page ${pageIndex + 1}. ` +
+          `Details: mediaBox=(${Math.round(mediaBox.width)}x${Math.round(mediaBox.height)}), ` +
+          `rotation=${rotationAngle}, normalized=${normalizedRotation}, ` +
+          `visual=(T:${Math.round(top)},R:${Math.round(right)},B:${Math.round(bottom)},L:${Math.round(left)}), ` +
+          `logical=(T:${Math.round(logicalTop)},R:${Math.round(logicalRight)},B:${Math.round(logicalBottom)},L:${Math.round(logicalLeft)}), ` +
+          `next=(${Math.round(nextWidth)}x${Math.round(nextHeight)})`
+        );
+      }
+
+      const nextX = mediaBox.x + logicalLeft;
+      const nextY = mediaBox.y + logicalBottom;
 
       page.setMediaBox(nextX, nextY, nextWidth, nextHeight);
       page.setCropBox(nextX, nextY, nextWidth, nextHeight);
@@ -868,7 +900,15 @@ export async function getPDFPageDimensions(
   const pageCount = pdfDoc.getPageCount();
   const pageIndex = Math.min(Math.max(pageNumber - 1, 0), Math.max(pageCount - 1, 0));
   const page = pdfDoc.getPage(pageIndex);
+  
   const mediaBox = page.getMediaBox();
+  const rotation = page.getRotation().angle;
+  const normalized = ((rotation % 360) + 360) % 360;
+  
+  if (normalized === 90 || normalized === 270) {
+    return { width: mediaBox.height, height: mediaBox.width };
+  }
+  
   return { width: mediaBox.width, height: mediaBox.height };
 }
 

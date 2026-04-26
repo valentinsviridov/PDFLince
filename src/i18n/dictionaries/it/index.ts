@@ -506,6 +506,7 @@ export const itDictionary: Dictionary = {
           margins: "Imposta margini",
           manual: "Selezione manuale",
         },
+        marginsTitle: "Margini",
         marginLabels: {
           top: "Margine superiore (pt)",
           right: "Margine destro (pt)",

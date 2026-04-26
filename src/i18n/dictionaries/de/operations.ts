@@ -1,4 +1,4 @@
-﻿import { OperationContent } from "../operation-types";
+import { OperationContent } from "../operation-types";
 import { OperationKey } from "../../../types/operations";
 
 const operationsDeContent: Record<OperationKey, OperationContent> = {
@@ -281,9 +281,9 @@ const operationsDeContent: Record<OperationKey, OperationContent> = {
       keywords: [
         "pdf zuschneiden",
         "pdf ränder entfernen",
-        "pdf crop",
-        "seiten zuschneiden",
         "pdf beschneiden",
+        "pdf ränder abschneiden",
+        "pdf format ändern",
       ],
       ogTitle: "PDF-Seiten lokal zuschneiden | PDFLince",
       ogDescription:

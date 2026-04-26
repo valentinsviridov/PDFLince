@@ -1,11 +1,11 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import FileUploader from './FileUploader';
 import FileList from './FileList';
 import PageSelector from './PageSelector';
 import PageOrderer from './PageOrderer';
-import ManualCropSelector from './ManualCropSelector';
+import UnifiedCropInterface from './UnifiedCropInterface';
 import ProcessingOptions from './ProcessingOptions';
 import { ProcessingStatusDialog } from './ProcessingStatusDialog';
 import type {
@@ -56,7 +56,6 @@ const MODE_DEFAULTS: Record<ProcessingMode, PDFProcessingOptions> = {
   },
   crop: {
     preserveMetadata: true,
-    cropInputMode: 'margins',
     cropMargins: {
       top: 18,
       right: 18,
@@ -2054,7 +2053,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
                           </p>
                           <p className="text-xs text-[var(--tx-3)]">
                             {selectedCount > 0
-                              ? `${fileListStrings.pagesLabel(selectedCount)} â€¢ ${fileListStrings.selected}`
+                              ? `${fileListStrings.pagesLabel(selectedCount)} • ${fileListStrings.selected}`
                               : errorStrings.noPagesSelected}
                           </p>
                         </div>
@@ -2170,7 +2169,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
                           </p>
                           <p className="text-xs text-[var(--tx-3)]">
                             {selectedCount > 0
-                              ? `${fileListStrings.pagesLabel(selectedCount)} â€¢ ${fileListStrings.selected}`
+                              ? `${fileListStrings.pagesLabel(selectedCount)} • ${fileListStrings.selected}`
                               : errorStrings.noPagesSelected}
                           </p>
                         </div>
@@ -2231,7 +2230,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
                           </p>
                           <p className="text-xs text-[var(--tx-3)]">
                             {selectedCount > 0
-                              ? `${fileListStrings.pagesLabel(selectedCount)} â€¢ ${fileListStrings.selected}`
+                              ? `${fileListStrings.pagesLabel(selectedCount)} • ${fileListStrings.selected}`
                               : errorStrings.noPagesSelected}
                           </p>
                         </div>
@@ -2253,8 +2252,8 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
                   );
                 })}
 
-                {currentFile && (processingOptions.cropInputMode ?? 'margins') === 'manual' && hasExtractSelection ? (
-                  <ManualCropSelector
+                {mode === 'crop' && currentFile && hasExtractSelection ? (
+                  <UnifiedCropInterface
                     file={currentFile}
                     pageNumber={currentCropPreviewPage}
                     cropMargins={processingOptions.cropMargins ?? { top: 0, right: 0, bottom: 0, left: 0 }}
@@ -2262,7 +2261,6 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
                       setProcessingOptions(prev => ({
                         ...prev,
                         cropMargins: nextMargins,
-                        cropInputMode: 'manual',
                       }))
                     }
                   />

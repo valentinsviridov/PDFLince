@@ -445,6 +445,7 @@ export const deDictionary: Dictionary = {
           margins: "Ränder festlegen",
           manual: "Manuelle Auswahl",
         },
+        marginsTitle: "Ränder",
         marginLabels: {
           top: "Oberer Rand (pt)",
           right: "Rechter Rand (pt)",
