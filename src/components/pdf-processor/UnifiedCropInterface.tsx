@@ -71,7 +71,7 @@ export default function UnifiedCropInterface({
       if (savedUnit && UNIT_CONVERSIONS[savedUnit]) {
         setUnit(savedUnit);
       }
-    } catch (e) {
+    } catch {
       // Ignore localStorage errors
     }
   }, []);
@@ -80,7 +80,7 @@ export default function UnifiedCropInterface({
     setUnit(newUnit);
     try {
       localStorage.setItem('PDFLINCE_CROP_UNIT', newUnit);
-    } catch (e) {
+    } catch {
       // Ignore
     }
   };
@@ -144,7 +144,7 @@ export default function UnifiedCropInterface({
       width: Math.max(0, nextWidth),
       height: Math.max(0, nextHeight),
     };
-  }, [cropMargins, pageSize, previewUrl]);
+  }, [cropMargins, pageSize]);
 
   const getPoint = (clientX: number, clientY: number) => {
     const host = surfaceRef.current;
@@ -287,6 +287,7 @@ export default function UnifiedCropInterface({
                 onPointerUp={handlePointerUp}
                 onPointerCancel={handlePointerUp}
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={previewUrl}
                   alt={cropStrings.manual.pagePreview(pageNumber)}
