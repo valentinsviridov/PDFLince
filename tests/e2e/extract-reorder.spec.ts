@@ -7,18 +7,19 @@ import { PDFDocument } from 'pdf-lib';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const testFile = path.join(__dirname, 'extract-reorder-test.pdf');
+const getTestPdfPath = (workerIndex: number) => path.join(__dirname, `extract-reorder-test-${workerIndex}.pdf`);
 
-test.beforeAll(async () => {
+test.beforeAll(async ({}, testInfo) => {
     // Create a 5-page PDF
     const pdfDoc = await PDFDocument.create();
     for (let i = 1; i <= 5; i++) {
         pdfDoc.addPage().drawText(`Page ${i}`);
     }
-    fs.writeFileSync(testFile, await pdfDoc.save());
+    fs.writeFileSync(getTestPdfPath(testInfo.workerIndex), await pdfDoc.save());
 });
 
-test.afterAll(() => {
+test.afterAll(({}, testInfo) => {
+    const testFile = getTestPdfPath(testInfo.workerIndex);
     if (fs.existsSync(testFile)) {
         try {
             fs.unlinkSync(testFile);
@@ -26,7 +27,7 @@ test.afterAll(() => {
     }
 });
 
-test('PDF Page Extraction Workflow', async ({ page }) => {
+test('PDF Page Extraction Workflow', async ({ page }, testInfo) => {
     test.setTimeout(120_000);
 
     // 1. Visit Extract Page
@@ -34,7 +35,7 @@ test('PDF Page Extraction Workflow', async ({ page }) => {
 
     // 2. Upload File
     const fileInput = page.locator('input[type="file"]');
-    await fileInput.setInputFiles(testFile);
+    await fileInput.setInputFiles(getTestPdfPath(testInfo.workerIndex));
 
     // 3. Selection
     // Wait for the thumbnails to load. Label from dictionary is "Pág. X"
@@ -65,7 +66,7 @@ test('PDF Page Extraction Workflow', async ({ page }) => {
     fs.unlinkSync(downloadPath);
 });
 
-test('PDF Page Reordering Workflow', async ({ page }) => {
+test('PDF Page Reordering Workflow', async ({ page }, testInfo) => {
     test.setTimeout(120_000);
 
     // 1. Visit Reorder Page
@@ -73,11 +74,13 @@ test('PDF Page Reordering Workflow', async ({ page }) => {
 
     // 2. Upload File
     const fileInput = page.locator('input[type="file"]');
-    await fileInput.setInputFiles(testFile);
+    await fileInput.setInputFiles(getTestPdfPath(testInfo.workerIndex));
 
-    // 3. Verify Page Selector / Orderer Loaded. Label is "Original: Pág. 1"
+    // 3. Wait for PageOrderer to finish loading (loading spinner disappears, page grid appears)
+    // The orderer shows a loading state while fetching page count and thumbnails.
+    // Wait for the first page item label to appear (rendered only when loading=false).
     const firstPage = page.getByText('Original: Pág. 1').first();
-    await expect(firstPage).toBeVisible({ timeout: 30_000 });
+    await expect(firstPage).toBeVisible({ timeout: 60_000 });
 
     // Wait for the process button to be enabled (thumbnails might take a moment)
     const processButton = page.getByRole('button', { name: 'Guardar nueva ordenación' });

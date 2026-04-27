@@ -7,10 +7,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const testPdfPath = path.join(__dirname, 'smoke-test.pdf');
+const getTestPdfPath = (workerIndex: number) => path.join(__dirname, `smoke-test-${workerIndex}.pdf`);
 
-// Setup: Create a real PDF file for testing
-test.beforeAll(async () => {
+// Setup: Create a real PDF file for testing per worker
+test.beforeAll(async ({}, testInfo) => {
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage();
     page.drawText('This is a test PDF for PDFLince smoke tests.', {
@@ -19,12 +19,12 @@ test.beforeAll(async () => {
         size: 24,
     });
     const pdfBytes = await pdfDoc.save();
-    // Ensure directory exists if needed, though this runs in existing tests/e2e
-    fs.writeFileSync(testPdfPath, pdfBytes);
+    fs.writeFileSync(getTestPdfPath(testInfo.workerIndex), pdfBytes);
 });
 
-// Teardown: Remove the test PDF
-test.afterAll(() => {
+// Teardown: Remove the test PDF per worker
+test.afterAll(({}, testInfo) => {
+    const testPdfPath = getTestPdfPath(testInfo.workerIndex);
     if (fs.existsSync(testPdfPath)) {
         try {
             fs.unlinkSync(testPdfPath);
@@ -33,6 +33,7 @@ test.afterAll(() => {
         }
     }
 });
+
 
 test.describe('PDFLince Smoke Tests', () => {
     test.beforeEach(async ({ page }) => {
@@ -48,15 +49,16 @@ test.describe('PDFLince Smoke Tests', () => {
         await expect(page.getByText('Procesamiento local').first()).toBeVisible();
     });
 
-    test('Can upload a PDF and see processing options', async ({ page }) => {
+    test('Can upload a PDF and see processing options', async ({ page }, testInfo) => {
         // Find file input (it might be hidden for styling)
         const fileInput = page.locator('input[type="file"]');
 
         // Upload the generated PDF
+        const testPdfPath = getTestPdfPath(testInfo.workerIndex);
         await fileInput.setInputFiles(testPdfPath);
 
         // Verify file appears in the list
-        await expect(page.getByText('smoke-test.pdf')).toBeVisible();
+        await expect(page.getByText(path.basename(testPdfPath))).toBeVisible();
 
         // Verify default mode (Unir PDFs) tab is active or visible
         await expect(page.getByRole('button', { name: 'Unir PDFs', exact: true })).toBeVisible();
