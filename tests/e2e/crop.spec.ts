@@ -41,8 +41,7 @@ test('PDF Manual Crop Workflow', async ({ page }) => {
     await expect(thumbnailCards.first()).toBeVisible({ timeout: 20_000 });
     await thumbnailCards.first().click();
 
-    await page.locator('label').filter({ hasText: 'Seleccion manual' }).click();
-    await expect(page.getByText('Seleccion manual de recorte')).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByRole('heading', { name: 'Recorte' })).toBeVisible({ timeout: 30_000 });
 
     const manualPreview = page.locator('div.touch-none.select-none').last();
     await expect(manualPreview).toBeVisible({ timeout: 30_000 });
