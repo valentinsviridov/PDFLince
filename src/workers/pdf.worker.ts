@@ -11,7 +11,6 @@ import {
     convertImagesToPdf,
     ProcessingResult,
     PdfToImagesArchiveResult,
-    rotatePages,
 } from '../lib/pdf-operations';
 
 // Polyfill document for PDF.js in worker environment
