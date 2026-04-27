@@ -270,6 +270,73 @@ const operationsEsContent: Record<OperationKey, OperationContent> = {
       "Guardar solo las páginas con formularios o comprobantes que necesitas archivar.",
     ],
   },
+  crop: {
+    key: "crop",
+    slug: "recortar",
+    mode: "crop",
+    meta: {
+      title: "Recortar páginas PDF online | Ajustar márgenes | PDFLince",
+      description:
+        "Recorta páginas PDF y elimina márgenes sobrantes directamente en tu navegador. Todo el proceso ocurre en local y sin subidas al servidor.",
+      keywords: [
+        "recortar pdf",
+        "recortar pdf online",
+        "quitar margenes pdf",
+        "recortador de pdf",
+        "recortar bordes pdf",
+      ],
+      ogTitle: "Recorta páginas PDF de forma privada | PDFLince",
+      ogDescription:
+        "Selecciona las páginas, define los márgenes y descarga un PDF más limpio sin compartir tus archivos con nadie.",
+      ogImageAlt: "Recortando páginas PDF en PDFLince",
+    },
+    hero: {
+      title: "Recorta páginas PDF y limpia los márgenes",
+      description:
+        "Elimina espacio en blanco innecesario de páginas concretas y descarga un documento más ajustado en segundos.",
+      bulletPoints: [
+        "Selecciona solo las páginas que quieres recortar",
+        "Ajusta márgenes superior, derecho, inferior e izquierdo con precisión",
+        "Procesamiento 100% local y sin servidores",
+      ],
+      imageAlt: "Flujo de recorte de PDF",
+    },
+    benefitsTitle: "Por qué recortar PDFs con PDFLince",
+    benefits: [
+      {
+        title: "Páginas más limpias",
+        description:
+          "Reduce bordes vacíos y centra la atención en el contenido importante.",
+      },
+      {
+        title: "Edición selectiva",
+        description:
+          "Aplica el recorte solo donde hace falta sin rehacer todo el documento.",
+      },
+      {
+        title: "Privacidad real",
+        description:
+          "Tus archivos siguen en tu dispositivo durante todo el proceso.",
+      },
+    ],
+    howTo: {
+      title: "Cómo recortar páginas PDF con PDFLince",
+      steps: [
+        "Sube el PDF y elige el archivo que quieres ajustar.",
+        "Marca las páginas a recortar y define los márgenes superior, derecho, inferior e izquierdo.",
+        "Pulsa “Procesar” para descargar un nuevo PDF con el recorte aplicado.",
+      ],
+      note:
+        "Si distintos grupos de páginas necesitan recortes diferentes, repite el proceso por separado.",
+    },
+    useCasesTitle: "Cuándo conviene recortar un PDF",
+    useCases: [
+      "Eliminar bordes del escáner en formularios, facturas o documentos firmados.",
+      "Quitar márgenes sobrantes antes de imprimir o unir archivos.",
+      "Uniformar páginas exportadas desde herramientas distintas.",
+      "Preparar manuales, reportes o apuntes con un encuadre más compacto.",
+    ],
+  },
   rotate: {
     key: "rotate",
     slug: "girar",
@@ -545,6 +612,7 @@ export const operationsEs: Record<OperationKey, OperationContent> = {
   compress: operationsEsContent.compress,
   split: operationsEsContent.split,
   extract: operationsEsContent.extract,
+  crop: operationsEsContent.crop,
   rotate: operationsEsContent.rotate,
   reorder: operationsEsContent.reorder,
   pdfToImages: operationsEsContent.pdfToImages,

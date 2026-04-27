@@ -270,6 +270,73 @@ const operationsDeContent: Record<OperationKey, OperationContent> = {
       "Nur Formular- oder Belegseiten sichern, die archiviert werden mÃ¼ssen.",
     ],
   },
+  crop: {
+    key: "crop",
+    slug: "zuschneiden",
+    mode: "crop",
+    meta: {
+      title: "PDF-Seiten zuschneiden | Ränder entfernen | PDFLince",
+      description:
+        "Schneide PDF-Seiten direkt im Browser zu und entferne überflüssige Ränder. Alles läuft lokal und ohne Uploads.",
+      keywords: [
+        "pdf zuschneiden",
+        "pdf ränder entfernen",
+        "pdf beschneiden",
+        "pdf ränder abschneiden",
+        "pdf format ändern",
+      ],
+      ogTitle: "PDF-Seiten lokal zuschneiden | PDFLince",
+      ogDescription:
+        "Wähle die Seiten aus, definiere die Ränder und lade ein sauber zugeschnittenes PDF herunter, ohne Dateien hochzuladen.",
+      ogImageAlt: "PDF-Seiten in PDFLince zuschneiden",
+    },
+    hero: {
+      title: "PDF-Seiten zuschneiden und Ränder verkleinern",
+      description:
+        "Entferne unnötige Leerräume von ausgewählten Seiten und lade in Sekunden ein kompakteres Dokument herunter.",
+      bulletPoints: [
+        "Nur die Seiten auswählen, die angepasst werden sollen",
+        "Oben, rechts, unten und links präzise Randwerte festlegen",
+        "Vollständig lokale Verarbeitung ohne Server",
+      ],
+      imageAlt: "PDF-Zuschneide-Workflow",
+    },
+    benefitsTitle: "Warum PDFs mit PDFLince zuschneiden",
+    benefits: [
+      {
+        title: "Saubere Seiten",
+        description:
+          "Reduziere leere Ränder und lenke den Fokus auf den eigentlichen Inhalt.",
+      },
+      {
+        title: "Gezielte Bearbeitung",
+        description:
+          "Passe nur die betroffenen Seiten an, statt das ganze Dokument neu aufzubauen.",
+      },
+      {
+        title: "Privat standardmäßig",
+        description:
+          "Die Dateien bleiben während des gesamten Vorgangs auf deinem Gerät.",
+      },
+    ],
+    howTo: {
+      title: "So schneidest du PDF-Seiten mit PDFLince zu",
+      steps: [
+        "Lade das PDF hoch und wähle die Datei aus, die du anpassen möchtest.",
+        "Markiere die Seiten und lege die oberen, rechten, unteren und linken Ränder fest.",
+        "Klicke auf „Verarbeiten“, um ein neues zugeschnittenes PDF herunterzuladen.",
+      ],
+      note:
+        "Wenn verschiedene Seiten unterschiedliche Zuschnitte brauchen, führe den Vorgang mehrfach aus.",
+    },
+    useCasesTitle: "Wann Zuschneiden sinnvoll ist",
+    useCases: [
+      "Scanner-Ränder von Formularen, Rechnungen oder unterschriebenen Dokumenten entfernen.",
+      "Überflüssige Ränder vor dem Drucken oder Zusammenführen von Dateien reduzieren.",
+      "Seiten aus unterschiedlichen Tools optisch vereinheitlichen.",
+      "Berichte, Handbücher oder Lernmaterial mit kompakterem Seitenrahmen vorbereiten.",
+    ],
+  },
   rotate: {
     key: "rotate",
     slug: "drehen",
@@ -545,6 +612,7 @@ export const operationsDe: Record<OperationKey, OperationContent> = {
   compress: operationsDeContent.compress,
   split: operationsDeContent.split,
   extract: operationsDeContent.extract,
+  crop: operationsDeContent.crop,
   rotate: operationsDeContent.rotate,
   reorder: operationsDeContent.reorder,
   pdfToImages: operationsDeContent.pdfToImages,

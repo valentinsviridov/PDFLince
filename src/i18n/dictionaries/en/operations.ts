@@ -337,6 +337,75 @@ const operationsEnContent: Record<OperationKey, OperationContent> = {
       "Save copies of form pages or receipts you need to archive.",
     ],
   },
+  crop: {
+    key: "crop",
+    slug: "crop",
+    mode: "crop",
+    meta: {
+      title: "Crop PDF Pages Online | Trim PDF Margins | PDFLince",
+      description:
+        "Crop PDF pages and trim excess margins directly in your browser. Select the pages, define the crop area, and download the result privately.",
+      keywords: [
+        "crop pdf",
+        "crop pdf online",
+        "trim pdf margins",
+        "cut pdf pages",
+        "pdf crop tool",
+        "free pdf cropper",
+        "remove white space pdf",
+      ],
+      ogTitle: "Crop PDF pages locally in your browser | PDFLince",
+      ogDescription:
+        "Trim white margins and focus each page on the content you need, all with private on-device processing and no server uploads.",
+      ogImageAlt: "Cropping PDF pages in PDFLince",
+    },
+    hero: {
+      title: "Crop PDF pages and trim margins",
+      description:
+        "Remove extra white space or tighten the visible area of selected pages without sending the document anywhere.",
+      bulletPoints: [
+        "Select only the pages you want to crop",
+        "Trim top, right, bottom, and left margins with precise point values",
+        "Keep the workflow fully local with zero-server processing",
+      ],
+      imageAlt: "PDF crop workflow",
+    },
+    benefitsTitle: "Why crop PDFs with PDFLince",
+    benefits: [
+      {
+        title: "Cleaner pages",
+        description:
+          "Reduce distracting white borders and focus each page on the content that matters.",
+      },
+      {
+        title: "Selective editing",
+        description:
+          "Crop only the pages that need adjustment instead of rebuilding the whole document.",
+      },
+      {
+        title: "Private by default",
+        description:
+          "Every crop runs in your browser, which is safer for invoices, scans, and internal reports.",
+      },
+    ],
+    howTo: {
+      title: "How to crop PDF pages with PDFLince",
+      steps: [
+        "Upload the PDF and choose the file whose pages you want to crop.",
+        "Select the pages to edit and set the top, right, bottom, and left crop margins.",
+        "Click Process to download a new PDF with the updated page bounds.",
+      ],
+      note:
+        "If different groups of pages need different trims, run the crop step more than once.",
+    },
+    useCasesTitle: "When cropping a PDF helps",
+    useCases: [
+      "Trim scanner borders from forms, receipts, or signed documents.",
+      "Remove extra white margins before printing or combining files.",
+      "Standardise pages exported from different tools with inconsistent borders.",
+      "Prepare tighter page frames before sharing manuals, reports, or study material.",
+    ],
+  },
   rotate: {
     key: "rotate",
     slug: "rotate",
@@ -546,6 +615,7 @@ export const operationsEn: Record<OperationKey, OperationContent> = {
   compress: operationsEnContent.compress,
   split: operationsEnContent.split,
   extract: operationsEnContent.extract,
+  crop: operationsEnContent.crop,
   rotate: operationsEnContent.rotate,
   reorder: operationsEnContent.reorder,
   pdfToImages: operationsEnContent.pdfToImages,

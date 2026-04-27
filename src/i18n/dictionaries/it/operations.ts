@@ -324,6 +324,136 @@ const operationsItContent: Record<OperationKey, OperationContent> = {
     ],
   },
 
+  crop: {
+    key: "crop",
+    slug: "ritaglia",
+    mode: "crop",
+    meta: {
+      title: "Ritaglia pagine PDF online | Riduci margini | PDFLince",
+      description:
+        "Ritaglia pagine PDF e rimuovi i margini in eccesso direttamente nel browser. Tutto resta locale e privato.",
+      keywords: [
+        "ritaglia pdf",
+        "ritagliare pdf online",
+        "taglia margini pdf",
+        "riduci margini pdf",
+        "eliminare bordi pdf",
+      ],
+      ogTitle: "Ritaglia pagine PDF in locale | PDFLince",
+      ogDescription:
+        "Seleziona le pagine, imposta i margini e scarica un PDF piu pulito senza caricare file.",
+      ogImageAlt: "Ritaglio di pagine PDF in PDFLince",
+    },
+    hero: {
+      title: "Ritaglia pagine PDF e pulisci i margini",
+      description:
+        "Rimuovi spazio bianco superfluo dalle pagine selezionate e scarica un documento piu compatto in pochi secondi.",
+      bulletPoints: [
+        "Seleziona solo le pagine da ritagliare",
+        "Regola margini superiore, destro, inferiore e sinistro con precisione",
+        "Elaborazione 100% locale senza server",
+      ],
+      imageAlt: "Flusso di ritaglio PDF",
+    },
+    benefitsTitle: "Perche ritagliare PDF con PDFLince",
+    benefits: [
+      {
+        title: "Pagine piu pulite",
+        description: "Riduci bordi vuoti e concentra l'attenzione sul contenuto utile.",
+      },
+      {
+        title: "Modifica selettiva",
+        description: "Applica il ritaglio solo alle pagine che ne hanno bisogno senza rifare l'intero documento.",
+      },
+      {
+        title: "Privacy totale",
+        description: "I file restano sul tuo dispositivo per tutta l'operazione.",
+      },
+    ],
+    howTo: {
+      title: "Come ritagliare pagine PDF",
+      steps: [
+        "Carica il PDF e scegli il file che vuoi modificare.",
+        "Seleziona le pagine e imposta i margini superiore, destro, inferiore e sinistro.",
+        "Clicca su Processa per scaricare un nuovo PDF con il ritaglio applicato.",
+      ],
+      note:
+        "Se gruppi diversi di pagine richiedono ritagli differenti, ripeti il processo separatamente.",
+    },
+    useCasesTitle: "Quando ritagliare un PDF",
+    useCases: [
+      "Rimuovere bordi di scanner da moduli, ricevute o documenti firmati.",
+      "Ridurre margini prima di stampare o unire file.",
+      "Uniformare pagine esportate da strumenti diversi.",
+      "Preparare report, manuali o materiali di studio con un layout piu compatto.",
+    ],
+  },
+
+  rotate: {
+    key: "rotate",
+    slug: "ruota",
+    mode: "rotate",
+    meta: {
+      title: "Ruota pagine PDF online | Correggi orientamento | PDFLince",
+      description:
+        "Ruota pagine PDF selezionate di 90 o 180 gradi direttamente nel browser. Gratis, privato e senza upload.",
+      keywords: [
+        "ruota pdf",
+        "ruota pagine pdf",
+        "correggi orientamento pdf",
+        "pdf storto",
+        "rotazione pagine pdf",
+      ],
+      ogTitle: "Ruota pagine PDF in pochi secondi | PDFLince",
+      ogDescription:
+        "Seleziona le pagine con orientamento errato, scegli 90 o 180 gradi e scarica il PDF corretto senza caricare nulla.",
+      ogImageAlt: "Rotazione di pagine PDF in PDFLince",
+    },
+    hero: {
+      title: "Ruota pagine PDF senza perdere qualita",
+      description:
+        "Correggi scansioni storte, pagine capovolte o documenti con orientamenti misti in pochi clic.",
+      bulletPoints: [
+        "Ruota solo le pagine selezionate e non l'intero documento",
+        "Scegli 90 gradi a destra, 180 gradi o 90 gradi a sinistra",
+        "Tutto avviene nel browser senza upload",
+      ],
+      imageAlt: "Flusso di rotazione PDF",
+    },
+    benefitsTitle: "Perche ruotare pagine con PDFLince",
+    benefits: [
+      {
+        title: "Correzioni precise",
+        description: "Regola solo le pagine che ne hanno bisogno, ideale per scansioni e report lunghi.",
+      },
+      {
+        title: "Correzione rapida",
+        description: "Sistema l'orientamento in pochi secondi senza aprire editor pesanti.",
+      },
+      {
+        title: "Privacy by design",
+        description: "I documenti restano sul tuo dispositivo perche la rotazione e locale.",
+      },
+    ],
+    howTo: {
+      title: "Come ruotare pagine PDF",
+      steps: [
+        "Carica il PDF e scegli il file con le pagine da correggere.",
+        "Seleziona le pagine e imposta 90 gradi a destra, 180 gradi o 90 gradi a sinistra.",
+        "Clicca su Processa per scaricare il PDF con il nuovo orientamento.",
+      ],
+      note:
+        "Dopo puoi anche riordinare, estrarre o comprimere il file corretto.",
+    },
+    useCasesTitle: "Quando ruotare pagine aiuta",
+    useCases: [
+      "Correggere contratti o moduli scansionati di lato.",
+      "Sistemare pagine capovolte in report creati da fonti diverse.",
+      "Preparare dispense e manuali prima della condivisione.",
+      "Rendere piu comodi da leggere a schermo i PDF di archivio.",
+    ],
+  },
+
   reorder: {
     key: "reorder",
     slug: "reorder",
@@ -384,68 +514,6 @@ const operationsItContent: Record<OperationKey, OperationContent> = {
     ],
   },
 
-  rotate: {
-    key: "rotate",
-    slug: "rotate",
-    mode: "rotate",
-    meta: {
-      title: "Ruota PDF online | PDFLince",
-      description:
-        "Ruota pagine PDF di 90°, 180° o 270° senza perdita di qualità.",
-      keywords: [
-        "ruota pdf",
-        "ruota pagine",
-        "pdf rotator",
-      ],
-      ogTitle: "Ruota PDF facilmente | PDFLince",
-      ogDescription:
-        "Seleziona le pagine e ruotale nel browser in pochi secondi.",
-      ogImageAlt: "Rotazione PDF",
-    },
-    hero: {
-      title: "Ruota pagine PDF",
-      description:
-        "Correggi l'orientamento delle pagine velocemente.",
-      bulletPoints: [
-        "Ruota di 90° a destra o sinistra",
-        "Applica a pagine singole o intere",
-        "Nessun caricamento su server",
-      ],
-      imageAlt: "Rotazione PDF",
-    },
-    benefitsTitle: "Vantaggi",
-    benefits: [
-      {
-        title: "Velocità",
-        description: "Correzioni istantanee.",
-      },
-      {
-        title: "Precisione",
-        description: "Controlla ogni pagina.",
-      },
-      {
-        title: "Privacy",
-        description: "Elaborazione locale.",
-      },
-    ],
-    howTo: {
-      title: "Come ruotare PDF",
-      steps: [
-        "Carica il PDF.",
-        "Seleziona le pagine da ruotare.",
-        "Scegli la direzione di rotazione.",
-        "Scarica il file.",
-      ],
-      note: "Puoi ruotare più pagine contemporaneamente.",
-    },
-    useCasesTitle: "Uso",
-    useCases: [
-      "Correggere scansioni capovolte.",
-      "Unificare orientamenti misti.",
-      "Preparare documenti per stampa.",
-      "Archiviazione organizzata.",
-    ],
-  },
 
   pdfToImages: {
     key: "pdfToImages",
@@ -513,8 +581,10 @@ export const operationsIt: Record<OperationKey, OperationContent> = {
   compress: operationsItContent.compress,
   split: operationsItContent.split,
   extract: operationsItContent.extract,
-  reorder: operationsItContent.reorder,
+  crop: operationsItContent.crop,
   rotate: operationsItContent.rotate,
+  reorder: operationsItContent.reorder,
+
   pdfToImages: operationsItContent.pdfToImages,
   imagesToPdf: operationsItContent.imagesToPdf,
 };

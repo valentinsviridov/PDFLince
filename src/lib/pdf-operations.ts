@@ -11,8 +11,8 @@ import {
   PDFRef,
   PDFArray,
   PDFNumber,
-  rgb,
   degrees,
+  rgb,
 } from 'pdf-lib';
 
 // Type definitions
@@ -21,6 +21,8 @@ export type PDFProcessingMode =
   | 'merge'
   | 'split'
   | 'extract'
+  | 'crop'
+  | 'rotate'
   | 'reorder'
   | 'rotate'
   | 'pdfToImages'
@@ -35,11 +37,18 @@ export type PDFProcessingOptions = {
   password?: string;
 
   pagesToExtract?: number[];
+  pagesToCrop?: number[];
   pageOrder?: number[];
 
   pagesToRotate?: number[];
   rotationDegrees?: 90 | 180 | 270 | -90 | -180 | -270;
-
+  cropMargins?: {
+    top: number;
+    right: number;
+    bottom: number;
+    left: number;
+  };
+  cropInputMode?: 'margins' | 'manual';
   bundleAsZip?: boolean;
 
   preserveMetadata?: boolean;
@@ -685,6 +694,118 @@ export async function reorderPages(
   }
 }
 
+export async function cropPages(
+  fileOrData: File | ArrayBuffer | Uint8Array,
+  pageNumbers: number[],
+  options: PDFProcessingOptions = {}
+): Promise<Uint8Array> {
+  try {
+    if (pageNumbers.length === 0) {
+      throw new Error('No pages to crop');
+    }
+
+    const margins = options.cropMargins;
+    if (!margins) {
+      throw new Error('No crop margins provided');
+    }
+
+    const left = Math.max(0, margins.left ?? 0);
+    const right = Math.max(0, margins.right ?? 0);
+    const top = Math.max(0, margins.top ?? 0);
+    const bottom = Math.max(0, margins.bottom ?? 0);
+
+    const arrayBuffer = fileOrData instanceof File ? await fileOrData.arrayBuffer() : fileOrData;
+    const pdfDoc = await PDFDocument.load(arrayBuffer, {
+      ignoreEncryption: true,
+      updateMetadata: options.preserveMetadata !== false,
+    });
+
+    const pageCount = pdfDoc.getPageCount();
+    const validPageIndices = [...new Set(
+      pageNumbers
+        .map(num => num - 1)
+        .filter(idx => idx >= 0 && idx < pageCount)
+    )];
+
+    if (validPageIndices.length === 0) {
+      throw new Error('No valid page numbers provided');
+    }
+
+    for (const pageIndex of validPageIndices) {
+      const page = pdfDoc.getPage(pageIndex);
+      const mediaBox = page.getMediaBox();
+      const rotationAngle = page.getRotation().angle;
+      const normalizedRotation = ((rotationAngle % 360) + 360) % 360;
+
+      let logicalTop = top;
+      let logicalRight = right;
+      let logicalBottom = bottom;
+      let logicalLeft = left;
+
+      if (normalizedRotation === 90) {
+        logicalTop = right;
+        logicalRight = bottom;
+        logicalBottom = left;
+        logicalLeft = top;
+      } else if (normalizedRotation === 180) {
+        logicalTop = bottom;
+        logicalRight = left;
+        logicalBottom = top;
+        logicalLeft = right;
+      } else if (normalizedRotation === 270) {
+        logicalTop = left;
+        logicalRight = top;
+        logicalBottom = right;
+        logicalLeft = bottom;
+      }
+
+      const nextWidth = mediaBox.width - logicalLeft - logicalRight;
+      const nextHeight = mediaBox.height - logicalTop - logicalBottom;
+
+      if (nextWidth <= 0 || nextHeight <= 0) {
+        throw new Error(
+          `Crop margins exceed page bounds on page ${pageIndex + 1}. ` +
+          `Details: mediaBox=(${Math.round(mediaBox.width)}x${Math.round(mediaBox.height)}), ` +
+          `rotation=${rotationAngle}, normalized=${normalizedRotation}, ` +
+          `visual=(T:${Math.round(top)},R:${Math.round(right)},B:${Math.round(bottom)},L:${Math.round(left)}), ` +
+          `logical=(T:${Math.round(logicalTop)},R:${Math.round(logicalRight)},B:${Math.round(logicalBottom)},L:${Math.round(logicalLeft)}), ` +
+          `next=(${Math.round(nextWidth)}x${Math.round(nextHeight)})`
+        );
+      }
+
+      const nextX = mediaBox.x + logicalLeft;
+      const nextY = mediaBox.y + logicalBottom;
+
+      page.setMediaBox(nextX, nextY, nextWidth, nextHeight);
+      page.setCropBox(nextX, nextY, nextWidth, nextHeight);
+      page.setBleedBox(nextX, nextY, nextWidth, nextHeight);
+      page.setTrimBox(nextX, nextY, nextWidth, nextHeight);
+      page.setArtBox(nextX, nextY, nextWidth, nextHeight);
+    }
+
+    if (options.metadata) {
+      if (options.metadata.title) pdfDoc.setTitle(options.metadata.title);
+      if (options.metadata.author) pdfDoc.setAuthor(options.metadata.author);
+      if (options.metadata.subject) pdfDoc.setSubject(options.metadata.subject);
+      if (options.metadata.keywords) {
+        pdfDoc.setKeywords([options.metadata.keywords]);
+      }
+    }
+
+    return pdfDoc.save({
+      useObjectStreams: true,
+      addDefaultPage: false,
+    });
+  } catch (error) {
+    console.error('Error cropping pages:', error);
+    throw new Error(
+      `Failed to crop pages: ${
+        error instanceof Error ? error.message : String(error)
+      }`
+    );
+  }
+}
+
 export async function rotatePages(
   fileOrData: File | ArrayBuffer | Uint8Array,
   pageNumbers: number[],
@@ -768,6 +889,27 @@ export async function getPDFPageCount(fileOrData: File | ArrayBuffer | Uint8Arra
   }
 }
 
+export async function getPDFPageDimensions(
+  fileOrData: File | ArrayBuffer | Uint8Array,
+  pageNumber: number
+): Promise<{ width: number; height: number }> {
+  const arrayBuffer = fileOrData instanceof File ? await fileOrData.arrayBuffer() : fileOrData;
+  const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+  const pageCount = pdfDoc.getPageCount();
+  const pageIndex = Math.min(Math.max(pageNumber - 1, 0), Math.max(pageCount - 1, 0));
+  const page = pdfDoc.getPage(pageIndex);
+  
+  const mediaBox = page.getMediaBox();
+  const rotation = page.getRotation().angle;
+  const normalized = ((rotation % 360) + 360) % 360;
+  
+  if (normalized === 90 || normalized === 270) {
+    return { width: mediaBox.height, height: mediaBox.width };
+  }
+  
+  return { width: mediaBox.width, height: mediaBox.height };
+}
+
 const FALLBACK_THUMBNAIL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=';
 
 /** Minimal interface for pdfjs-dist PDFDocumentProxy (avoids importing full pdfjs types) */
@@ -785,7 +927,7 @@ interface PdfjsPage {
 type PdfJsModule = typeof import('pdfjs-dist/legacy/build/pdf');
 let pdfjsLibPromise: Promise<PdfJsModule> | null = null;
 const pdfDocumentCache = new WeakMap<File, Promise<PdfjsDocument>>();
-const thumbnailCache = new WeakMap<File, Map<number, string>>();
+const thumbnailCache = new WeakMap<File, Map<string, string>>();
 
 const PAGE_SIZE_MAP: Record<'a4' | 'letter', { width: number; height: number }> = {
   a4: { width: 595.28, height: 841.89 },
@@ -833,10 +975,10 @@ async function getCachedPdfDocument(fileOrData: File | ArrayBuffer | Uint8Array)
   return docPromise;
 }
 
-function getThumbnailCache(file: File): Map<number, string> {
+function getThumbnailCache(file: File): Map<string, string> {
   let cache = thumbnailCache.get(file);
   if (!cache) {
-    cache = new Map<number, string>();
+    cache = new Map<string, string>();
     thumbnailCache.set(file, cache);
   }
   return cache;
@@ -1006,13 +1148,16 @@ export async function convertPdfToImages(fileOrData: File | ArrayBuffer | Uint8A
   return { kind: 'zip', blob: await zip.generateAsync({ type: 'blob' }), imageCount: entries.length, format: options.imageOutputFormat ?? 'png', suggestedName: `${base}_${extension}.zip` };
 }
 
-export async function renderPDFThumbnail(file: File, pageNumber: number): Promise<string> {
+export async function renderPDFThumbnail(file: File, pageNumber: number, targetWidth = 160): Promise<string> {
   const cache = getThumbnailCache(file);
-  if (cache.has(pageNumber)) return cache.get(pageNumber)!;
+  const resolvedTargetWidth = Math.max(1, Math.round(targetWidth));
+  const cacheKey = `${pageNumber}_${resolvedTargetWidth}`;
+  if (cache.has(cacheKey)) return cache.get(cacheKey)!;
   try {
     const doc = await getCachedPdfDocument(file);
     const page = await doc.getPage(pageNumber);
-    const vp = page.getViewport({ scale: 160 / page.getViewport({ scale: 1 }).width });
+    const viewportAtScaleOne = page.getViewport({ scale: 1 });
+    const vp = page.getViewport({ scale: resolvedTargetWidth / viewportAtScaleOne.width });
     let canvas: HTMLCanvasElement | OffscreenCanvas;
     if (typeof OffscreenCanvas !== 'undefined') {
       canvas = new OffscreenCanvas(vp.width, vp.height);
@@ -1046,7 +1191,7 @@ export async function renderPDFThumbnail(file: File, pageNumber: number): Promis
       url = (canvas as HTMLCanvasElement).toDataURL('image/png');
     }
 
-    cache.set(pageNumber, url);
+    cache.set(cacheKey, url);
     page.cleanup();
     return url;
   } catch {

@@ -5,6 +5,7 @@ import FileUploader from './FileUploader';
 import FileList from './FileList';
 import PageSelector from './PageSelector';
 import PageOrderer from './PageOrderer';
+import UnifiedCropInterface from './UnifiedCropInterface';
 import ProcessingOptions from './ProcessingOptions';
 import { ProcessingStatusDialog } from './ProcessingStatusDialog';
 import type {
@@ -31,6 +32,7 @@ type ProcessingMode = OperationKey;
 const cloneOptions = (options: PDFProcessingOptions): PDFProcessingOptions => ({
   ...options,
   metadata: options.metadata ? { ...options.metadata } : undefined,
+  cropMargins: options.cropMargins ? { ...options.cropMargins } : undefined,
 });
 
 const DEFAULT_IMAGE_BASE_NAME = 'pdflince_pages';
@@ -51,6 +53,15 @@ const MODE_DEFAULTS: Record<ProcessingMode, PDFProcessingOptions> = {
   },
   extract: {
     preserveMetadata: true,
+  },
+  crop: {
+    preserveMetadata: true,
+    cropMargins: {
+      top: 18,
+      right: 18,
+      bottom: 18,
+      left: 18,
+    },
   },
   reorder: {
     preserveMetadata: true,
@@ -80,6 +91,7 @@ const MODE_TABS: ProcessingMode[] = [
   'compress',
   'split',
   'extract',
+  'crop',
   'reorder',
   'rotate',
   'pdfToImages',
@@ -230,6 +242,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
     compress: cloneOptions(MODE_DEFAULTS.compress),
     split: cloneOptions(MODE_DEFAULTS.split),
     extract: cloneOptions(MODE_DEFAULTS.extract),
+    crop: cloneOptions(MODE_DEFAULTS.crop),
     reorder: cloneOptions(MODE_DEFAULTS.reorder),
     rotate: cloneOptions(MODE_DEFAULTS.rotate),
     pdfToImages: cloneOptions(MODE_DEFAULTS.pdfToImages),
@@ -262,7 +275,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
   }, [mode, listHeadings]);
 
   const currentFile =
-    mode === 'extract' || mode === 'reorder' || mode === 'rotate'
+    mode === 'extract' || mode === 'crop' || mode === 'reorder' || mode === 'rotate'
       ? files[currentFileIndex] ?? null
       : files[0] ?? null;
 
@@ -330,6 +343,18 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
   );
 
   const currentFileKey = currentFile ? buildFileSignature(currentFile) : null;
+  const currentCropPreviewPage = useMemo(() => {
+    if (mode !== 'crop') {
+      return 1;
+    }
+
+    const selected = Object.keys(selectedPages)
+      .map(page => parseInt(page, 10))
+      .filter(page => selectedPages[page])
+      .sort((a, b) => a - b);
+
+    return selected[0] ?? 1;
+  }, [mode, selectedPages]);
 
   const previewItems = useMemo(() => {
     if (mode !== 'compress' || files.length === 0) {
@@ -683,7 +708,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
     });
 
     const nextSelectedPages =
-      (newMode === 'extract' || newMode === 'rotate') && firstFileKey
+      (newMode === 'extract' || newMode === 'crop' || newMode === 'rotate') && firstFileKey
         ? { ...(extractSelectionsByFile[firstFileKey] ?? {}) }
         : {};
     const nextPageOrder =
@@ -821,6 +846,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
     const downloads: DownloadEntry[] = [];
     const compressionEntriesBuffer: CompressionSummaryEntry[] = [];
     const extractPlan: Array<{ file: File; pages: number[] }> = [];
+    const cropPlan: Array<{ file: File; pages: number[] }> = [];
     const rotatePlan: Array<{ file: File; pages: number[] }> = [];
 
     switch (mode) {
@@ -860,6 +886,28 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
 
         if (extractPlan.length === 0) {
           trackProcessorEvent('operation_blocked', { reason: 'extract_no_pages' });
+          error(errorStrings.noPagesSelected);
+          return;
+        }
+        break;
+      }
+      case 'crop': {
+        const activeKey = currentFileKey;
+        currentFiles.forEach(file => {
+          const key = buildFileSignature(file);
+          const selectionRecord =
+            key === activeKey ? selectedPages : extractSelectionsByFile[key] ?? {};
+          const pages = Object.keys(selectionRecord)
+            .map(page => parseInt(page, 10))
+            .filter(page => selectionRecord[page])
+            .sort((a, b) => a - b);
+          if (pages.length > 0) {
+            cropPlan.push({ file, pages });
+          }
+        });
+
+        if (cropPlan.length === 0) {
+          trackProcessorEvent('operation_blocked', { reason: 'crop_no_pages' });
           error(errorStrings.noPagesSelected);
           return;
         }
@@ -1187,6 +1235,53 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
           trackProcessorEvent('operation_success', {
             file_count: processedSources,
             total_pages: totalPagesExtracted,
+          });
+          return;
+        }
+
+        case 'crop': {
+          let processedSources = 0;
+          let latestMessage = '';
+          let totalPagesCropped = 0;
+
+          for (const entry of cropPlan) {
+            const cropOptions: PDFProcessingOptions = {
+              ...processingOptions,
+              pagesToCrop: entry.pages,
+            };
+            const blob = await processPDF('crop', [entry.file], cropOptions);
+            const fileName = buildFileName('crop', entry.file.name);
+            downloads.push({ blob, fileName });
+            triggerDownloadAction(blob, fileName);
+
+            processedSources += 1;
+            latestMessage = `${entry.file.name}: ${statusMessages.cropped(entry.pages.length)}`;
+            totalPagesCropped += entry.pages.length;
+          }
+
+          if (processedSources === 0) {
+            showErrorDialog(errorStrings.noPagesSelected);
+            trackProcessorEvent('operation_error', { reason: 'crop_no_results' });
+            return;
+          }
+
+          const highlightEntries: DialogHighlight[] = [
+            { label: statusDialogStrings.resultsLabel, value: latestMessage },
+          ];
+          if (processedSources > 1) {
+            highlightEntries.push({
+              label: statusDialogStrings.filesProcessedLabel(processedSources),
+            });
+          }
+
+          showSuccessDialog({
+            highlights: highlightEntries,
+            downloads,
+            donationPrompt: buildDonationPrompt(),
+          });
+          trackProcessorEvent('operation_success', {
+            file_count: processedSources,
+            total_pages: totalPagesCropped,
           });
           return;
         }
@@ -1548,7 +1643,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
   );
 
   useEffect(() => {
-    if (mode !== 'extract' && mode !== 'rotate') {
+    if (mode !== 'extract' && mode !== 'crop' && mode !== 'rotate') {
       if (Object.keys(selectedPages).length > 0) {
         setSelectedPages({});
       }
@@ -1674,7 +1769,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
         }
       }
 
-      if (mode === 'extract' || mode === 'reorder' || mode === 'rotate') {
+      if (mode === 'extract' || mode === 'crop' || mode === 'reorder' || mode === 'rotate') {
         setCurrentFileIndex(prevIndex => {
           if (prevIndex === index) {
             return 0;
@@ -1716,7 +1811,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
       changed: index !== currentFileIndex,
     });
 
-    if (mode === 'extract' || mode === 'rotate') {
+    if (mode === 'extract' || mode === 'crop' || mode === 'rotate') {
       setSelectedPages(targetKey ? { ...(extractSelectionsByFile[targetKey] ?? {}) } : {});
     }
 
@@ -1747,10 +1842,10 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
 
   const totalExtractPageSelections = useMemo(() => {
     let total = 0;
-    const activeKey = mode === 'extract' || mode === 'rotate' ? currentFileKey : null;
+    const activeKey = mode === 'extract' || mode === 'crop' || mode === 'rotate' ? currentFileKey : null;
 
     Object.entries(extractSelectionsByFile).forEach(([key, selection]) => {
-      if ((mode === 'extract' || mode === 'rotate') && key === activeKey) {
+      if ((mode === 'extract' || mode === 'crop' || mode === 'rotate') && key === activeKey) {
         return;
       }
 
@@ -1760,7 +1855,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
       }, 0);
     });
 
-    if (mode === 'extract' || mode === 'rotate') {
+    if (mode === 'extract' || mode === 'crop' || mode === 'rotate') {
       total += Object.keys(selectedPages).reduce((count, page) => {
         const pageNumber = parseInt(page, 10);
         return selectedPages[pageNumber] ? count + 1 : count;
@@ -1822,6 +1917,10 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
   const resolveIdleButtonLabel = () => {
     if (mode === 'extract') {
       return processButton.extract(totalExtractPageSelections);
+    }
+
+    if (mode === 'crop') {
+      return processButton.crop(totalExtractPageSelections);
     }
 
     if (mode === 'rotate') {
@@ -1912,9 +2011,9 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
               files={files}
               onMoveFileAction={mode === 'merge' || mode === 'imagesToPdf' ? moveFile : undefined}
               onRemoveFileAction={removeFile}
-              currentIndex={mode === 'extract' || mode === 'reorder' || mode === 'rotate' ? currentFileIndex : undefined}
+              currentIndex={mode === 'extract' || mode === 'crop' || mode === 'reorder' || mode === 'rotate' ? currentFileIndex : undefined}
               onFileSelectAction={
-                mode === 'extract' || mode === 'reorder' || mode === 'rotate' ? handleFileChange : undefined
+                mode === 'extract' || mode === 'crop' || mode === 'reorder' || mode === 'rotate' ? handleFileChange : undefined
               }
             />
 
@@ -2070,7 +2169,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
                           </p>
                           <p className="text-xs text-[var(--tx-3)]">
                             {selectedCount > 0
-                              ? `${fileListStrings.pagesLabel(selectedCount)} â€¢ ${fileListStrings.selected}`
+                              ? `${fileListStrings.pagesLabel(selectedCount)} • ${fileListStrings.selected}`
                               : errorStrings.noPagesSelected}
                           </p>
                         </div>
@@ -2092,6 +2191,80 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
                     </section>
                   );
                 })}
+              </div>
+            )}
+
+            {mode === 'crop' && (
+              <div className="mt-6 space-y-8">
+                <h3 className="font-bold">{labels.pagesToCrop}</h3>
+                {files.map((file, index) => {
+                  const fileKey = buildFileSignature(file);
+                  const selection =
+                    fileKey === currentFileKey
+                      ? selectedPages
+                      : extractSelectionsByFile[fileKey] ?? {};
+                  const selectedCount = Object.values(selection).filter(Boolean).length;
+                  const isActive = currentFileIndex === index;
+
+                  return (
+                    <section
+                      key={`crop-panel-${fileKey}`}
+                      className={`rounded-lg border border-[var(--ui-2)] bg-[var(--bg-2)]/60 shadow-sm transition hover:border-[var(--accent)] ${isActive ? 'ring-1 ring-[var(--accent)]/60' : ''
+                        }`}
+                    >
+                      <header
+                        className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--ui-2)] bg-white/70 px-4 py-3 cursor-pointer"
+                        onClick={() => handleFileChange(index)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={event => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            handleFileChange(index);
+                          }
+                        }}
+                      >
+                        <div>
+                          <p className="font-medium text-[var(--tx)] truncate max-w-[280px] sm:max-w-none">
+                            {file.name}
+                          </p>
+                          <p className="text-xs text-[var(--tx-3)]">
+                            {selectedCount > 0
+                              ? `${fileListStrings.pagesLabel(selectedCount)} • ${fileListStrings.selected}`
+                              : errorStrings.noPagesSelected}
+                          </p>
+                        </div>
+                        {isActive ? (
+                          <span className="text-xs font-medium text-[var(--accent)]">
+                            {fileListStrings.selected}
+                          </span>
+                        ) : null}
+                      </header>
+                      <div className="px-4 pb-4 pt-3">
+                        <PageSelector
+                          key={`crop-selector-${fileKey}`}
+                          file={file}
+                          selectedPages={selection}
+                          onPageSelectAction={(page, value) => handlePageSelection(file, page, value)}
+                        />
+                      </div>
+                    </section>
+                  );
+                })}
+
+                {mode === 'crop' && currentFile && hasExtractSelection ? (
+                  <UnifiedCropInterface
+                    file={currentFile}
+                    pageNumber={currentCropPreviewPage}
+                    cropMargins={processingOptions.cropMargins ?? { top: 0, right: 0, bottom: 0, left: 0 }}
+                    onCropChangeAction={nextMargins =>
+                      setProcessingOptions(prev => ({
+                        ...prev,
+                        cropMargins: nextMargins,
+                      }))
+                    }
+                  />
+                ) : null}
               </div>
             )}
 
@@ -2242,7 +2415,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
             disabled={
               files.length === 0 ||
               isProcessing ||
-              ((mode === 'extract' || mode === 'rotate') && !hasExtractSelection)
+              ((mode === 'extract' || mode === 'crop' || mode === 'rotate') && !hasExtractSelection)
             }
             onClick={handleProcess}
           >

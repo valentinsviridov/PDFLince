@@ -15,6 +15,7 @@ const operationRoutes: Record<OperationKey, string> = {
   compress: getOperationPath(locale, "compress"),
   split: getOperationPath(locale, "split"),
   extract: getOperationPath(locale, "extract"),
+  crop: getOperationPath(locale, "crop"),
   rotate: getOperationPath(locale, "rotate"),
   reorder: getOperationPath(locale, "reorder"),
   pdfToImages: getOperationPath(locale, "pdfToImages"),
@@ -127,6 +128,7 @@ export const deDictionary: Dictionary = {
         compress: "PDF komprimieren",
         split: "PDF teilen",
         extract: "Seiten extrahieren",
+        crop: "Seiten zuschneiden",
         rotate: "Seiten drehen",
         reorder: "Seiten neu ordnen",
         pdfToImages: "PDF in Bilder",
@@ -178,6 +180,10 @@ export const deDictionary: Dictionary = {
           label: "Seiten extrahieren",
           helper: "Markiere spezifische Seiten für ein neues Dokument.",
         },
+        crop: {
+          label: "Seiten zuschneiden",
+          helper: "Schneide sichtbare Rander ausgewahlter Seiten direkt im Browser weg.",
+        },
         rotate: {
           label: "Seiten drehen",
           helper: "Wähle die Seiten mit falscher Ausrichtung und drehe nur diese Seiten.",
@@ -201,6 +207,7 @@ export const deDictionary: Dictionary = {
         listHeadings: {
           merge: "Dateien zum Zusammenführen (Reihenfolge festlegen):",
           extract: "Datei auswählen, um mit den Seiten zu arbeiten:",
+          crop: "Datei auswahlen, um mit den Seiten zu arbeiten:",
           rotate: "Datei auswählen, um mit den Seiten zu arbeiten:",
           reorder: "Datei auswählen, um mit den Seiten zu arbeiten:",
           pdfToImages: "PDFs zum Konvertieren (werden nacheinander verarbeitet):",
@@ -210,6 +217,7 @@ export const deDictionary: Dictionary = {
         hints: {
           compress: "Jede Datei wird einzeln komprimiert und balanciert Qualität und Größe.",
           split: "Jedes PDF wird entsprechend der Optionen im nächsten Schritt geteilt.",
+          crop: "Wahle die zuzuschneidenden Seiten und lege im Optionsbereich fest, wie viele Punkte pro Seite entfernt werden.",
           pdfToImages: "Wir rendern ein PDF nach dem einen. Stelle Format und DPI im Optionsbereich vor dem Export ein.",
           imagesToPdf: "Ziehe JPG, PNG, WEBP oder TIFF hinein. Wähle Seitenformat, Ausrichtung und Ränder im Optionspanel.",
         },
@@ -219,6 +227,7 @@ export const deDictionary: Dictionary = {
         merge: "zusammengefuegt_PDFLince",
         split: "teil_PDFLince",
         extract: "extrahiert_PDFLince",
+        crop: "zugeschnitten_PDFLince",
         rotate: "gedreht_PDFLince",
         reorder: "neu_geordnet_PDFLince",
         pdfToImages: "bilder_PDFLince",
@@ -230,6 +239,8 @@ export const deDictionary: Dictionary = {
         processing: "Verarbeitung läuft...",
         extract: (count: number) =>
           `${count} ${count === 1 ? "Seite" : "Seiten"} extrahieren`,
+        crop: (count: number) =>
+          count > 0 ? `Schneide ${count} ${count === 1 ? "Seite" : "Seiten"} zu` : "PDF zuschneiden",
         rotate: (count: number) =>
           count > 0 ? `${count} ${count === 1 ? "Seite" : "Seiten"} drehen` : "PDF drehen",
         reorder: "Neue Reihenfolge speichern",
@@ -252,6 +263,7 @@ export const deDictionary: Dictionary = {
             ? `${count} Dateien erzeugt. Erste Datei wird heruntergeladen...`
             : "Teilung abgeschlossen",
         extracted: (count: number) => `${count} ${count === 1 ? "Seite" : "Seiten"} extrahiert`,
+        cropped: (count: number) => `Es wurden ${count} ${count === 1 ? "Seite" : "Seiten"} zugeschnitten`,
         rotated: (count: number) => `${count} ${count === 1 ? "Seite" : "Seiten"} gedreht`,
         reordered: "Neuordnung abgeschlossen",
         pdfToImages: (count: number, format: "png" | "jpeg", zipped: boolean) => {
@@ -278,6 +290,7 @@ export const deDictionary: Dictionary = {
       },
       labels: {
         pagesToExtract: "Seiten zum Extrahieren auswählen:",
+        pagesToCrop: "Wahle die zuzuschneidenden Seiten:",
         pagesToRotate: "Seiten zum Drehen auswählen:",
         reorderPages: "Seiten ziehen, um sie neu zu ordnen:",
       },
@@ -423,6 +436,33 @@ export const deDictionary: Dictionary = {
         title: "Extrahieren",
         preserveMetadata: "Metadaten beibehalten",
         preserveMetadataHint: "Behält Titel, Autor und weitere Details in der extrahierten Datei.",
+      },
+      crop: {
+        title: "Zuschneiden",
+        hint: "Wahle die Seiten aus und lege fest, wie viele Punkte oben, rechts, unten und links entfernt werden.",
+        inputModeLabel: "Zuschneidemethode",
+        inputModes: {
+          margins: "Ränder festlegen",
+          manual: "Manuelle Auswahl",
+        },
+        marginsTitle: "Ränder",
+        marginLabels: {
+          top: "Oberer Rand (pt)",
+          right: "Rechter Rand (pt)",
+          bottom: "Unterer Rand (pt)",
+          left: "Linker Rand (pt)",
+        },
+        marginHint: "72 pt entsprechen ungefahr 1 Zoll. Starte mit kleinen Werten, damit kein Inhalt verloren geht.",
+        preserveMetadata: "Metadaten beibehalten",
+        preserveMetadataHint: "Behalt Titel, Autor und weitere Details in der zugeschnittenen Datei.",
+        manual: {
+          title: "Manuelle Zuschnittauswahl",
+          hint: "Ziehe auf der Vorschau, um den sichtbaren Bereich festzulegen. Wir ubertragen die Auswahl in dieselben Randwerte, die der bisherige Zuschnitt nutzt.",
+          loading: "Zuschnittvorschau wird geladen...",
+          error: "Die Zuschnittvorschau konnte nicht geladen werden.",
+          reset: "Auswahl zurucksetzen",
+          pagePreview: (pageNumber: number) => `Vorschauseite ${pageNumber}`,
+        },
       },
       rotate: {
         title: "Drehen",
