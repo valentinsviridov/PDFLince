@@ -13,7 +13,6 @@ import {
   PDFNumber,
   degrees,
   rgb,
-  degrees,
 } from 'pdf-lib';
 
 // Type definitions
