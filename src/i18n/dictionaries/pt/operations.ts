@@ -1,4 +1,4 @@
-﻿import { OperationContent } from "../operation-types";
+import { OperationContent } from "../operation-types";
 import { OperationKey } from "../../../types/operations";
 
 const operationsPtContent: Record<OperationKey, OperationContent> = {
@@ -402,73 +402,6 @@ const operationsPtContent: Record<OperationKey, OperationContent> = {
       "Reduzir margens antes de imprimir ou juntar arquivos.",
       "Padronizar páginas exportadas por ferramentas diferentes.",
       "Preparar relatórios, manuais ou materiais de estudo com enquadramento mais compacto.",
-    ],
-  },
-  rotate: {
-    key: "rotate",
-    slug: "girar",
-    mode: "rotate",
-    meta: {
-      title: "Girar paginas PDF online | Corrigir orientacao | PDFLince",
-      description:
-        "Gire paginas selecionadas de um PDF em 90 ou 180 graus direto no navegador. Gratis, privado e sem upload.",
-      keywords: [
-        "girar pdf",
-        "girar paginas pdf",
-        "corrigir orientacao pdf",
-        "rotacao de paginas pdf",
-        "pdf torto",
-      ],
-      ogTitle: "Gire paginas PDF em segundos | PDFLince",
-      ogDescription:
-        "Selecione as paginas com orientacao errada, escolha 90 ou 180 graus e baixe o PDF corrigido sem enviar nada.",
-      ogImageAlt: "Rotacao de paginas PDF no PDFLince",
-    },
-    hero: {
-      title: "Gire paginas PDF sem perder qualidade",
-      description:
-        "Corrija digitalizacoes inclinadas, paginas invertidas ou documentos com orientacoes misturadas em poucos cliques.",
-      bulletPoints: [
-        "Gire apenas as paginas selecionadas",
-        "Escolha 90 graus para a direita, 180 graus ou 90 graus para a esquerda",
-        "Tudo acontece localmente no navegador",
-      ],
-      imageAlt: "Fluxo de rotacao de paginas PDF",
-    },
-    benefitsTitle: "Por que girar paginas com o PDFLince",
-    benefits: [
-      {
-        title: "Correcao precisa",
-        description:
-          "Ajuste apenas as folhas que precisam de correcao, ideal para lotes digitalizados e relatorios longos.",
-      },
-      {
-        title: "Ajuste rapido",
-        description:
-          "Corrija a orientacao sem abrir editores pesados no desktop.",
-      },
-      {
-        title: "Privacidade total",
-        description:
-          "Os documentos continuam no seu dispositivo porque a rotacao roda localmente.",
-      },
-    ],
-    howTo: {
-      title: "Como girar paginas PDF",
-      steps: [
-        "Envie o PDF e escolha o arquivo com as paginas que deseja corrigir.",
-        "Marque as paginas e selecione 90 graus para a direita, 180 graus ou 90 graus para a esquerda.",
-        "Clique em Processar para baixar o PDF com a nova orientacao.",
-      ],
-      note:
-        "Depois voce ainda pode reordenar, extrair ou comprimir o arquivo corrigido.",
-    },
-    useCasesTitle: "Quando girar paginas ajuda",
-    useCases: [
-      "Corrigir contratos ou formularios escaneados de lado.",
-      "Ajustar paginas invertidas dentro de relatorios montados com varias fontes.",
-      "Preparar apostilas e manuais antes de compartilhar.",
-      "Deixar arquivos antigos mais confortaveis para leitura na tela.",
     ],
   },
   reorder: {

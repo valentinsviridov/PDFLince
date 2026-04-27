@@ -18,7 +18,6 @@ const operationsRoutes: Record<OperationKey, string> = {
   crop: getOperationPath(locale, "crop"),
   rotate: getOperationPath(locale, "rotate"),
   reorder: getOperationPath(locale, "reorder"),
-  rotate: getOperationPath(locale, "rotate"),
   pdfToImages: getOperationPath(locale, "pdfToImages"),
   imagesToPdf: getOperationPath(locale, "imagesToPdf"),
 };
@@ -132,7 +131,6 @@ export const itDictionary: Dictionary = {
         crop: "Ritaglia pagine",
         rotate: "Ruota pagine",
         reorder: "Riordina pagine",
-        rotate: "Ruota pagine",
         pdfToImages: "PDF in immagini",
         imagesToPdf: "Immagini in PDF",
       },
@@ -195,10 +193,6 @@ export const itDictionary: Dictionary = {
         reorder: {
           label: "Riordina pagine",
           helper: "Cambia l’ordine delle pagine all’interno di un PDF.",
-        },
-        rotate: {
-          label: "Ruota pagine",
-          helper: "Ruota le pagine del PDF nel modo desiderato desiderato.",
         },
         pdfToImages: {
           label: "PDF in immagini",
