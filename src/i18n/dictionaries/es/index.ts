@@ -23,6 +23,7 @@ export const esDictionary: Dictionary = {
       compress: getOperationPath(DEFAULT_LOCALE, "compress"),
       split: getOperationPath(DEFAULT_LOCALE, "split"),
       extract: getOperationPath(DEFAULT_LOCALE, "extract"),
+      crop: getOperationPath(DEFAULT_LOCALE, "crop"),
       rotate: getOperationPath(DEFAULT_LOCALE, "rotate"),
       reorder: getOperationPath(DEFAULT_LOCALE, "reorder"),
       pdfToImages: getOperationPath(DEFAULT_LOCALE, "pdfToImages"),
@@ -121,6 +122,7 @@ export const esDictionary: Dictionary = {
         compress: "Comprimir PDF",
         split: "Dividir PDF",
         extract: "Extraer Páginas",
+        crop: "Recortar paginas",
         rotate: "Girar páginas",
         reorder: "Reordenar Páginas",
         pdfToImages: "PDF a imágenes",
@@ -172,6 +174,10 @@ export const esDictionary: Dictionary = {
           label: "Extraer Páginas",
           helper: "Selecciona páginas específicas de un PDF para crear un nuevo documento.",
         },
+        crop: {
+          label: "Recortar paginas",
+          helper: "Recorta los margenes visibles de las paginas seleccionadas sin salir del navegador.",
+        },
         rotate: {
           label: "Girar páginas",
           helper: "Selecciona las páginas que necesitan otra orientación y rota solo esas hojas.",
@@ -195,6 +201,7 @@ export const esDictionary: Dictionary = {
         listHeadings: {
           merge: "Archivos a unir (ordena para establecer el orden final):",
           extract: "Selecciona un archivo para trabajar con sus páginas:",
+          crop: "Selecciona un archivo para trabajar con sus paginas:",
           rotate: "Selecciona un archivo para trabajar con sus páginas:",
           reorder: "Selecciona un archivo para trabajar con sus páginas:",
           pdfToImages: "PDFs a convertir (se procesarán uno a uno):",
@@ -204,6 +211,7 @@ export const esDictionary: Dictionary = {
         hints: {
           compress: "Los archivos se comprimirán individualmente manteniendo el mejor balance entre calidad y tamaño.",
           split: "Cada archivo PDF será dividido según las opciones que elijas en el siguiente paso.",
+          crop: "Selecciona las paginas a recortar y define cuantos puntos quitar de cada lado desde el panel de opciones.",
           pdfToImages: "Renderizamos un PDF por turno. Ajusta formato y DPI en el panel de opciones antes de exportar.",
           imagesToPdf: "Arrastra JPG, PNG, WEBP o TIFF. Usa las opciones para definir tamaño de página, orientación y márgenes.",
         },
@@ -213,6 +221,7 @@ export const esDictionary: Dictionary = {
         merge: "unido_PDFLince",
         split: "parte_PDFLince",
         extract: "extraido_PDFLince",
+        crop: "recortado_PDFLince",
         rotate: "rotado_PDFLince",
         reorder: "reordenado_PDFLince",
         pdfToImages: "imagenes_PDFLince",
@@ -223,6 +232,8 @@ export const esDictionary: Dictionary = {
         idleMultiple: (count: number) => `Procesar ${count} archivos`,
         processing: "Procesando...",
         extract: (count: number) => `Extraer ${count} ${count === 1 ? "página" : "páginas"}`,
+        crop: (count: number) =>
+          count > 0 ? `Recortar ${count} ${count === 1 ? "pagina" : "paginas"}` : "Recortar PDF",
         rotate: (count: number) =>
           count > 0 ? `Girar ${count} ${count === 1 ? "página" : "páginas"}` : "Girar PDF",
         reorder: "Guardar nueva ordenación",
@@ -245,6 +256,7 @@ export const esDictionary: Dictionary = {
             ? `Generados ${count} archivos. Descargando el primero...`
             : "División completada",
         extracted: (count: number) => `Extraídas ${count} páginas`,
+        cropped: (count: number) => `Recortadas ${count} ${count === 1 ? "pagina" : "paginas"}`,
         rotated: (count: number) => `Rotadas ${count} ${count === 1 ? "página" : "páginas"}`,
         reordered: "Reordenación completada",
         pdfToImages: (count: number, format: "png" | "jpeg", zipped: boolean) => {
@@ -271,6 +283,7 @@ export const esDictionary: Dictionary = {
       },
       labels: {
         pagesToExtract: "Selecciona las páginas a extraer:",
+        pagesToCrop: "Selecciona las paginas a recortar:",
         pagesToRotate: "Selecciona las páginas a girar:",
         reorderPages: "Arrastra las páginas para reordenarlas:",
       },
@@ -420,6 +433,33 @@ export const esDictionary: Dictionary = {
         title: "Extracción",
         preserveMetadata: "Conservar metadatos originales",
         preserveMetadataHint: "Mantiene título, autor y otros detalles en el PDF resultante.",
+      },
+      crop: {
+        title: "Recorte",
+        hint: "Selecciona las paginas a recortar y define cuantos puntos quitar de cada lado.",
+        inputModeLabel: "Metodo de recorte",
+        inputModes: {
+          margins: "Establecer márgenes",
+          manual: "Seleccion manual",
+        },
+        marginsTitle: "Márgenes",
+        marginLabels: {
+          top: "Margen superior (pt)",
+          right: "Margen derecho (pt)",
+          bottom: "Margen inferior (pt)",
+          left: "Margen izquierdo (pt)",
+        },
+        marginHint: "72 pt equivalen aproximadamente a 1 pulgada. Empieza con valores pequenos para no cortar contenido.",
+        preserveMetadata: "Conservar metadatos originales",
+        preserveMetadataHint: "Mantiene titulo, autor y otros detalles en el PDF recortado.",
+        manual: {
+          title: "Seleccion manual de recorte",
+          hint: "Arrastra sobre la vista previa para definir el area visible. Convertimos esa seleccion en los mismos margenes que usa el recorte actual.",
+          loading: "Cargando vista previa del recorte...",
+          error: "No se pudo cargar la vista previa del recorte.",
+          reset: "Restablecer seleccion",
+          pagePreview: (pageNumber: number) => `Vista previa de la pagina ${pageNumber}`,
+        },
       },
       rotate: {
         title: "Girar",

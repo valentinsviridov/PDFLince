@@ -292,6 +292,21 @@ export default function ProcessingOptions({ mode, options, onOptionsChangeAction
     );
   }
 
+  if (mode === 'crop') {
+    const cropStrings = processingStrings.crop;
+
+    return (
+      <div className="mt-4 space-y-4">
+        <OptionToggle
+          checked={options.preserveMetadata !== false}
+          label={cropStrings.preserveMetadata}
+          description={cropStrings.preserveMetadataHint}
+          onChange={value => update('preserveMetadata', value)}
+        />
+      </div>
+    );
+  }
+
   if (mode === 'reorder') {
     const reorderStrings = processingStrings.reorder;
     return (

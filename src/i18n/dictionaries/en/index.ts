@@ -15,6 +15,7 @@ const operationsRoutes: Record<OperationKey, string> = {
   compress: getOperationPath(locale, "compress"),
   split: getOperationPath(locale, "split"),
   extract: getOperationPath(locale, "extract"),
+  crop: getOperationPath(locale, "crop"),
   rotate: getOperationPath(locale, "rotate"),
   reorder: getOperationPath(locale, "reorder"),
   pdfToImages: getOperationPath(locale, "pdfToImages"),
@@ -127,6 +128,7 @@ export const enDictionary: Dictionary = {
         compress: "Compress PDF",
         split: "Split PDF",
         extract: "Extract Pages",
+        crop: "Crop Pages",
         rotate: "Rotate Pages",
         reorder: "Reorder Pages",
         pdfToImages: "PDF to images",
@@ -178,6 +180,10 @@ export const enDictionary: Dictionary = {
           label: "Extract Pages",
           helper: "Choose specific pages to create a new document.",
         },
+        crop: {
+          label: "Crop Pages",
+          helper: "Trim the visible margins of selected PDF pages without leaving the browser.",
+        },
         rotate: {
           label: "Rotate Pages",
           helper: "Select the pages that need a new orientation and rotate only those pages.",
@@ -201,6 +207,7 @@ export const enDictionary: Dictionary = {
         listHeadings: {
           merge: "Files to merge (reorder to define the final sequence):",
           extract: "Select a file to work with its pages:",
+          crop: "Select a file to work with its pages:",
           rotate: "Select a file to work with its pages:",
           reorder: "Select a file to work with its pages:",
           pdfToImages: "PDFs to convert (processed one by one):",
@@ -210,6 +217,7 @@ export const enDictionary: Dictionary = {
         hints: {
           compress: "Each file is compressed individually using the best quality-to-size balance.",
           split: "Each PDF will be split according to the options you select in the next step.",
+          crop: "Pick the pages to crop, then define how many points to trim from each side in the options panel.",
           pdfToImages: "We render one PDF at a time. Adjust format and DPI from the options panel before exporting.",
           imagesToPdf: "Drop JPG, PNG, WEBP or TIFF images. Use the options panel to choose page size, margins and background colour.",
         },
@@ -219,6 +227,7 @@ export const enDictionary: Dictionary = {
         merge: "merged_PDFLince",
         split: "part_PDFLince",
         extract: "extracted_PDFLince",
+        crop: "cropped_PDFLince",
         rotate: "rotated_PDFLince",
         reorder: "reordered_PDFLince",
         pdfToImages: "images_PDFLince",
@@ -229,6 +238,8 @@ export const enDictionary: Dictionary = {
         idleMultiple: (count: number) => `Process ${count} files`,
         processing: "Processing...",
         extract: (count: number) => `Extract ${count} ${count === 1 ? "page" : "pages"}`,
+        crop: (count: number) =>
+          count > 0 ? `Crop ${count} ${count === 1 ? "page" : "pages"}` : "Crop PDF",
         rotate: (count: number) =>
           count > 0 ? `Rotate ${count} ${count === 1 ? "page" : "pages"}` : "Rotate PDF",
         reorder: "Save new order",
@@ -251,6 +262,7 @@ export const enDictionary: Dictionary = {
             ? `Generated ${count} files. Downloading the first one...`
             : "Split complete",
         extracted: (count: number) => `Extracted ${count} ${count === 1 ? "page" : "pages"}`,
+        cropped: (count: number) => `Cropped ${count} ${count === 1 ? "page" : "pages"}`,
         rotated: (count: number) => `Rotated ${count} ${count === 1 ? "page" : "pages"}`,
         reordered: "Reordering complete",
         pdfToImages: (count: number, format: "png" | "jpeg", zipped: boolean) => {
@@ -277,6 +289,7 @@ export const enDictionary: Dictionary = {
       },
       labels: {
         pagesToExtract: "Select the pages to extract:",
+        pagesToCrop: "Select the pages to crop:",
         pagesToRotate: "Select the pages to rotate:",
         reorderPages: "Drag pages to reorder them:",
       },
@@ -426,6 +439,33 @@ export const enDictionary: Dictionary = {
         title: "Extract",
         preserveMetadata: "Preserve original metadata",
         preserveMetadataHint: "Keeps title, author, and other document details in the extracted file.",
+      },
+      crop: {
+        title: "Crop",
+        hint: "Select the pages to crop and define how many points to trim from each side.",
+        inputModeLabel: "Crop method",
+        inputModes: {
+          margins: "Set margins",
+          manual: "Manual selection",
+        },
+        marginsTitle: "Margins",
+        marginLabels: {
+          top: "Top margin (pts)",
+          right: "Right margin (pts)",
+          bottom: "Bottom margin (pts)",
+          left: "Left margin (pts)",
+        },
+        marginHint: "72 pts equals roughly 1 inch. Use small values first to avoid trimming content.",
+        preserveMetadata: "Preserve original metadata",
+        preserveMetadataHint: "Keeps title, author, and other document details in the cropped file.",
+        manual: {
+          title: "Manual crop selection",
+          hint: "Drag on the preview to define the visible area. We convert the selection into the same margin values used by the current crop flow.",
+          loading: "Loading crop preview...",
+          error: "The crop preview could not be loaded.",
+          reset: "Reset selection",
+          pagePreview: (pageNumber: number) => `Preview page ${pageNumber}`,
+        },
       },
       rotate: {
         title: "Rotate",

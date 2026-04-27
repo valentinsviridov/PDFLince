@@ -49,6 +49,13 @@
       "de": "/de/seiten-extrahieren",
       "it": "/it/estrai"
     },
+    "crop": {
+      "es": "/recortar",
+      "en": "/en/crop",
+      "pt": "/pt/recortar",
+      "de": "/de/zuschneiden",
+      "it": "/it/ritaglia"
+    },
     "rotate": {
       "es": "/girar",
       "en": "/en/rotate",

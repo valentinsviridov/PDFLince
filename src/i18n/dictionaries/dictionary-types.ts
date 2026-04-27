@@ -98,6 +98,7 @@ export interface PdfProcessorStrings {
     listHeadings: {
       merge: string;
       extract: string;
+      crop: string;
       rotate: string;
       reorder: string;
       pdfToImages: string;
@@ -107,6 +108,7 @@ export interface PdfProcessorStrings {
     hints: {
       compress: string;
       split: string;
+      crop: string;
       pdfToImages: string;
       imagesToPdf: string;
     };
@@ -117,6 +119,7 @@ export interface PdfProcessorStrings {
     idleMultiple: FileCountLabel;
     processing: string;
     extract: ExtractPagesLabel;
+    crop: ExtractPagesLabel;
     rotate: ExtractPagesLabel;
     reorder: string;
     pdfToImages: {
@@ -134,6 +137,7 @@ export interface PdfProcessorStrings {
     merged: string;
     split: OperationCountStatus;
     extracted: OperationCountStatus;
+    cropped: OperationCountStatus;
     rotated: OperationCountStatus;
     reordered: string;
     pdfToImages: PdfToImagesStatus;
@@ -151,6 +155,7 @@ export interface PdfProcessorStrings {
   };
   labels: {
     pagesToExtract: string;
+    pagesToCrop: string;
     pagesToRotate: string;
     reorderPages: string;
   };
@@ -296,6 +301,33 @@ export interface ProcessingOptionsStrings {
     title: string;
     preserveMetadata: string;
     preserveMetadataHint: string;
+  };
+  crop: {
+    title: string;
+    hint: string;
+    inputModeLabel: string;
+    inputModes: {
+      margins: string;
+      manual: string;
+    };
+    marginsTitle: string;
+    marginLabels: {
+      top: string;
+      right: string;
+      bottom: string;
+      left: string;
+    };
+    marginHint: string;
+    preserveMetadata: string;
+    preserveMetadataHint: string;
+    manual: {
+      title: string;
+      hint: string;
+      loading: string;
+      error: string;
+      reset: string;
+      pagePreview: PageLabel;
+    };
   };
   rotate: {
     title: string;
