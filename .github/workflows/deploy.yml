@@ -118,6 +118,12 @@ jobs:
     if: (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch') && github.actor != 'dependabot[bot]'
     environment: production
     steps:
+    - uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
     - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
@@ -160,6 +166,4 @@ jobs:
 
     - name: Ping IndexNow
       run: |
-        echo "Notifying Bing and other search engines via IndexNow..."
-        curl -s "https://api.indexnow.org/indexnow?url=https://pdflince.com&key=7a258aaa2a9b472bb6e97935fe5e82ca"
-        echo "IndexNow pinged successfully."
+        node scripts/ping-indexnow.mjs deploy-files/sitemap.xml
