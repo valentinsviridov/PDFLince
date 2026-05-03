@@ -17,7 +17,7 @@ export default function robots(): MetadataRoute.Robots {
             ],
         },
         sitemap: `${baseUrl}/sitemap.xml`,
-        host: "https://api.indexnow.org/indexnow?url=https://pdflince.com&key=7a258aaa2a9b472bb6e97935fe5e82ca",
+        host: "pdflince.com",
     };
 
     return robotsObj as MetadataRoute.Robots;
