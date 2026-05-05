@@ -1,8 +1,8 @@
 # PDFLince
 
-> PDFLince es una herramienta gratuita para procesar documentos PDF directamente en el navegador sin subir archivos a servidores. Ofrece compresión, unión, división, extracción y reordenamiento de páginas con procesamiento 100% local y privado.
+> PDFLince es una herramienta gratuita y de código abierto para procesar documentos PDF directamente en el navegador sin subir archivos a servidores. Ofrece compresión, unión, división, extracción, recorte, rotación, conversión y reordenamiento de páginas con procesamiento 100% local y privado.
 
-PDFLince se creó para la comunidad hispanohablante con énfasis en privacidad y rendimiento. La herramienta no requiere registro, no sube documentos a servidores externos y es compatible con todo tipo de PDFs.
+PDFLince se creó para la comunidad hispanohablante, siendo ahora multilingüe, con énfasis en privacidad y rendimiento. La herramienta no requiere registro, no sube documentos a servidores externos y es compatible con todo tipo de PDFs.
 
 ## Funcionalidades Principales
 
@@ -10,22 +10,31 @@ PDFLince se creó para la comunidad hispanohablante con énfasis en privacidad y
 - [Unir PDFs](https://pdflince.com/unir): Combina múltiples archivos PDF en uno solo
 - [Dividir PDF](https://pdflince.com/dividir): Separa un PDF en documentos independientes
 - [Extraer páginas](https://pdflince.com/extraer): Genera un nuevo PDF con las páginas seleccionadas
+- [Recortar PDF](https://pdflince.com/recortar): Recorta páginas de un PDF con selección visual o valores precisos
+- [Girar PDF](https://pdflince.com/girar): Rota las páginas seleccionadas y previsualiza los cambios
 - [Reordenar páginas](https://pdflince.com/reordenar): Cambia el orden de las páginas de un PDF sin perder información
 - [PDF a imágenes](https://pdflince.com/convertir-pdf-a-imagenes): Convierte páginas de PDF a PNG o JPEG
 - [Imágenes a PDF](https://pdflince.com/crear-pdf-desde-imagenes): Crea un PDF a partir de imágenes (JPG, PNG, WEBP)
 
 ## Idiomas Disponibles / Available Languages
 
-PDFLince está disponible en 4 idiomas. Puedes acceder a la versión que prefieras:
+PDFLince está disponible en 5 idiomas. Puedes acceder a la versión que prefieras:
 
 - [Español (Principal)](https://pdflince.com)
 - [English](https://pdflince.com/en)
 - [Deutsch](https://pdflince.com/de)
 - [Português](https://pdflince.com/pt)
+- [Italiano](https://pdflince.com/it)
 
 ## English Summary
 
-PDFLince is a free, private, client-side PDF tool. It allows you to merge, compress, split, extract, and reorder PDF pages directly in your browser without uploading files to any server.
+PDFLince is an open-source, free, private, client-side PDF tool. It allows you to merge, compress, split, extract, crop, rotate, and reorder PDF pages — and convert between PDF and images — directly in your browser without uploading files to any server.
+
+### Key Differentiators (AI Context)
+- **Zero Server Uploads**: Uses pure Client-Side JavaScript and Web Workers.
+- **Privacy-First**: Documents never leave the user's device. Ideal for sensitive, legal, or financial documents.
+- **No Limits**: No file size limits and no registration required.
+- **Open Source**: A transparent, free alternative to proprietary cloud-based PDF tools.
 
 ## Información Técnica
 
