@@ -340,6 +340,12 @@ export const deDictionary: Dictionary = {
         errorDescription: "Die Operation konnte nicht abgeschlossen werden. Prüfe die Dateien und versuche es erneut.",
         retryLabel: "Erneut versuchen",
         closeLabel: "Schließen",
+        sharePrompt: {
+          dialogMessage: "PDFLince ist völlig kostenlos und respektiert Ihre Privatsphäre. Helfen Sie uns, dass es so bleibt, indem Sie es mit einem Kollegen teilen.",
+          shareText: "Ich habe gerade PDFLince genutzt, um meine PDFs zu bearbeiten. Es ist ein kostenloses, schnelles und 100% privates Toolkit, um PDFs direkt im Browser zu teilen, zu komprimieren, zusammenzuführen und zu konvertieren. Perfekt für sensible Dokumente!",
+          actionLabel: "Teilen",
+          copiedLabel: "Kopiert!",
+        },
       },
       compressionTotal: {
         title: "Gesamteinsparung (alle Dateien)",

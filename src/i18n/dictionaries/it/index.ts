@@ -387,6 +387,12 @@ export const itDictionary: Dictionary = {
           "Non siamo riusciti a completare l’operazione. Controlla i file e riprova.",
         retryLabel: "Riprova",
         closeLabel: "Chiudi",
+        sharePrompt: {
+          dialogMessage: "PDFLince è completamente gratuito e rispetta la tua privacy. Aiutaci a mantenerlo tale condividendolo con un collega.",
+          shareText: "Ho appena usato PDFLince per gestire i miei PDF. È un toolkit gratuito, veloce e completamente privato per dividere, comprimere, unire e convertire PDF direttamente nel browser. Perfetto per i documenti sensibili!",
+          actionLabel: "Condividi",
+          copiedLabel: "Copiato!",
+        },
       },
 
       compressionTotal: {

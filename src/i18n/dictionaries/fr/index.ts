@@ -339,6 +339,12 @@ export const frDictionary: Dictionary = {
         errorDescription: "Nous n'avons pas pu terminer cette opération. Vérifiez les fichiers.",
         retryLabel: "Réessayer",
         closeLabel: "Fermer",
+        sharePrompt: {
+          dialogMessage: "PDFLince est entièrement gratuit et respecte votre vie privée. Aidez-nous à le garder ainsi en le partageant avec un collègue.",
+          shareText: "Je viens d'utiliser PDFLince pour gérer mes PDF. C'est une boîte à outils gratuite, rapide et totalement privée pour diviser, compresser, fusionner et convertir des PDF directement dans le navigateur. Idéal pour les documents sensibles !",
+          actionLabel: "Partager",
+          copiedLabel: "Copié !",
+        },
       },
       compressionTotal: {
         title: "Économies totales",
