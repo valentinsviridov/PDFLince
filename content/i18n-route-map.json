@@ -4,21 +4,24 @@
     "en": "/en",
     "pt": "/pt",
     "de": "/de",
-    "it": "/it"
+    "it": "/it",
+    "fr": "/fr"
   },
   "faq": {
     "es": "/preguntas-frecuentes",
     "en": "/en/faq",
     "pt": "/pt/perguntas-frequentes",
     "de": "/de/haeufige-fragen",
-    "it": "/it/faq"
+    "it": "/it/faq",
+    "fr": "/fr/faq"
   },
   "support": {
     "es": "/apoya",
     "en": "/en/support",
     "pt": "/pt/apoie",
     "de": "/de/unterstuetzen",
-    "it": "/it/supporto"
+    "it": "/it/supporto",
+    "fr": "/fr/soutenir"
   },
   "operations": {
     "compress": {
@@ -26,63 +29,72 @@
       "en": "/en/compress",
       "pt": "/pt/comprimir",
       "de": "/de/komprimieren",
-      "it": "/it/comprimi"
+      "it": "/it/comprimi",
+      "fr": "/fr/compresser"
     },
     "merge": {
       "es": "/unir",
       "en": "/en/merge",
       "pt": "/pt/juntar",
       "de": "/de/zusammenfuehren",
-      "it": "/it/unisci"
+      "it": "/it/unisci",
+      "fr": "/fr/fusionner"
     },
     "split": {
       "es": "/dividir",
       "en": "/en/split",
       "pt": "/pt/dividir",
       "de": "/de/teilen",
-      "it": "/it/dividi"
+      "it": "/it/dividi",
+      "fr": "/fr/diviser"
     },
     "extract": {
       "es": "/extraer",
       "en": "/en/extract",
       "pt": "/pt/extrair",
       "de": "/de/seiten-extrahieren",
-      "it": "/it/estrai"
+      "it": "/it/estrai",
+      "fr": "/fr/extraire"
     },
     "crop": {
       "es": "/recortar",
       "en": "/en/crop",
       "pt": "/pt/recortar",
       "de": "/de/zuschneiden",
-      "it": "/it/ritaglia"
+      "it": "/it/ritaglia",
+      "fr": "/fr/recadrer"
     },
     "rotate": {
       "es": "/girar",
       "en": "/en/rotate",
       "pt": "/pt/girar",
       "de": "/de/drehen",
-      "it": "/it/ruota"
+      "it": "/it/ruota",
+      "fr": "/fr/faire-pivoter"
     },
     "reorder": {
       "es": "/reordenar",
       "en": "/en/reorder",
       "pt": "/pt/reordenar",
       "de": "/de/seiten-sortieren",
-      "it": "/it/riordina"
+      "it": "/it/riordina",
+      "fr": "/fr/reorganiser"
     },
     "pdfToImages": {
       "es": "/convertir-pdf-a-imagenes",
       "en": "/en/pdf-to-images",
       "pt": "/pt/pdf-para-imagens",
       "de": "/de/pdf-zu-bildern",
-      "it": "/it/da-pdf-a-immagini"
+      "it": "/it/da-pdf-a-immagini",
+      "fr": "/fr/pdf-en-images"
     },
     "imagesToPdf": {
       "es": "/crear-pdf-desde-imagenes",
       "en": "/en/images-to-pdf",
       "pt": "/pt/imagens-para-pdf",
       "de": "/de/bilder-zu-pdf",
-      "it": "/it/da-immagini-a-pdf"
+      "it": "/it/da-immagini-a-pdf",
+      "fr": "/fr/creer-pdf-depuis-images"
     }
   }
 }

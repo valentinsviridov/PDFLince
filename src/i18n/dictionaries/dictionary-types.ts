@@ -177,6 +177,12 @@ export interface PdfProcessorStrings {
     errorDescription: string;
     retryLabel: string;
     closeLabel: string;
+    sharePrompt: {
+      dialogMessage: string;
+      shareText: string;
+      actionLabel: string;
+      copiedLabel: string;
+    };
   };
   compressionTotal: {
     title: string;

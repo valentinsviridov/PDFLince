@@ -4,42 +4,12 @@ import { usePathname } from "next/navigation";
 import Script from "next/script";
 import { useMemo } from "react";
 import { useDictionary } from "../../i18n/LocaleProvider";
-import { OperationKey } from "../../types/operations";
+import { SUPPORTED_LOCALES } from "../../i18n/config";
+import { buildGlobalSlugToOperationMap, buildFaqSegmentSet } from "../../i18n/routing";
 
-// Map of route segments to OperationKeys or other keys
-const SEGMENT_LABEL_MAP: Record<string, OperationKey> = {
-    // Spanish
-    "comprimir-pdf": "compress",
-    "unir-pdf": "merge",
-    "dividir-pdf": "split",
-    "extraer-paginas": "extract",
-    "ordenar-pdf": "reorder",
-    "pdf-a-jpg": "pdfToImages",
-    "jpg-a-pdf": "imagesToPdf",
-    // English
-    "compress-pdf": "compress",
-    "merge-pdf": "merge",
-    "split-pdf": "split",
-    "extract-pages": "extract",
-    "organize-pdf": "reorder",
-    "pdf-to-jpg": "pdfToImages",
-    "jpg-to-pdf": "imagesToPdf",
-    // German
-    "pdf-komprimieren": "compress",
-    "pdf-zusammenfugen": "merge",
-    "pdf-teilen": "split",
-    "seiten-extrahieren": "extract",
-    "pdf-ordnen": "reorder",
-    "pdf-in-jpg": "pdfToImages",
-    "pdf-in-jpeg": "pdfToImages", // Alternate
-    "jpg-in-pdf": "imagesToPdf",
-    // Portuguese
-    "juntar-pdf": "merge",
-    "extrair-paginas": "extract",
-    "pdf-para-jpg": "pdfToImages",
-    "jpg-para-pdf": "imagesToPdf",
-    // Duplicates handled by JS object behavior (last one wins), but we should explicitely list unique ones in source code to avoid linter errors
-};
+// Dynamically built from i18n-route-map.json — never goes stale when slugs change or languages are added.
+const SLUG_TO_OPERATION = buildGlobalSlugToOperationMap();
+const FAQ_SEGMENTS = buildFaqSegmentSet();
 
 export function BreadcrumbSchema() {
     const pathname = usePathname();
@@ -54,7 +24,7 @@ export function BreadcrumbSchema() {
         const segments = pathname.split('/').filter(Boolean);
 
         // Skip if just home "/" or "/es"
-        const isHome = segments.length === 0 || (segments.length === 1 && ["es", "en", "de", "pt"].includes(segments[0]));
+        const isHome = segments.length === 0 || (segments.length === 1 && (SUPPORTED_LOCALES as readonly string[]).includes(segments[0]));
 
         if (isHome) {
             return null;
@@ -76,14 +46,14 @@ export function BreadcrumbSchema() {
         let label = lastSegment;
 
         // Attempt to lookup friendly name
-        const lookupKey = SEGMENT_LABEL_MAP[lastSegment];
+        const operationKey = SLUG_TO_OPERATION[lastSegment];
         const operations = dictionary.operations;
 
-        if (lookupKey && operations && operations[lookupKey]) {
-            // It's an operation
-            label = operations[lookupKey].meta.title;
-        } else if (lastSegment === 'faq' || lastSegment === 'preguntas-frecuentes') {
-            label = dictionary.pages.faq.title; // Or components.nav.faq
+        if (operationKey && operations && operations[operationKey]) {
+            // It's an operation - use the short footer navigation label, NOT the full SEO meta title
+            label = dictionary.components.footer.operations[operationKey];
+        } else if (FAQ_SEGMENTS.has(lastSegment)) {
+            label = dictionary.pages.faq.title;
         } else {
             // Fallback formatting
             label = lastSegment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
