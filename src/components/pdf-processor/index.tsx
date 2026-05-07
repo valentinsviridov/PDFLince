@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import FileUploader from './FileUploader';
@@ -2474,6 +2474,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
           description={statusDialogState.description}
           highlights={statusDialogState.highlights}
           donationPrompt={statusDialogState.donationPrompt}
+          sharePrompt={statusDialogStrings.sharePrompt}
           actions={dialogActions}
           closeLabel={statusDialogStrings.closeLabel}
           onClose={handleDialogClose}
