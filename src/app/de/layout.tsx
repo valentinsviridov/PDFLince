@@ -31,6 +31,8 @@ export const metadata = {
       'es': 'https://pdflince.com',
       'en': 'https://pdflince.com/en',
       'en-US': 'https://pdflince.com/en',
+      'fr': 'https://pdflince.com/fr',
+      'fr-FR': 'https://pdflince.com/fr',
       'pt': 'https://pdflince.com/pt',
       'pt-BR': 'https://pdflince.com/pt',
       'de': 'https://pdflince.com/de',
