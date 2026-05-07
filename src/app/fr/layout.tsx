@@ -14,15 +14,15 @@ import { SchemaOrg } from "../../components/SchemaOrg";
 
 import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH } from "../../lib/metadata-shared";
 
-const LOCALE = "pt" as const;
+const LOCALE = "fr" as const;
 
 export const metadata = {
   metadataBase: METADATA_BASE,
-  title: "PDFLince - Juntar, Comprimir, Dividir e Converter PDFs Online",
-  description: "Ferramentas de PDF online gratuitas para juntar, comprimir, dividir, extrair e converter PDFs. 100% privado, processamento local no seu navegador.",
+  title: "PDFLince - Fusionner, Compresser, Diviser et Convertir des PDF",
+  description: "Outils PDF gratuits en ligne pour fusionner, compresser, diviser, extraire et convertir. 100% privé, traitement local dans votre navigateur.",
   icons: SHARED_ICONS,
   alternates: {
-    canonical: "https://pdflince.com/pt",
+    canonical: "https://pdflince.com/fr",
     languages: {
       'es-ES': 'https://pdflince.com',
       'es-MX': 'https://pdflince.com',
@@ -37,20 +37,22 @@ export const metadata = {
       'pt-BR': 'https://pdflince.com/pt',
       'de': 'https://pdflince.com/de',
       'de-DE': 'https://pdflince.com/de',
+      'it': 'https://pdflince.com/it',
+      'it-IT': 'https://pdflince.com/it',
       'x-default': 'https://pdflince.com',
     },
   },
   openGraph: {
     ...SHARED_OPEN_GRAPH,
-    title: "PDFLince - Ferramentas de PDF gratuitas e privadas no seu navegador",
-    description: "Combine, comprima, divida e converta PDFs sem carregar arquivos. Processamento seguro e 100% privado.",
-    url: "https://pdflince.com/pt",
-    locale: "pt_BR",
+    title: "PDFLince - Outils PDF gratuits et privés dans votre navigateur",
+    description: "Fusionnez, compressez, divisez et convertissez des PDF sans télécharger de fichiers. Sécurisé et 100% privé.",
+    url: "https://pdflince.com/fr",
+    locale: "fr_FR",
     type: "website",
   },
 };
 
-export default function PtLayout({ children }: { children: ReactNode }) {
+export default function FrLayout({ children }: { children: ReactNode }) {
   return (
     <html lang={LOCALE}>
       <head>

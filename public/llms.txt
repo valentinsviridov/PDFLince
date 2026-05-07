@@ -18,10 +18,11 @@ PDFLince se creó para la comunidad hispanohablante, siendo ahora multilingüe, 
 
 ## Idiomas Disponibles / Available Languages
 
-PDFLince está disponible en 5 idiomas. Puedes acceder a la versión que prefieras:
+PDFLince está disponible en 6 idiomas. Puedes acceder a la versión que prefieras:
 
 - [Español (Principal)](https://pdflince.com)
 - [English](https://pdflince.com/en)
+- [Français](https://pdflince.com/fr)
 - [Deutsch](https://pdflince.com/de)
 - [Português](https://pdflince.com/pt)
 - [Italiano](https://pdflince.com/it)
