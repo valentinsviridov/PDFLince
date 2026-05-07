@@ -339,6 +339,12 @@ export const enDictionary: Dictionary = {
         errorDescription: "We couldn't finish this operation. Check the files and try again.",
         retryLabel: "Retry",
         closeLabel: "Close",
+        sharePrompt: {
+          dialogMessage: "PDFLince is completely free and respects your privacy. Help us keep it that way by sharing it with a colleague.",
+          shareText: "I just used PDFLince to manage my PDFs. It's a free, fast, and completely private toolkit to split, compress, merge, and convert PDFs directly in the browser. Perfect for sensitive documents!",
+          actionLabel: "Share",
+          copiedLabel: "Copied!",
+        },
       },
       compressionTotal: {
         title: "Total Savings (all files)",

@@ -73,6 +73,17 @@ const localeOperationSlugMap: Record<Locale, Record<OperationKey, string>> = {
     pdfToImages: "",
     imagesToPdf: "",
   },
+  fr: {
+    compress: "",
+    merge: "",
+    split: "",
+    extract: "",
+    crop: "",
+    rotate: "",
+    reorder: "",
+    pdfToImages: "",
+    imagesToPdf: "",
+  },
 };
 
 const localeOperationSlugLookup: Record<Locale, Record<string, OperationKey>> = {
@@ -81,6 +92,7 @@ const localeOperationSlugLookup: Record<Locale, Record<string, OperationKey>> = 
   pt: {},
   de: {},
   it: {},
+  fr: {},
 };
 
 const trimLeadingSlash = (path: string) => (path.startsWith("/") ? path.slice(1) : path);
@@ -157,4 +169,33 @@ export function getLocalizedAlternateMap(identifier: RouteIdentifier): Record<Lo
 
 export function getRouteMap() {
   return routeMap;
+}
+
+/**
+ * Flat lookup: URL slug segment → OperationKey across ALL locales.
+ * Built dynamically from the route map so it never goes stale.
+ * Used by BreadcrumbSchema to resolve the last path segment
+ * into an operation key for structured data labels.
+ */
+export function buildGlobalSlugToOperationMap(): Record<string, OperationKey> {
+  const map: Record<string, OperationKey> = {};
+  for (const [slug, opKey] of Object.values(localeOperationSlugLookup).flatMap(Object.entries)) {
+    map[slug] = opKey;
+  }
+  return map;
+}
+
+/**
+ * Set of all FAQ URL segments across all locales (e.g. "faq", "preguntas-frecuentes", etc.).
+ * Built dynamically from the route map.
+ */
+export function buildFaqSegmentSet(): Set<string> {
+  const segments = new Set<string>();
+  const faqRoutes = routeMap.faq;
+  for (const path of Object.values(faqRoutes)) {
+    const parts = path.split("/").filter(Boolean);
+    const lastSegment = parts[parts.length - 1];
+    if (lastSegment) segments.add(lastSegment);
+  }
+  return segments;
 }

@@ -339,6 +339,12 @@ export const ptDictionary: Dictionary = {
         errorDescription: "Não foi possível concluir a operação. Verifique os arquivos e tente outra vez.",
         retryLabel: "Tentar novamente",
         closeLabel: "Fechar",
+        sharePrompt: {
+          dialogMessage: "O PDFLince é totalmente gratuito e respeita a sua privacidade. Ajude-nos a mantê-lo assim compartilhando-o com um colega.",
+          shareText: "Acabei de usar o PDFLince para gerenciar meus PDFs. É uma ferramenta gratuita, rápida e totalmente privada para dividir, comprimir, juntar e converter PDFs direto no navegador. Perfeita para documentos sensíveis!",
+          actionLabel: "Compartilhar",
+          copiedLabel: "Copiado!",
+        },
       },
       compressionTotal: {
         title: "Economia total (todos os arquivos)",

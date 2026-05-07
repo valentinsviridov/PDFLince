@@ -61,6 +61,9 @@ test.describe('UI Refinements', () => {
         // 8. Close the ProcessingStatusDialog modal (it overlays the page)
         // Press Escape to dismiss — avoids strict mode with 2 "Cerrar" buttons
         await page.keyboard.press('Escape');
+        
+        // Wait for the dialog to fully unmount to avoid intercepting clicks
+        await expect(page.getByRole('dialog')).not.toBeVisible();
 
         // 9. Clear All — reset the file list
         await clearAllButton.click();
