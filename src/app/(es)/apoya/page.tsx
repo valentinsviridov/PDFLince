@@ -1,7 +1,3 @@
-import NavMenu from "../../../components/NavMenu";
-import Footer from "../../../components/Footer";
-import FotoLinceBanner from "../../../components/FotoLinceBanner";
-import { LocaleProvider } from "../../../i18n/LocaleProvider";
 import { DEFAULT_LOCALE } from "../../../i18n/config";
 import { SupportPageContent } from "../../../components/SupportPageContent";
 import { createSupportMetadata } from "../../(helpers)/locale-metadata";
