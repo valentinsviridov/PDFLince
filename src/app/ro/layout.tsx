@@ -14,15 +14,15 @@ import { SchemaOrg } from "../../components/SchemaOrg";
 
 import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH } from "../../lib/metadata-shared";
 
-const LOCALE = "it" as const;
+const LOCALE = "ro" as const;
 
 export const metadata = {
   metadataBase: METADATA_BASE,
-  title: "PDFLince - Merge, Compress, Split, and Convert PDFs Online",
-  description: "Free online PDF tools to merge, compress, split, extract, and convert PDFs. 100% private, local processing in your browser.",
+  title: "PDFLince - Unește, Comprimă, Divide și Convertește PDF-uri",
+  description: "Instrumente PDF gratuite, online, pentru a uni, comprima, divide, extrage și converti. 100% privat, procesare locală în browserul tău.",
   icons: SHARED_ICONS,
   alternates: {
-    canonical: "https://pdflince.com/en",
+    canonical: "https://pdflince.com/ro",
     languages: {
       'es-ES': 'https://pdflince.com',
       'es-MX': 'https://pdflince.com',
@@ -47,15 +47,15 @@ export const metadata = {
   },
   openGraph: {
     ...SHARED_OPEN_GRAPH,
-    title: "PDFLince - Strumenti PDF gratuiti e privati nel tuo browser",
-    description: "Unisci, comprimi, dividi e converti PDF senza dover caricare i file online. Elaborazione sicura e completamente privata.",
-    url: "https://pdflince.com/it",
-    locale: "it_IT",
+    title: "PDFLince - Instrumente PDF gratuite și private în browserul tău",
+    description: "Unește, comprimă, divide și convertește PDF-uri fără a încărca fișierele pe server. Securizat și 100% privat.",
+    url: "https://pdflince.com/ro",
+    locale: "ro_RO",
     type: "website",
   },
 };
 
-export default function ItLayout({ children }: { children: ReactNode }) {
+export default function RoLayout({ children }: { children: ReactNode }) {
   return (
     <html lang={LOCALE}>
       <head>

@@ -5,7 +5,8 @@
     "pt": "/pt",
     "de": "/de",
     "it": "/it",
-    "fr": "/fr"
+    "fr": "/fr",
+    "ro": "/ro"
   },
   "faq": {
     "es": "/preguntas-frecuentes",
@@ -13,7 +14,8 @@
     "pt": "/pt/perguntas-frequentes",
     "de": "/de/haeufige-fragen",
     "it": "/it/faq",
-    "fr": "/fr/faq"
+    "fr": "/fr/faq",
+    "ro": "/ro/intrebari-frecvente"
   },
   "support": {
     "es": "/apoya",
@@ -21,7 +23,8 @@
     "pt": "/pt/apoie",
     "de": "/de/unterstuetzen",
     "it": "/it/supporto",
-    "fr": "/fr/soutenir"
+    "fr": "/fr/soutenir",
+    "ro": "/ro/sustine"
   },
   "operations": {
     "compress": {
@@ -30,7 +33,8 @@
       "pt": "/pt/comprimir",
       "de": "/de/komprimieren",
       "it": "/it/comprimi",
-      "fr": "/fr/compresser"
+      "fr": "/fr/compresser",
+      "ro": "/ro/comprima"
     },
     "merge": {
       "es": "/unir",
@@ -38,7 +42,8 @@
       "pt": "/pt/juntar",
       "de": "/de/zusammenfuehren",
       "it": "/it/unisci",
-      "fr": "/fr/fusionner"
+      "fr": "/fr/fusionner",
+      "ro": "/ro/uneste"
     },
     "split": {
       "es": "/dividir",
@@ -46,7 +51,8 @@
       "pt": "/pt/dividir",
       "de": "/de/teilen",
       "it": "/it/dividi",
-      "fr": "/fr/diviser"
+      "fr": "/fr/diviser",
+      "ro": "/ro/divide"
     },
     "extract": {
       "es": "/extraer",
@@ -54,7 +60,8 @@
       "pt": "/pt/extrair",
       "de": "/de/seiten-extrahieren",
       "it": "/it/estrai",
-      "fr": "/fr/extraire"
+      "fr": "/fr/extraire",
+      "ro": "/ro/extrage"
     },
     "crop": {
       "es": "/recortar",
@@ -62,7 +69,8 @@
       "pt": "/pt/recortar",
       "de": "/de/zuschneiden",
       "it": "/it/ritaglia",
-      "fr": "/fr/recadrer"
+      "fr": "/fr/recadrer",
+      "ro": "/ro/decupeaza"
     },
     "rotate": {
       "es": "/girar",
@@ -70,7 +78,8 @@
       "pt": "/pt/girar",
       "de": "/de/drehen",
       "it": "/it/ruota",
-      "fr": "/fr/faire-pivoter"
+      "fr": "/fr/faire-pivoter",
+      "ro": "/ro/roteste"
     },
     "reorder": {
       "es": "/reordenar",
@@ -78,7 +87,8 @@
       "pt": "/pt/reordenar",
       "de": "/de/seiten-sortieren",
       "it": "/it/riordina",
-      "fr": "/fr/reorganiser"
+      "fr": "/fr/reorganiser",
+      "ro": "/ro/reordoneaza"
     },
     "pdfToImages": {
       "es": "/convertir-pdf-a-imagenes",
@@ -86,7 +96,8 @@
       "pt": "/pt/pdf-para-imagens",
       "de": "/de/pdf-zu-bildern",
       "it": "/it/da-pdf-a-immagini",
-      "fr": "/fr/pdf-en-images"
+      "fr": "/fr/pdf-en-images",
+      "ro": "/ro/pdf-in-imagini"
     },
     "imagesToPdf": {
       "es": "/crear-pdf-desde-imagenes",
@@ -94,7 +105,8 @@
       "pt": "/pt/imagens-para-pdf",
       "de": "/de/bilder-zu-pdf",
       "it": "/it/da-immagini-a-pdf",
-      "fr": "/fr/creer-pdf-depuis-images"
+      "fr": "/fr/creer-pdf-depuis-images",
+      "ro": "/ro/imagini-in-pdf"
     }
   }
 }

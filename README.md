@@ -8,9 +8,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Build Status](https://github.com/GSiesto/pdflince/actions/workflows/deploy.yml/badge.svg?style=for-the-badge)](https://github.com/GSiesto/pdflince/actions)
 
-| English | Español | Français | Deutsch | Português | Italiano |
-|:---:|:---:|:---:|:---:|:---:|:---:|
-| [pdflince.com](https://pdflince.com/en?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com](https://pdflince.com/?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com](https://pdflince.com/fr?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com](https://pdflince.com/de?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com](https://pdflince.com/pt?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com](https://pdflince.com/it?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public)
+| English | Español | Français | Deutsch | Português | Italiano | Română |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| [pdflince.com/en](https://pdflince.com/en?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com](https://pdflince.com/?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com/fr](https://pdflince.com/fr?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com/de](https://pdflince.com/de?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com/pt](https://pdflince.com/pt?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com/it](https://pdflince.com/it?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com/ro](https://pdflince.com/ro?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public)
 
 ## Why PDFLince?
 
@@ -32,7 +32,7 @@ Most online PDF tools require you to upload your sensitive documents to their cl
 - **Crop**: Crop PDF pages manually with visual selection or by specifying precise values
 - **Rotate**: Rotate selected pages and preview changes in real-time before exporting.
 - **Secure**: 100% local processing verifiable via Network tab.
-- **Multilingual**: Native support for English, Spanish, French, German, Portuguese, Italian.
+- **Multilingual**: Native support for English, Spanish, French, German, Portuguese, Italian, Romanian.
 
 ## Architecture
 

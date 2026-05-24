@@ -82,6 +82,10 @@ export function createSupportMetadata(locale: Locale) {
       title: supportMeta.title,
       description: supportMeta.description,
       keywords: supportMeta.keywords,
+      robots: {
+        index: false,
+        follow: false,
+      },
       alternates: {
         canonical: supportMeta.canonical,
         languages,
