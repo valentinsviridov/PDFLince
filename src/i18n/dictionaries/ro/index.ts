@@ -131,7 +131,7 @@ export const roDictionary: Dictionary = {
         crop: "Decupează pagini",
         rotate: "Rotește",
         reorder: "Reordonează",
-        pdfToImages: "PDF în imagini",
+        pdfToImages: "PDF în Imagini",
         imagesToPdf: "Imagini în PDF",
       },
       license: "Procesare PDF: PDF-lib (MIT), PDF.js (Apache 2.0) • Font: Geist (MIT)",
@@ -193,7 +193,7 @@ export const roDictionary: Dictionary = {
           helper: "Modifică ordinea paginilor din interiorul unui PDF.",
         },
         pdfToImages: {
-          label: "PDF în imagini",
+          label: "PDF în Imagini",
           helper: "Exportă fiecare pagină PDF ca PNG sau JPEG fără încărcare pe server.",
         },
         imagesToPdf: {
@@ -552,7 +552,7 @@ export const roDictionary: Dictionary = {
         imageAlt: "Ilustrație a unui document PDF",
         ctaLinks: [
           {
-            label: "PDF în imagini",
+            label: "PDF în Imagini",
             href: operationsRoutes.pdfToImages,
             description: "Exportă în format PNG sau JPEG",
           },
@@ -564,7 +564,7 @@ export const roDictionary: Dictionary = {
         ],
       },
       why: {
-        title: "De ce să folosești PDFLince ?",
+        title: "De ce să folosești PDFLince?",
         cards: [
           {
             title: "Privat implicit",
