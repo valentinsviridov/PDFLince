@@ -2,7 +2,7 @@
 
 import { createContext, ReactNode, useContext, useMemo } from "react";
 import { usePathname } from "next/navigation";
-import { DEFAULT_LOCALE, Locale } from "./config";
+import { DEFAULT_LOCALE, Locale, SUPPORTED_LOCALES } from "./config";
 import type { Dictionary } from "./dictionaries/dictionary-types";
 import { getDictionary, getDefaultDictionary } from "./get-dictionary";
 
@@ -19,7 +19,7 @@ export function LocaleProvider({ locale: initialLocale, children }: { locale: Lo
     const segments = pathname.split('/');
     const firstSegment = segments[1] as Locale;
 
-    if (firstSegment && ['en', 'pt', 'de', 'it'].includes(firstSegment)) {
+    if (firstSegment && (SUPPORTED_LOCALES as readonly string[]).includes(firstSegment) && firstSegment !== DEFAULT_LOCALE) {
       return firstSegment;
     }
 

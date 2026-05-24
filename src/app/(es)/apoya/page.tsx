@@ -9,14 +9,5 @@ import { createSupportMetadata } from "../../(helpers)/locale-metadata";
 export const generateMetadata = createSupportMetadata(DEFAULT_LOCALE);
 
 export default function SupportPage() {
-  return (
-    <LocaleProvider locale={DEFAULT_LOCALE}>
-      <NavMenu />
-      <main>
-        <SupportPageContent />
-      </main>
-      <FotoLinceBanner />
-      <Footer />
-    </LocaleProvider>
-  );
+  return <SupportPageContent />;
 }
