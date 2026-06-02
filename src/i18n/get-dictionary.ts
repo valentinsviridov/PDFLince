@@ -6,6 +6,7 @@ import { deDictionary } from "./dictionaries/de";
 import { itDictionary } from "./dictionaries/it";
 import { frDictionary } from "./dictionaries/fr";
 import { roDictionary } from "./dictionaries/ro";
+import { ruDictionary } from "./dictionaries/ru";
 import type { Dictionary } from "./dictionaries/dictionary-types";
 
 const dictionaries: Record<Locale, Dictionary> = {
@@ -16,6 +17,7 @@ const dictionaries: Record<Locale, Dictionary> = {
   it: itDictionary,
   fr: frDictionary,
   ro: roDictionary,
+  ru: ruDictionary,
 };
 
 export function getDictionary(locale: Locale = DEFAULT_LOCALE): Dictionary {
