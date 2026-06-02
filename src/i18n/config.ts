@@ -1,4 +1,4 @@
-export const SUPPORTED_LOCALES = ["es", "en", "pt", "de", "it", "fr", "ro"] as const;
+export const SUPPORTED_LOCALES = ["es", "pt", "de", "en", "fr", "it", "ro", "ru"] as const;
 
 export type Locale = typeof SUPPORTED_LOCALES[number];
 
@@ -13,6 +13,7 @@ export const localeLabels: Record<Locale, { label: string; nativeName: string; h
   it: { label: "Italiano", nativeName: "Italiano", htmlLang: "it", hrefLang: "it" },
   fr: { label: "Français", nativeName: "Français", htmlLang: "fr", hrefLang: "fr" },
   ro: { label: "Română", nativeName: "Română", htmlLang: "ro", hrefLang: "ro" },
+  ru: { label: "Русский", nativeName: "Русский", htmlLang: "ru", hrefLang: "ru" },
 };
 
 export function isLocale(value: string): value is Locale {

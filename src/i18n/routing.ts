@@ -95,6 +95,17 @@ const localeOperationSlugMap: Record<Locale, Record<OperationKey, string>> = {
     pdfToImages: "",
     imagesToPdf: "",
   },
+  ru: {
+    compress: "",
+    merge: "",
+    split: "",
+    extract: "",
+    crop: "",
+    rotate: "",
+    reorder: "",
+    pdfToImages: "",
+    imagesToPdf: "",
+  },
 };
 
 const localeOperationSlugLookup: Record<Locale, Record<string, OperationKey>> = {
@@ -105,6 +116,7 @@ const localeOperationSlugLookup: Record<Locale, Record<string, OperationKey>> = 
   it: {},
   fr: {},
   ro: {},
+  ru: {},
 };
 
 const trimLeadingSlash = (path: string) => (path.startsWith("/") ? path.slice(1) : path);

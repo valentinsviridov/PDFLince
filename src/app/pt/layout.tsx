@@ -42,6 +42,8 @@ export const metadata = {
       'it-IT': 'https://pdflince.com/it',
       'ro': 'https://pdflince.com/ro',
       'ro-RO': 'https://pdflince.com/ro',
+      'ru': 'https://pdflince.com/ru',
+      'ru-RU': 'https://pdflince.com/ru',
       'x-default': 'https://pdflince.com',
     },
   },
