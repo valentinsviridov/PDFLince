@@ -10,7 +10,8 @@ function buildLanguagesMap(operationKey: OperationKey, baseUrl: string) {
   const alternatesMap = getLocalizedAlternateMap({ type: "operation", key: operationKey });
   const entries = (Object.entries(alternatesMap) as [Locale, string][]).map(([localeKey, path]) => {
     const hrefLang = localeLabels[localeKey].hrefLang;
-    const absoluteUrl = new URL(path, baseUrl).toString();
+    const pathWithSlash = path.endsWith("/") ? path : `${path}/`;
+    const absoluteUrl = new URL(pathWithSlash, baseUrl).toString();
     return [hrefLang, absoluteUrl] as const;
   });
   const languages = Object.fromEntries(entries) as Record<string, string>;
@@ -25,7 +26,8 @@ export function buildOperationMetadata(locale: Locale, operationKey: OperationKe
     const operationMeta = dictionary.metadata.operations[operationKey];
     const baseUrl = dictionary.metadata.site.openGraph.url;
     const canonicalPath = dictionary.routes.operations[operationKey];
-    const canonicalUrl = new URL(canonicalPath, baseUrl).toString();
+    const canonicalPathWithSlash = canonicalPath.endsWith("/") ? canonicalPath : `${canonicalPath}/`;
+    const canonicalUrl = new URL(canonicalPathWithSlash, baseUrl).toString();
     const languages = buildLanguagesMap(operationKey, baseUrl);
 
     return {
