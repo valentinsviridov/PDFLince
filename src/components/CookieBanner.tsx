@@ -25,7 +25,9 @@ export default function CookieBanner() {
             if (typeof window !== 'undefined' && (window as unknown as WindowWithGtag).gtag) {
                 (window as unknown as WindowWithGtag).gtag('consent', 'update', {
                     'ad_storage': 'granted',
-                    'analytics_storage': 'granted'
+                    'analytics_storage': 'granted',
+                    'ad_user_data': 'granted',
+                    'ad_personalization': 'granted'
                 });
             }
         }
@@ -39,7 +41,9 @@ export default function CookieBanner() {
         if (typeof window !== 'undefined' && (window as unknown as WindowWithGtag).gtag) {
             (window as unknown as WindowWithGtag).gtag('consent', 'update', {
                 'ad_storage': 'granted',
-                'analytics_storage': 'granted'
+                'analytics_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted'
             });
         }
     };

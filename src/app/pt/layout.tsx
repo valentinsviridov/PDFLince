@@ -11,8 +11,9 @@ import { GaPageViewTracker } from "../../components/analytics/GaPageViewTracker"
 import { WebVitalsReporter } from "../../components/analytics/WebVitalsReporter";
 import CookieBanner from "../../components/CookieBanner";
 import { SchemaOrg } from "../../components/SchemaOrg";
+import { BreadcrumbSchema } from "../../components/seo/BreadcrumbSchema";
 
-import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH } from "../../lib/metadata-shared";
+import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH, SHARED_TWITTER } from "../../lib/metadata-shared";
 
 const LOCALE = "pt" as const;
 
@@ -48,6 +49,7 @@ export const metadata = {
     locale: "pt_BR",
     type: "website",
   },
+  twitter: SHARED_TWITTER,
 };
 
 export default function PtLayout({ children }: { children: ReactNode }) {
@@ -56,6 +58,7 @@ export default function PtLayout({ children }: { children: ReactNode }) {
       <head>
         <GoogleAnalyticsScripts />
         <SchemaOrg />
+        <BreadcrumbSchema />
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <LocaleProvider locale={LOCALE}>
