@@ -8,9 +8,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Build Status](https://github.com/GSiesto/pdflince/actions/workflows/deploy.yml/badge.svg?style=for-the-badge)](https://github.com/GSiesto/pdflince/actions)
 
-| English | Español | Français | Deutsch | Português | Italiano | Română |
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| [pdflince.com/en](https://pdflince.com/en?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com](https://pdflince.com/?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com/fr](https://pdflince.com/fr?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com/de](https://pdflince.com/de?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com/pt](https://pdflince.com/pt?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com/it](https://pdflince.com/it?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) | [pdflince.com/ro](https://pdflince.com/ro?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public)
+| Language | Link |
+| :--- | :--- |
+| 🇬🇧 English | [pdflince.com/en](https://pdflince.com/en?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
+| 🇪🇸 Español | [pdflince.com](https://pdflince.com/?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
+| 🇫🇷 Français | [pdflince.com/fr](https://pdflince.com/fr?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
+| 🇩🇪 Deutsch | [pdflince.com/de](https://pdflince.com/de?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
+| 🇵🇹 Português | [pdflince.com/pt](https://pdflince.com/pt?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
+| 🇮🇹 Italiano | [pdflince.com/it](https://pdflince.com/it?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
+| 🇷🇴 Română | [pdflince.com/ro](https://pdflince.com/ro?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
 
 ## Why PDFLince?
 
