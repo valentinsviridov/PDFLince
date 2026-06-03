@@ -11,8 +11,9 @@ import { GaPageViewTracker } from "../../components/analytics/GaPageViewTracker"
 import { WebVitalsReporter } from "../../components/analytics/WebVitalsReporter";
 import CookieBanner from "../../components/CookieBanner";
 import { SchemaOrg } from "../../components/SchemaOrg";
+import { BreadcrumbSchema } from "../../components/seo/BreadcrumbSchema";
 
-import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH } from "../../lib/metadata-shared";
+import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH, SHARED_TWITTER } from "../../lib/metadata-shared";
 
 const LOCALE = "en" as const;
 
@@ -22,29 +23,29 @@ export const metadata = {
   description: "Free online PDF tools to merge, compress, split, extract, and convert PDFs. 100% private, local processing in your browser.",
   icons: SHARED_ICONS,
   alternates: {
-    canonical: "https://pdflince.com/en",
+    canonical: "https://pdflince.com/en/",
     languages: {
-      'es-ES': 'https://pdflince.com',
-      'es-MX': 'https://pdflince.com',
-      'es-CO': 'https://pdflince.com',
-      'es-AR': 'https://pdflince.com',
-      'es': 'https://pdflince.com',
-      'en': 'https://pdflince.com/en',
-      'en-US': 'https://pdflince.com/en',
-      'fr': 'https://pdflince.com/fr',
-      'fr-FR': 'https://pdflince.com/fr',
-      'pt': 'https://pdflince.com/pt',
-      'pt-BR': 'https://pdflince.com/pt',
-      'pt-PT': 'https://pdflince.com/pt',
-      'de': 'https://pdflince.com/de',
-      'de-DE': 'https://pdflince.com/de',
-      'it': 'https://pdflince.com/it',
-      'it-IT': 'https://pdflince.com/it',
-      'ro': 'https://pdflince.com/ro',
-      'ro-RO': 'https://pdflince.com/ro',
-      'ru': 'https://pdflince.com/ru',
-      'ru-RU': 'https://pdflince.com/ru',
-      'x-default': 'https://pdflince.com',
+      'es-ES': 'https://pdflince.com/',
+      'es-MX': 'https://pdflince.com/',
+      'es-CO': 'https://pdflince.com/',
+      'es-AR': 'https://pdflince.com/',
+      'es': 'https://pdflince.com/',
+      'en': 'https://pdflince.com/en/',
+      'en-US': 'https://pdflince.com/en/',
+      'fr': 'https://pdflince.com/fr/',
+      'fr-FR': 'https://pdflince.com/fr/',
+      'pt': 'https://pdflince.com/pt/',
+      'pt-BR': 'https://pdflince.com/pt/',
+      'pt-PT': 'https://pdflince.com/pt/',
+      'de': 'https://pdflince.com/de/',
+      'de-DE': 'https://pdflince.com/de/',
+      'it': 'https://pdflince.com/it/',
+      'it-IT': 'https://pdflince.com/it/',
+      'ro': 'https://pdflince.com/ro/',
+      'ro-RO': 'https://pdflince.com/ro/',
+      'ru': 'https://pdflince.com/ru/',
+      'ru-RU': 'https://pdflince.com/ru/',
+      'x-default': 'https://pdflince.com/',
     },
   },
   openGraph: {
@@ -55,6 +56,7 @@ export const metadata = {
     locale: "en_US",
     type: "website",
   },
+  twitter: SHARED_TWITTER,
 };
 
 export default function EnLayout({ children }: { children: ReactNode }) {
@@ -63,6 +65,7 @@ export default function EnLayout({ children }: { children: ReactNode }) {
       <head>
         <GoogleAnalyticsScripts />
         <SchemaOrg />
+        <BreadcrumbSchema />
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <LocaleProvider locale={LOCALE}>

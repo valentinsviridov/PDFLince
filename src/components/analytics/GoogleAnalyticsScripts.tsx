@@ -25,7 +25,9 @@ export function GoogleAnalyticsScripts() {
           
           gtag('consent', 'default', {
             'ad_storage': 'denied',
-            'analytics_storage': 'denied'
+            'analytics_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied'
           });
 
           gtag('js', new Date());
