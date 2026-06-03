@@ -17,7 +17,7 @@
 | 🇵🇹 Português | [pdflince.com/pt](https://pdflince.com/pt?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
 | 🇮🇹 Italiano | [pdflince.com/it](https://pdflince.com/it?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
 | 🇷🇴 Română | [pdflince.com/ro](https://pdflince.com/ro?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
-| Русский | [pdflince.com/ru](https://pdflince.com/ru?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
+| 🇷🇺 Русский | [pdflince.com/ru](https://pdflince.com/ru?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
 
 ## Why PDFLince?
 
