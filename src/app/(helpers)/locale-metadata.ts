@@ -9,7 +9,8 @@ function buildLanguagesMap(identifier: { type: "static"; key: StaticRouteKey }, 
   const alternatesMap = getLocalizedAlternateMap(identifier);
   const entries = (Object.entries(alternatesMap) as [Locale, string][]).map(([localeKey, path]) => {
     const hrefLang = localeLabels[localeKey].hrefLang;
-    const absoluteUrl = new URL(path, baseUrl).toString();
+    const pathWithSlash = path.endsWith("/") ? path : `${path}/`;
+    const absoluteUrl = new URL(pathWithSlash, baseUrl).toString();
     return [hrefLang, absoluteUrl] as const;
   });
 
@@ -31,7 +32,7 @@ export function createHomeMetadata(locale: Locale) {
       description: siteMeta.description,
       keywords: siteMeta.keywords,
       alternates: {
-        canonical: siteMeta.canonical,
+        canonical: siteMeta.canonical.endsWith("/") ? siteMeta.canonical : `${siteMeta.canonical}/`,
         languages,
       },
       openGraph: {
@@ -64,7 +65,7 @@ export function createFaqMetadata(locale: Locale) {
       description: faqMeta.description,
       keywords: faqMeta.keywords,
       alternates: {
-        canonical: faqMeta.canonical,
+        canonical: faqMeta.canonical.endsWith("/") ? faqMeta.canonical : `${faqMeta.canonical}/`,
         languages,
       },
     };
@@ -87,7 +88,7 @@ export function createSupportMetadata(locale: Locale) {
         follow: false,
       },
       alternates: {
-        canonical: supportMeta.canonical,
+        canonical: supportMeta.canonical.endsWith("/") ? supportMeta.canonical : `${supportMeta.canonical}/`,
         languages,
       },
     };
