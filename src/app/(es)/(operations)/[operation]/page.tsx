@@ -17,6 +17,8 @@ export function generateStaticParams(): OperationPageParams[] {
   }));
 }
 
+export const dynamicParams = false;
+
 export async function generateMetadata({ params }: { params: Promise<OperationPageParams> }): Promise<Metadata> {
   const resolvedParams = await params;
   const operationKey = matchOperationKeyBySlug(DEFAULT_LOCALE, resolvedParams.operation) as OperationKey | undefined;
