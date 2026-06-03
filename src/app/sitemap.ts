@@ -19,7 +19,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const seen = new Set<string>();
 
   const addEntry = (path: string, changeFrequency: ChangeFrequency, priority: number) => {
-    const url = `${siteUrl}${path}`;
+    const pathWithSlash = path.endsWith("/") ? path : `${path}/`;
+    const url = `${siteUrl}${pathWithSlash}`;
     if (seen.has(url)) return;
 
     seen.add(url);

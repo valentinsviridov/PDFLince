@@ -1,9 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { useDictionary } from "../i18n/LocaleProvider";
 
 export function SupportPageContent() {
+  if (process.env.NODE_ENV === "production") {
+    notFound();
+  }
   const dictionary = useDictionary();
   const {
     pages: { support },
