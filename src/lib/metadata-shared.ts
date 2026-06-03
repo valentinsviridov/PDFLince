@@ -17,3 +17,7 @@ export const SHARED_OPEN_GRAPH: Metadata["openGraph"] = {
         }
     ],
 };
+
+export const SHARED_TWITTER: Metadata["twitter"] = {
+    card: "summary_large_image",
+};
