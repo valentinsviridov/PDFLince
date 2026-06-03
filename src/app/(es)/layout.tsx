@@ -14,7 +14,7 @@ import { LocaleProvider } from "../../i18n/LocaleProvider";
 import { SchemaOrg } from "../../components/SchemaOrg";
 import { BreadcrumbSchema } from "../../components/seo/BreadcrumbSchema";
 
-import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH } from "../../lib/metadata-shared";
+import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH, SHARED_TWITTER } from "../../lib/metadata-shared";
 
 export const metadata = {
   metadataBase: METADATA_BASE,
@@ -57,6 +57,7 @@ export const metadata = {
     locale: "es_ES",
     type: "website",
   },
+  twitter: SHARED_TWITTER,
 };
 
 export default async function RootLayout({
