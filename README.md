@@ -18,6 +18,7 @@
 | 🇮🇹 Italiano | [pdflince.com/it](https://pdflince.com/it?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
 | 🇷🇴 Română | [pdflince.com/ro](https://pdflince.com/ro?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
 | 🇷🇺 Русский | [pdflince.com/ru](https://pdflince.com/ru?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
+| 🇭🇺 Magyar | [pdflince.com/hu](https://pdflince.com/hu?utm_source=github&utm_medium=readme&utm_campaign=pdflince_public) |
 
 ## Why PDFLince?
 
@@ -39,7 +40,7 @@ Most online PDF tools require you to upload your sensitive documents to their cl
 - **Crop**: Crop PDF pages manually with visual selection or by specifying precise values
 - **Rotate**: Rotate selected pages and preview changes in real-time before exporting.
 - **Secure**: 100% local processing verifiable via Network tab.
-- **Multilingual**: Native support for English, Spanish, French, German, Portuguese, Italian, Romanian.
+- **Multilingual**: Native support for 9 languages (English, Spanish, French, German, Portuguese, Italian, Romanian, Russian, Hungarian).
 
 ## Architecture
 
