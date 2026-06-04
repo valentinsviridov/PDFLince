@@ -12,7 +12,7 @@ import { WebVitalsReporter } from "../../components/analytics/WebVitalsReporter"
 import CookieBanner from "../../components/CookieBanner";
 import { SchemaOrg } from "../../components/SchemaOrg";
 
-import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH } from "../../lib/metadata-shared";
+import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH, SHARED_TWITTER } from "../../lib/metadata-shared";
 
 const LOCALE = "hu" as const;
 
@@ -53,10 +53,11 @@ export const metadata = {
     ...SHARED_OPEN_GRAPH,
     title: "PDFLince - Ingyenes és privát PDF-eszközök a böngésződben",
     description: "Egyesítsd, tömörítsd, oszd fel és konvertáld a PDF-eket szerverre feltöltés nélkül. Biztonságos és 100% privát.",
-    url: "https://pdflince.com/hu",
+    url: "https://pdflince.com/hu/",
     locale: "hu_HU",
     type: "website",
   },
+  twitter: SHARED_TWITTER,
 };
 
 export default function HuLayout({ children }: { children: ReactNode }) {

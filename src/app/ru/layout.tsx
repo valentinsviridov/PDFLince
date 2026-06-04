@@ -12,7 +12,7 @@ import { WebVitalsReporter } from "../../components/analytics/WebVitalsReporter"
 import CookieBanner from "../../components/CookieBanner";
 import { SchemaOrg } from "../../components/SchemaOrg";
 
-import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH } from "../../lib/metadata-shared";
+import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH, SHARED_TWITTER } from "../../lib/metadata-shared";
 
 const LOCALE = "ru" as const;
 
@@ -53,10 +53,11 @@ export const metadata = {
     ...SHARED_OPEN_GRAPH,
     title: "PDFLince - Бесплатные и конфиденциальные инструменты для PDF в браузере",
     description: "Объединяйте, сжимайте, делите и конвертируйте PDF без загрузки на сервер. Безопасно и 100% конфиденциально.",
-    url: "https://pdflince.com/ru",
+    url: "https://pdflince.com/ru/",
     locale: "ru_RU",
     type: "website",
   },
+  twitter: SHARED_TWITTER,
 };
 
 export default function RuLayout({ children }: { children: ReactNode }) {
