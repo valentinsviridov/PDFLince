@@ -12,7 +12,7 @@ import { WebVitalsReporter } from "../../components/analytics/WebVitalsReporter"
 import CookieBanner from "../../components/CookieBanner";
 import { SchemaOrg } from "../../components/SchemaOrg";
 
-import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH } from "../../lib/metadata-shared";
+import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH, SHARED_TWITTER } from "../../lib/metadata-shared";
 
 const LOCALE = "ro" as const;
 
@@ -42,6 +42,10 @@ export const metadata = {
       'it-IT': 'https://pdflince.com/it/',
       'ro': 'https://pdflince.com/ro/',
       'ro-RO': 'https://pdflince.com/ro/',
+      'ru': 'https://pdflince.com/ru/',
+      'ru-RU': 'https://pdflince.com/ru/',
+      'hu': 'https://pdflince.com/hu/',
+      'hu-HU': 'https://pdflince.com/hu/',
       'x-default': 'https://pdflince.com/',
     },
   },
@@ -49,10 +53,11 @@ export const metadata = {
     ...SHARED_OPEN_GRAPH,
     title: "PDFLince - Instrumente PDF gratuite și private în browserul tău",
     description: "Unește, comprimă, divide și convertește PDF-uri fără a încărca fișierele pe server. Securizat și 100% privat.",
-    url: "https://pdflince.com/ro",
+    url: "https://pdflince.com/ro/",
     locale: "ro_RO",
     type: "website",
   },
+  twitter: SHARED_TWITTER,
 };
 
 export default function RoLayout({ children }: { children: ReactNode }) {

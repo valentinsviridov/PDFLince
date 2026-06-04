@@ -11,19 +11,18 @@ import { GaPageViewTracker } from "../../components/analytics/GaPageViewTracker"
 import { WebVitalsReporter } from "../../components/analytics/WebVitalsReporter";
 import CookieBanner from "../../components/CookieBanner";
 import { SchemaOrg } from "../../components/SchemaOrg";
-import { BreadcrumbSchema } from "../../components/seo/BreadcrumbSchema";
 
 import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH, SHARED_TWITTER } from "../../lib/metadata-shared";
 
-const LOCALE = "de" as const;
+const LOCALE = "hu" as const;
 
 export const metadata = {
   metadataBase: METADATA_BASE,
-  title: "PDFLince - PDFs zusammenführen, komprimieren, teilen und konvertieren",
-  description: "Kostenlose Online-PDF-Tools zum Zusammenführen, Komprimieren, Teilen, Extrahieren und Konvertieren von PDFs. 100% privat, lokale Verarbeitung in Ihrem Browser.",
+  title: "PDFLince - PDF tömörítése, egyesítése, felosztása és konvertálása",
+  description: "Ingyenes online PDF-eszközök: tömörítés, egyesítés, felosztás, kinyerés és konvertálás. 100% privát, helyi feldolgozás a böngésződben.",
   icons: SHARED_ICONS,
   alternates: {
-    canonical: "https://pdflince.com/de/",
+    canonical: "https://pdflince.com/hu/",
     languages: {
       'es-ES': 'https://pdflince.com/',
       'es-MX': 'https://pdflince.com/',
@@ -52,22 +51,21 @@ export const metadata = {
   },
   openGraph: {
     ...SHARED_OPEN_GRAPH,
-    title: "PDFLince - Kostenlose und private PDF-Tools in Ihrem Browser",
-    description: "PDFs zusammenführen, komprimieren, teilen und konvertieren, ohne Dateien hochzuladen. Sichere und 100% private Verarbeitung.",
-    url: "https://pdflince.com/de",
-    locale: "de_DE",
+    title: "PDFLince - Ingyenes és privát PDF-eszközök a böngésződben",
+    description: "Egyesítsd, tömörítsd, oszd fel és konvertáld a PDF-eket szerverre feltöltés nélkül. Biztonságos és 100% privát.",
+    url: "https://pdflince.com/hu/",
+    locale: "hu_HU",
     type: "website",
   },
   twitter: SHARED_TWITTER,
 };
 
-export default function DeLayout({ children }: { children: ReactNode }) {
+export default function HuLayout({ children }: { children: ReactNode }) {
   return (
     <html lang={LOCALE}>
       <head>
         <GoogleAnalyticsScripts />
         <SchemaOrg />
-        <BreadcrumbSchema />
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <LocaleProvider locale={LOCALE}>
