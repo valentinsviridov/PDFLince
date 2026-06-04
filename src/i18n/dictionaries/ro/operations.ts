@@ -7,7 +7,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
     slug: "comprima",
     mode: "compress",
     meta: {
-      title: "Comprimă PDF online gratuit | Redu dimensiunea | PDFLince",
+      title: "Comprimă PDF online gratuit | Redu dimensiunea | PDFLince | Compress PDF",
       description:
         "Redu eficient dimensiunea fișierului PDF fără pierderi de calitate. Compresie gratuită și privată direct în browserul tău.",
       keywords: [
@@ -16,6 +16,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
         "optimizare pdf",
         "compresor pdf",
         "pdf mai mic",
+        "compress pdf",
       ],
       ogTitle: "Comprimă PDF-uri fără a pierde din calitate | PDFLince",
       ogDescription:
@@ -74,7 +75,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
     slug: "imagini-in-pdf",
     mode: "imagesToPdf",
     meta: {
-      title: "Creează PDF din imagini | JPG, PNG în PDF | PDFLince",
+      title: "Creează PDF din imagini | JPG, PNG în PDF | PDFLince | Images to PDF",
       description:
         "Creează un PDF profesional din imaginile tale. Organizează fotografiile, personalizează aspectul paginii și generează documentul local în browser.",
       keywords: [
@@ -83,6 +84,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
         "png in pdf",
         "webp in pdf",
         "creeaza pdf din imagini",
+        "images to pdf",
       ],
       ogTitle: "Creează un PDF clar din imaginile tale | PDFLince",
       ogDescription:
@@ -141,7 +143,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
     slug: "uneste",
     mode: "merge",
     meta: {
-      title: "Unește PDF | Combină mai multe PDF-uri gratuit | PDFLince",
+      title: "Unește PDF | Combină mai multe PDF-uri gratuit | PDFLince | Merge PDF",
       description:
         "Combină mai multe fișiere PDF într-un singur document organizat, fără limită de pagini. Trage, reordonează și descarcă fișierul unit instant.",
       keywords: [
@@ -150,6 +152,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
         "unire fisiere pdf",
         "combinare pdf",
         "fuziune pdf",
+        "merge pdf",
       ],
       ogTitle: "Unește mai multe PDF-uri în câteva secunde | PDFLince",
       ogDescription:
@@ -208,7 +211,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
     slug: "divide",
     mode: "split",
     meta: {
-      title: "Divide un PDF pe pagini sau capitole | Instrument gratuit | PDFLince",
+      title: "Divide un PDF pe pagini sau capitole | Gratuit | PDFLince | Split PDF",
       description:
         "Separă PDF-ul tău în mai multe fișiere după intervale de pagini sau capitole specifice. Bucură-te de control deplin asupra structurii documentului tău.",
       keywords: [
@@ -217,6 +220,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
         "imparte pdf pe pagini",
         "divizor pdf",
         "taie pdf",
+        "split pdf",
       ],
       ogTitle: "Divide PDF-urile tale cu precizie | PDFLince",
       ogDescription:
@@ -275,7 +279,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
     slug: "extrage",
     mode: "extract",
     meta: {
-      title: "Extrage pagini PDF | Salvează paginile selectate | PDFLince",
+      title: "Extrage pagini PDF | Salvează paginile selectate | PDFLince | Extract PDF pages",
       description:
         "Selectează pagini specifice din orice PDF și creează instantaneu un nou document personalizat. Procesare privată și nelimitată.",
       keywords: [
@@ -284,6 +288,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
         "selecteaza pagini pdf",
         "extractor pagini pdf",
         "creeaza pdf nou",
+        "extract pdf pages",
       ],
       ogTitle: "Extrage doar paginile de care ai nevoie | PDFLince",
       ogDescription:
@@ -342,7 +347,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
     slug: "decupeaza",
     mode: "crop",
     meta: {
-      title: "Decupează pagini PDF | Ajustează marginile | PDFLince",
+      title: "Decupează pagini PDF | Ajustează marginile | PDFLince | Crop PDF",
       description:
         "Decupează pagini PDF și elimină marginile inutile direct în browser. Selectează paginile și definește zona de decupare.",
       keywords: [
@@ -352,6 +357,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
         "taie pagini pdf",
         "instrument decupare pdf",
         "elimina spatiu alb pdf",
+        "crop pdf",
       ],
       ogTitle: "Decupează pagini PDF local în browserul tău | PDFLince",
       ogDescription:
@@ -410,7 +416,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
     slug: "roteste",
     mode: "rotate",
     meta: {
-      title: "Rotește pagini PDF | Întoarce paginile online | PDFLince",
+      title: "Rotește pagini PDF | Întoarce paginile online | PDFLince | Rotate PDF",
       description:
         "Rotește paginile selectate din PDF cu 90 sau 180 de grade direct în browser. Privat, gratuit și complet local.",
       keywords: [
@@ -419,6 +425,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
         "rotire pdf",
         "corecteaza pdf inclinat",
         "roteste pagina pdf",
+        "rotate pdf",
       ],
       ogTitle: "Rotește pagini PDF în câteva secunde | PDFLince",
       ogDescription:
@@ -477,7 +484,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
     slug: "reordoneaza",
     mode: "reorder",
     meta: {
-      title: "Reordonează paginile PDF | Schimbă ordinea | PDFLince",
+      title: "Reordonează paginile PDF | Schimbă ordinea | PDFLince | Reorder PDF",
       description:
         "Reordonează cu ușurință paginile PDF-ului tău printr-o interfață simplă de tip drag-and-drop. Corectează ordinea documentelor și salvează instant.",
       keywords: [
@@ -485,6 +492,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
         "schimba ordine pagini pdf",
         "organizeaza pdf",
         "sorteaza pagini pdf",
+        "reorder pdf",
       ],
       ogTitle: "Organizează paginile PDF fără a instala programe | PDFLince",
       ogDescription:
@@ -543,7 +551,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
     slug: "pdf-in-imagini",
     mode: "pdfToImages",
     meta: {
-      title: "Convertește PDF în imagini | Export PNG sau JPEG | PDFLince",
+      title: "Convertește PDF în imagini | Export PNG sau JPEG | PDFLince | PDF to Images",
       description:
         "Convertește fiecare pagină a PDF-ului tău în imagini PNG sau JPEG de înaltă calitate. Alege rezoluția și descarcă-le ca arhivă ZIP.",
       keywords: [
@@ -552,6 +560,7 @@ const operationsRoContent: Record<OperationKey, OperationContent> = {
         "pdf in png",
         "pdf in jpeg",
         "descarca pdf ca imagini",
+        "pdf to images",
       ],
       ogTitle: "Exportă paginile PDF ca imagini clare | PDFLince",
       ogDescription:
