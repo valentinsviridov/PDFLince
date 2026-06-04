@@ -14,15 +14,15 @@ import { SchemaOrg } from "../../components/SchemaOrg";
 
 import { METADATA_BASE, SHARED_ICONS, SHARED_OPEN_GRAPH } from "../../lib/metadata-shared";
 
-const LOCALE = "ro" as const;
+const LOCALE = "hu" as const;
 
 export const metadata = {
   metadataBase: METADATA_BASE,
-  title: "PDFLince - Unește, Comprimă, Divide și Convertește PDF-uri",
-  description: "Instrumente PDF gratuite, online, pentru a uni, comprima, divide, extrage și converti. 100% privat, procesare locală în browserul tău.",
+  title: "PDFLince - PDF tömörítése, egyesítése, felosztása és konvertálása",
+  description: "Ingyenes online PDF-eszközök: tömörítés, egyesítés, felosztás, kinyerés és konvertálás. 100% privát, helyi feldolgozás a böngésződben.",
   icons: SHARED_ICONS,
   alternates: {
-    canonical: "https://pdflince.com/ro/",
+    canonical: "https://pdflince.com/hu/",
     languages: {
       'es-ES': 'https://pdflince.com/',
       'es-MX': 'https://pdflince.com/',
@@ -51,15 +51,15 @@ export const metadata = {
   },
   openGraph: {
     ...SHARED_OPEN_GRAPH,
-    title: "PDFLince - Instrumente PDF gratuite și private în browserul tău",
-    description: "Unește, comprimă, divide și convertește PDF-uri fără a încărca fișierele pe server. Securizat și 100% privat.",
-    url: "https://pdflince.com/ro",
-    locale: "ro_RO",
+    title: "PDFLince - Ingyenes és privát PDF-eszközök a böngésződben",
+    description: "Egyesítsd, tömörítsd, oszd fel és konvertáld a PDF-eket szerverre feltöltés nélkül. Biztonságos és 100% privát.",
+    url: "https://pdflince.com/hu",
+    locale: "hu_HU",
     type: "website",
   },
 };
 
-export default function RoLayout({ children }: { children: ReactNode }) {
+export default function HuLayout({ children }: { children: ReactNode }) {
   return (
     <html lang={LOCALE}>
       <head>
