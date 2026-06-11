@@ -64,7 +64,7 @@ export const frDictionary: Dictionary = {
         url: `${siteUrl}${homePath}`,
         locale: "fr_FR",
         type: "website",
-        imageUrl: "https://pdflince.com/og-image.jpg",
+        imageUrl: "https://pdflince.com/og-images/og-image-fr.png",
         imageAlt: "PDFLince - Traitement PDF privé et gratuit",
       },
     },

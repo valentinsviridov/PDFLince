@@ -63,7 +63,7 @@ export const deDictionary: Dictionary = {
         url: `${siteUrl}${homePath}`,
         locale: "de_DE",
         type: "website",
-        imageUrl: "https://pdflince.com/og-image.jpg",
+        imageUrl: "https://pdflince.com/og-images/og-image-de.png",
         imageAlt: "PDFLince – Private und kostenlose PDF-Bearbeitung",
       },
     },

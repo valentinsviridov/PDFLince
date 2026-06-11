@@ -59,7 +59,7 @@ export const esDictionary: Dictionary = {
         url: siteUrl,
         locale: "es_ES",
         type: "website",
-        imageUrl: "https://pdflince.com/og-image.jpg",
+        imageUrl: "https://pdflince.com/og-images/og-image-es.png",
         imageAlt: "PDFLince - Procesamiento de PDFs privado y gratuito",
       },
     },
