@@ -10,9 +10,9 @@ export const SHARED_ICONS = [
 export const SHARED_OPEN_GRAPH: Metadata["openGraph"] = {
     images: [
         {
-            url: "https://pdflince.com/og-image.jpg",
-            width: 1200,
-            height: 630,
+            url: "https://pdflince.com/og-images/og-image-es.png",
+            width: 1409,
+            height: 736,
             alt: "PDFLince - Procesamiento de PDFs privado y gratuito"
         }
     ],

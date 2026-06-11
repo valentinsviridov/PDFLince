@@ -58,8 +58,8 @@ export async function generateMetadata({ params }: { params: Promise<OperationPa
       images: [
         {
           url: dictionary.metadata.site.openGraph.imageUrl,
-          width: 1200,
-          height: 630,
+          width: 1409,
+          height: 736,
           alt: operation.meta.ogImageAlt ?? operation.hero.imageAlt,
         },
       ],

@@ -46,8 +46,8 @@ export function buildOperationMetadata(locale: Locale, operationKey: OperationKe
         images: [
           {
             url: dictionary.metadata.site.openGraph.imageUrl,
-            width: 1200,
-            height: 630,
+            width: 1409,
+            height: 736,
             alt: operationMeta.meta.ogImageAlt ?? operationMeta.hero.imageAlt,
           },
         ],

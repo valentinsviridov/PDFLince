@@ -64,7 +64,7 @@ export const enDictionary: Dictionary = {
         url: `${siteUrl}${homePath}`,
         locale: "en_US",
         type: "website",
-        imageUrl: "https://pdflince.com/og-image.jpg",
+        imageUrl: "https://pdflince.com/og-images/og-image-en.png",
         imageAlt: "PDFLince - Private and free PDF processing",
       },
     },

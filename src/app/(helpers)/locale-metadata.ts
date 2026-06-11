@@ -43,8 +43,8 @@ export function createHomeMetadata(locale: Locale) {
         images: [
           {
             url: siteMeta.openGraph.imageUrl,
-            width: 1200,
-            height: 630,
+            width: 1409,
+            height: 736,
             alt: siteMeta.openGraph.imageAlt,
           },
         ],
