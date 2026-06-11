@@ -70,7 +70,7 @@ export const huDictionary: Dictionary = {
         url: `${siteUrl}${homePath}`,
         locale: "hu_HU",
         type: "website",
-        imageUrl: "https://pdflince.com/og-image.jpg",
+        imageUrl: "https://pdflince.com/og-images/og-image-hu.png",
         imageAlt: "PDFLince - Privát és ingyenes PDF-feldolgozás",
       },
     },

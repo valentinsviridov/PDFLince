@@ -72,7 +72,7 @@ export const roDictionary: Dictionary = {
         url: `${siteUrl}${homePath}`,
         locale: "ro_RO",
         type: "website",
-        imageUrl: "https://pdflince.com/og-image.jpg",
+        imageUrl: "https://pdflince.com/og-images/og-image-ro.png",
         imageAlt: "PDFLince - Procesare PDF privată și gratuită",
       },
     },
