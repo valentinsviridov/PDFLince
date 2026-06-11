@@ -52,6 +52,7 @@ export const metadata = {
   },
   openGraph: {
     ...SHARED_OPEN_GRAPH,
+    images: [{ url: "https://pdflince.com/og-images/og-image-pt.png", width: 1409, height: 736, alt: "PDFLince - Processamento de PDFs privado e gratuito" }],
     title: "PDFLince - Ferramentas de PDF gratuitas e privadas no seu navegador",
     description: "Combine, comprima, divida e converta PDFs sem carregar arquivos. Processamento seguro e 100% privado.",
     url: "https://pdflince.com/pt",
