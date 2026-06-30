@@ -149,20 +149,22 @@ jobs:
     - name: Deploy to S3
       run: |
         echo "Deploying to S3 bucket: pdflince"
-        # Sync all files first with default caching (no-cache for HTML/others)
-        aws s3 sync deploy-files/ s3://pdflince/ --delete --no-progress --cache-control "public, max-age=0, must-revalidate"
-
-        # Sync immutable assets (hashed files) with long-term caching
-        # Next.js static assets
+        # 1. Sync immutable assets FIRST (Zero-Downtime Architecture)
         aws s3 sync deploy-files/_next/static/ s3://pdflince/_next/static/ --delete --no-progress --cache-control "public, max-age=31536000, immutable"
+        
+        # 2. Sync root files SECOND, explicitly excluding the static folder we just uploaded
+        aws s3 sync deploy-files/ s3://pdflince/ --delete --no-progress --exclude "_next/static/*" --cache-control "public, max-age=0, must-revalidate"
 
     - name: Invalidate CloudFront cache
-      if: ${{ env.CLOUDFRONT_DISTRIBUTION_ID != '' }}
       env:
         CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
       run: |
-        aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
-        echo "CloudFront cache invalidation requested."
+        if [ -n "$CLOUDFRONT_DISTRIBUTION_ID" ]; then
+          aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+          echo "CloudFront cache invalidation requested."
+        else
+          echo "CLOUDFRONT_DISTRIBUTION_ID secret is empty or missing. Skipping invalidation."
+        fi
 
     - name: Ping IndexNow
       run: |
