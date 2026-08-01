@@ -38,10 +38,7 @@ test.describe('Google Analytics Opt-In', () => {
         expect(consent).toBe('true');
 
         // Verify that the GA script tag (#ga-loader) is dynamically inserted into the DOM
-        const gaLoaderExists = await page.evaluate(() => {
-            return document.getElementById('ga-loader') !== null || typeof (window as unknown as { gtag?: unknown }).gtag !== 'undefined';
-        });
-        expect(gaLoaderExists).toBe(true);
+        await expect(page.locator('#ga-loader')).toBeAttached();
     });
 
     test('Google Analytics respects existing opt-in consent on page load', async ({ page }) => {
@@ -56,7 +53,7 @@ test.describe('Google Analytics Opt-In', () => {
         const consent = await page.evaluate(() => localStorage.getItem('cookie_consent'));
         expect(consent).toBe('true');
 
-        const gaLoaderExists = await page.evaluate(() => document.getElementById('ga-loader') !== null);
-        expect(gaLoaderExists).toBe(true);
+        await expect(page.locator('#ga-loader')).toBeAttached();
     });
 });
+
