@@ -18,7 +18,7 @@ bun run build
 echo "🎭 Running E2E tests..."
 # We use --no-install to strictly force bunx to use the local playwright version installed in node_modules,
 # ensuring the downloaded browsers perfectly match the project's dependency version.
-bunx --no-install playwright install
+bunx --no-install playwright install --with-deps
 bun run test:e2e
 
 echo "🐳 Building Docker image..."
