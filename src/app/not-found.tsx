@@ -35,7 +35,7 @@ export default function NotFound() {
         >
           <div style={{ maxWidth: "1200px", margin: "0 auto", width: "100%", display: "flex" }}>
             <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", color: "inherit" }}>
-              <Image src="/favicon.ico?v=2" alt="PDFLince logo" width={32} height={32} style={{ marginRight: "0.5rem" }} />
+              <Image src="/favicon.ico" alt="PDFLince logo" width={32} height={32} style={{ marginRight: "0.5rem" }} />
               <span style={{ fontSize: "1.25rem", fontWeight: 700, fontFamily: "'Montserrat', sans-serif" }}>PDFLince</span>
             </Link>
           </div>
