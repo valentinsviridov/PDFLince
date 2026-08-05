@@ -18,8 +18,11 @@ bun run build
 echo "🎭 Running E2E tests..."
 # We use --no-install to strictly force bunx to use the local playwright version installed in node_modules,
 # ensuring the downloaded browsers perfectly match the project's dependency version.
-bunx --no-install playwright install --with-deps
-bun run test:e2e
+PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=true bunx --no-install playwright install
+# We skip host requirements validation to avoid sudo prompts during automated checks.
+# If tests crash or the browser fails to launch due to missing system libraries (like libavif16),
+# you can manually fix it by running: sudo npx playwright install-deps
+PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=true bun run test:e2e
 
 echo "🐳 Building Docker image..."
 docker build -t pdflince:local .
