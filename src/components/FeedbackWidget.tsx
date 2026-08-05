@@ -3,15 +3,8 @@
 import { useState } from 'react';
 import { useDictionary } from '../i18n/LocaleProvider';
 
-interface WindowWithGtag extends Window {
-    gtag: (
-        command: 'event',
-        action: string,
-        params?: Record<string, unknown>
-    ) => void;
-}
 
-export function FeedbackWidget({ operation }: { operation?: string }) {
+export function FeedbackWidget() {
     const dictionary = useDictionary();
     // Fallback if translation is missing (safety check)
     const t = dictionary.components?.feedback || {
@@ -26,14 +19,6 @@ export function FeedbackWidget({ operation }: { operation?: string }) {
     const handleFeedback = (type: 'positive' | 'negative') => {
         setStatus(type);
 
-        // Track event
-        if (typeof window !== 'undefined' && (window as unknown as WindowWithGtag).gtag) {
-            (window as unknown as WindowWithGtag).gtag('event', `feedback_${type}`, {
-                event_category: 'engagement',
-                event_label: operation || 'unknown_operation',
-                operation_type: operation
-            });
-        }
     };
 
     if (status === 'positive') {

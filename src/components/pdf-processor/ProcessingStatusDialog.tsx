@@ -325,7 +325,7 @@ export function ProcessingStatusDialog({
                   </button>
                 </div>
               )}
-              <FeedbackWidget operation={analyticsContext?.mode} />
+              <FeedbackWidget />
             </div>
           )}
         </div>

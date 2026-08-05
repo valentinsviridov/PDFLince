@@ -1,15 +1,11 @@
 import "../../styles/globals.css";
-import { Suspense, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import NavMenu from "../../components/NavMenu";
 import Footer from "../../components/Footer";
 import FotoLinceBanner from "../../components/FotoLinceBanner";
 import { LocaleProvider } from "../../i18n/LocaleProvider";
-import { GoogleAnalyticsScripts } from "../../components/analytics/GoogleAnalyticsScripts";
-import { GaPageViewTracker } from "../../components/analytics/GaPageViewTracker";
-import { WebVitalsReporter } from "../../components/analytics/WebVitalsReporter";
-import CookieBanner from "../../components/CookieBanner";
 import { SchemaOrg } from "../../components/SchemaOrg";
 import { BreadcrumbSchema } from "../../components/seo/BreadcrumbSchema";
 
@@ -67,21 +63,15 @@ export default function DeLayout({ children }: { children: ReactNode }) {
     <html lang={LOCALE}>
       <head>
         <title>{metadata.title}</title>
-        <GoogleAnalyticsScripts />
         <SchemaOrg />
         <BreadcrumbSchema />
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <LocaleProvider locale={LOCALE}>
-          <WebVitalsReporter />
-          <Suspense fallback={null}>
-            <GaPageViewTracker />
-          </Suspense>
           <NavMenu />
           <main>{children}</main>
           <FotoLinceBanner />
           <Footer />
-          <CookieBanner />
         </LocaleProvider>
       </body>
     </html>
