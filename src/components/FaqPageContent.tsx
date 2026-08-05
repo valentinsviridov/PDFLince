@@ -1,4 +1,4 @@
-import Link from "next/link";
+
 import type { Dictionary } from "../i18n/dictionaries/dictionary-types";
 import FaqSection from "./faq-section";
 
@@ -28,13 +28,7 @@ export function FaqPageContent({ dictionary }: { dictionary: Dictionary }) {
           </div>
         )}
 
-        <div className="my-12 p-8 surface-card bg-[var(--bg-2)]/80 text-center">
-          <h2 className="text-2xl font-bold mb-4">{faqPage.cta.title}</h2>
-          <p className="mb-6 text-[var(--tx-2)]">{faqPage.cta.description}</p>
-          <Link href={dictionary.routes.home} className="btn-primary rounded-lg px-6 py-3 text-white inline-block">
-            {faqPage.cta.ctaLabel}
-          </Link>
-        </div>
+
       </div>
     </div>
   );
