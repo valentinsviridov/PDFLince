@@ -24,7 +24,7 @@
     "preview": "bun run build && bunx serve out --single",
     "start": "bunx serve out --single",
     "test:e2e": "playwright test",
-    "postinstall": "bun scripts/setup-pdf-worker.mjs"
+    "setup-worker": "bun scripts/setup-pdf-worker.mjs"
   },
   "dependencies": {
     "@fontsource/montserrat": "^5.3.0",

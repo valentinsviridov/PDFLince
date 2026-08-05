@@ -6,6 +6,7 @@ COPY package.json bun.lock ./
 COPY scripts/setup-pdf-worker.mjs ./scripts/setup-pdf-worker.mjs
 
 RUN bun install --frozen-lockfile
+RUN bun run setup-worker
 
 COPY . .
 

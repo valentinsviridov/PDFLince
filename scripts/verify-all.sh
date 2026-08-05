@@ -5,6 +5,7 @@ echo "🚀 Starting full verification suite..."
 
 echo "📦 Installing dependencies..."
 bun install
+bun run setup-worker
 
 echo "🧹 Running linting..."
 bun run lint
