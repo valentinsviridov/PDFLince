@@ -4,7 +4,6 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import NavMenu from "../../components/NavMenu";
 import Footer from "../../components/Footer";
-import FotoLinceBanner from "../../components/FotoLinceBanner";
 import { LocaleProvider } from "../../i18n/LocaleProvider";
 import { SchemaOrg } from "../../components/SchemaOrg";
 import { BreadcrumbSchema } from "../../components/seo/BreadcrumbSchema";
@@ -70,7 +69,6 @@ export default function DeLayout({ children }: { children: ReactNode }) {
         <LocaleProvider locale={LOCALE}>
           <NavMenu />
           <main>{children}</main>
-          <FotoLinceBanner />
           <Footer />
         </LocaleProvider>
       </body>
