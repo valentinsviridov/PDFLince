@@ -15,7 +15,7 @@ When contributing to this project, adhere to the following best practices for ou
 - Do **not** send user PDF data to any remote servers. All PDF manipulation and processing must remain 100% local and executed entirely client-side within the browser.
 
 ## ✅ Verification
-When modifying the codebase, please ensure you run the comprehensive verification script before concluding your work:
+**MANDATORY**: When modifying the codebase, you MUST run the comprehensive verification script before concluding your work:
 
 ```bash
 ./scripts/verify-all.sh
