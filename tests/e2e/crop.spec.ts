@@ -120,5 +120,10 @@ test('PDF Crop Workflow on Corrupt PDF', async ({ page }) => {
     const croppedSize = fs.statSync(downloadPath).size;
     expect(croppedSize).toBeGreaterThan(0);
 
+    // Verify the output PDF is no longer corrupt by loading it and reading the page count
+    const pdfBuffer = fs.readFileSync(downloadPath);
+    const croppedPdf = await PDFDocument.load(pdfBuffer, { throwOnInvalidObject: true });
+    expect(croppedPdf.getPageCount()).toBeGreaterThan(0);
+
     fs.unlinkSync(downloadPath);
 });
