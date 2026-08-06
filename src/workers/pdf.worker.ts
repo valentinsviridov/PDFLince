@@ -14,7 +14,7 @@ import {
 } from '../lib/pdf-operations';
 
 // Polyfill document for PDF.js in worker environment
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 if (typeof self !== 'undefined') {
     // Polyfill window
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1156,7 +1156,7 @@ export async function convertPdfToImages(fileOrData: File | ArrayBuffer | Uint8A
     }
     const ctx = canvas.getContext('2d', { alpha: false })! as CanvasRenderingContext2D;
     ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     await page.render({
       canvasContext: ctx as unknown as CanvasRenderingContext2D,
       viewport: vp,
@@ -1196,7 +1196,7 @@ export async function renderPDFThumbnail(file: File, pageNumber: number, targetW
     canvas.width = vp.width; canvas.height = vp.height;
     const ctx = canvas.getContext('2d')! as CanvasRenderingContext2D;
     ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     await page.render({
       canvasContext: ctx as unknown as CanvasRenderingContext2D,
       viewport: vp,
