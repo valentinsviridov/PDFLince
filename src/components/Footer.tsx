@@ -36,14 +36,6 @@ export default function Footer() {
           </Link>
 
           <a
-            href="https://fotolince.com"
-            className="text-[var(--tx-2)] hover:text-[var(--accent)] font-medium"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {footer.links.photo}
-          </a>
-          <a
             href="mailto:info@pdflince.com"
             className="text-[var(--tx-2)] hover:text-[var(--accent)] font-medium"
           >

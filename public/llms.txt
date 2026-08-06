@@ -44,4 +44,4 @@ PDFLince is an open-source, free, private, client-side PDF tool. It allows you t
 
 ## Herramientas Relacionadas
 
-- [FotoLince](https://fotolince.com): Nuestra herramienta hermana para procesamiento de imágenes
+
