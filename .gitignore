@@ -62,6 +62,8 @@ yarn-error.log*
 # Test files
 /test-pdfs
 test-pdf-operations.js
+tests/e2e/*.pdf
+tests/e2e/*.zip
 
 # Playwright
 test-results/
