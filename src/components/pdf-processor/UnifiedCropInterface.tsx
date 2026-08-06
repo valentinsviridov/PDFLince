@@ -279,7 +279,7 @@ export default function UnifiedCropInterface({
                 className="relative mx-auto touch-none select-none overflow-hidden rounded-md border border-[var(--ui-3)] bg-white shadow-md transition-shadow hover:shadow-lg cursor-crosshair"
                 style={{
                   width: '100%',
-                  maxWidth: '320px',
+                  maxWidth: '560px',
                   aspectRatio: pageSize ? `${pageSize.width} / ${pageSize.height}` : '3 / 4'
                 }}
                 onPointerDown={handlePointerDown}

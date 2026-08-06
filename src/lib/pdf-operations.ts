@@ -16,6 +16,10 @@ import {
 } from 'pdf-lib';
 
 // Type definitions
+function isFileLike(obj: unknown): obj is File {
+  return obj instanceof File || (!!obj && typeof (obj as File).name === 'string' && typeof (obj as File).arrayBuffer === 'function');
+}
+
 export type PDFProcessingMode =
   | 'compress'
   | 'merge'
@@ -121,7 +125,7 @@ export async function compressPDF(
   const startTime = performance.now();
 
   try {
-    const arrayBuffer = fileOrData instanceof File
+    const arrayBuffer = isFileLike(fileOrData)
       ? await fileOrData.arrayBuffer()
       : fileOrData;
     const pdfDoc = await PDFDocument.load(arrayBuffer, {
@@ -568,14 +572,14 @@ export async function mergePDFs(
     if (filesOrData.length === 0) throw new Error('No files to merge');
     if (filesOrData.length === 1) {
       const data = filesOrData[0];
-      return data instanceof File ? new Uint8Array(await data.arrayBuffer()) : new Uint8Array(data);
+      return isFileLike(data) ? new Uint8Array(await data.arrayBuffer()) : new Uint8Array(data);
     }
 
     const mergedPdf = await PDFDocument.create();
     for (let i = 0; i < filesOrData.length; i++) {
       await yieldToMain();
       const input = filesOrData[i];
-      const arrayBuffer = input instanceof File ? await input.arrayBuffer() : input;
+      const arrayBuffer = isFileLike(input) ? await input.arrayBuffer() : input;
       const pdf = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
       const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
       copiedPages.forEach((page) => mergedPdf.addPage(page));
@@ -606,7 +610,7 @@ export async function splitPDF(
   options: PDFProcessingOptions = {}
 ): Promise<Uint8Array[]> {
   try {
-    const arrayBuffer = fileOrData instanceof File ? await fileOrData.arrayBuffer() : fileOrData;
+    const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
     const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
     const pageCount = pdfDoc.getPageCount();
     const pagesPerFile = options.pagesPerFile || 1;
@@ -635,7 +639,7 @@ export async function extractPages(
 ): Promise<Uint8Array> {
   try {
     if (pageNumbers.length === 0) throw new Error('No pages to extract');
-    const arrayBuffer = fileOrData instanceof File ? await fileOrData.arrayBuffer() : fileOrData;
+    const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
     const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
     const pageCount = pdfDoc.getPageCount();
     const validPageIndices = pageNumbers.map(num => num - 1).filter(idx => idx >= 0 && idx < pageCount).sort((a, b) => a - b);
@@ -668,7 +672,7 @@ export async function reorderPages(
 ): Promise<Uint8Array> {
   try {
     if (newOrder.length === 0) throw new Error('No page order provided');
-    const arrayBuffer = fileOrData instanceof File ? await fileOrData.arrayBuffer() : fileOrData;
+    const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
     const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
     const pageCount = pdfDoc.getPageCount();
     const validPageIndices = newOrder.map(num => num - 1).filter(idx => idx >= 0 && idx < pageCount);
@@ -714,7 +718,7 @@ export async function cropPages(
     const top = Math.max(0, margins.top ?? 0);
     const bottom = Math.max(0, margins.bottom ?? 0);
 
-    const arrayBuffer = fileOrData instanceof File ? await fileOrData.arrayBuffer() : fileOrData;
+    const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
     const pdfDoc = await PDFDocument.load(arrayBuffer, {
       ignoreEncryption: true,
       updateMetadata: options.preserveMetadata !== false,
@@ -818,7 +822,7 @@ export async function rotatePages(
     }
 
     const arrayBuffer =
-      fileOrData instanceof File ? await fileOrData.arrayBuffer() : fileOrData;
+      isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
 
     const pdfDoc = await PDFDocument.load(arrayBuffer, {
       ignoreEncryption: true,
@@ -880,7 +884,7 @@ function normalizeRotation(angle: number): 0 | 90 | 180 | 270 {
 
 export async function getPDFPageCount(fileOrData: File | ArrayBuffer | Uint8Array): Promise<number> {
   try {
-    const arrayBuffer = fileOrData instanceof File ? await fileOrData.arrayBuffer() : fileOrData;
+    const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
     const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
     return pdfDoc.getPageCount();
   } catch (error) {
@@ -893,7 +897,7 @@ export async function getPDFPageDimensions(
   fileOrData: File | ArrayBuffer | Uint8Array,
   pageNumber: number
 ): Promise<{ width: number; height: number }> {
-  const arrayBuffer = fileOrData instanceof File ? await fileOrData.arrayBuffer() : fileOrData;
+  const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
   const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
   const pageCount = pdfDoc.getPageCount();
   const pageIndex = Math.min(Math.max(pageNumber - 1, 0), Math.max(pageCount - 1, 0));
@@ -939,7 +943,7 @@ async function getPdfJsLib(): Promise<PdfJsModule> {
   if (!pdfjsLibPromise) {
     pdfjsLibPromise = import('pdfjs-dist/legacy/build/pdf').then((module) => {
       if (!module.GlobalWorkerOptions.workerSrc) {
-        module.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+        module.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
       }
       return module;
     });
@@ -948,12 +952,12 @@ async function getPdfJsLib(): Promise<PdfJsModule> {
 }
 
 async function getCachedPdfDocument(fileOrData: File | ArrayBuffer | Uint8Array): Promise<PdfjsDocument> {
-  const isFile = fileOrData instanceof File;
+  const isFile = isFileLike(fileOrData);
   let docPromise = isFile ? pdfDocumentCache.get(fileOrData) : null;
   if (!docPromise) {
     docPromise = (async () => {
       const pdfjsLib = await getPdfJsLib();
-      const data = fileOrData instanceof File ? await fileOrData.arrayBuffer() : fileOrData;
+      const data = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
       // Use absolute URLs for CMap/font loading
       const baseUrl = typeof window !== 'undefined' ? window.location.origin : self.location.origin;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -1012,8 +1016,8 @@ function parseBackgroundColor(color?: string) {
 }
 
 async function normalizeImageForPdf(fileOrData: File | ArrayBuffer | Uint8Array): Promise<{ bytes: Uint8Array; format: 'png' | 'jpeg' }> {
-  const data = fileOrData instanceof File ? fileOrData : new Blob([fileOrData as BlobPart]);
-  if (fileOrData instanceof File) {
+  const data = isFileLike(fileOrData) ? fileOrData : new Blob([fileOrData as BlobPart]);
+  if (isFileLike(fileOrData)) {
     const lowerName = fileOrData.name.toLowerCase();
     const mime = (fileOrData.type || '').toLowerCase();
     if (mime === 'image/png' || lowerName.endsWith('.png')) return { bytes: new Uint8Array(await fileOrData.arrayBuffer()), format: 'png' };
@@ -1112,7 +1116,7 @@ export async function convertPdfToImages(fileOrData: File | ArrayBuffer | Uint8A
   const scale = (options.imageRenderDpi ?? 144) / 72;
   const extension = (options.imageOutputFormat ?? 'png') === 'png' ? 'png' : 'jpg';
   const entries: Array<{ name: string; blob: Blob }> = [];
-  const base = sanitizeFileBaseName(options.imageBaseName ?? (fileOrData instanceof File ? stripExtension(fileOrData.name) : 'pdflince'));
+  const base = sanitizeFileBaseName(options.imageBaseName ?? (isFileLike(fileOrData) ? stripExtension(fileOrData.name) : 'pdflince'));
   for (let i = 1; i <= doc.numPages; i++) {
     await yieldToMain();
     const page = await doc.getPage(i);

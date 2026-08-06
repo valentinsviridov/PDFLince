@@ -12,7 +12,7 @@ package-lock.json
 /out/
 /public/cmaps
 /public/standard_fonts
-/public/pdf.worker.min.mjs
+/public/pdf.worker.min.js
 
 # Production build
 /build

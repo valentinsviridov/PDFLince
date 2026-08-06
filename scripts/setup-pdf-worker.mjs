@@ -6,7 +6,7 @@ async function copyWorker() {
   const projectRoot = process.cwd();
   const source = path.join(projectRoot, 'node_modules', 'pdfjs-dist', 'legacy', 'build', 'pdf.worker.min.mjs');
   const destinationDir = path.join(projectRoot, 'public');
-  const destination = path.join(destinationDir, 'pdf.worker.min.mjs');
+  const destination = path.join(destinationDir, 'pdf.worker.min.js');
 
   try {
     await fs.access(source);

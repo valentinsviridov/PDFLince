@@ -19,7 +19,7 @@ type DiffState =
   | { state: "ready"; original: string; compressed: string }
   | { state: "error" };
 
-const THUMBNAIL_HEIGHT = 224;
+const THUMBNAIL_HEIGHT = 320;
 
 export default function CompressionDiffSlider({
   originalFile,
@@ -50,8 +50,8 @@ export default function CompressionDiffSlider({
     const loadThumbnails = async () => {
       try {
         const [originalThumb, compressedThumb] = await Promise.all([
-          renderPdfThumbnail(originalFile, 1),
-          renderPdfThumbnail(compressedSource, 1),
+          renderPdfThumbnail(originalFile, 1, 320),
+          renderPdfThumbnail(compressedSource, 1, 320),
         ]);
 
         if (cancelled) {

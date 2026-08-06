@@ -92,7 +92,7 @@ export default function PageOrderer({ file, onOrderChangeAction, initialOrder }:
 
         for (let i = 1; i <= maxPages; i++) {
           if (!isMounted) return;
-          const thumbnail = await renderPdfThumbnail(file, i);
+          const thumbnail = await renderPdfThumbnail(file, i, 240);
           if (!isMounted) return;
           setThumbnails(prev => [...prev, thumbnail]);
           // Small yield to ensure UI updates
@@ -473,8 +473,8 @@ export default function PageOrderer({ file, onOrderChangeAction, initialOrder }:
                   <Image
                     src={thumbnail}
                     alt={ordererStrings.pageLabel(pageNumber)}
-                    width={160}
-                    height={200}
+                    width={240}
+                    height={320}
                     className="w-full h-full object-contain"
                     unoptimized
                   />
