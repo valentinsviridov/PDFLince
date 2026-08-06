@@ -2,9 +2,11 @@ name: CI and Docker Push
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - '**' # Triggers on all branches
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
