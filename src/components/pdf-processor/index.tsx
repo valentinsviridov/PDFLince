@@ -2485,7 +2485,6 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
           description={statusDialogState.description}
           highlights={statusDialogState.highlights}
           donationPrompt={statusDialogState.donationPrompt}
-          sharePrompt={statusDialogStrings.sharePrompt}
           actions={dialogActions}
           closeLabel={statusDialogStrings.closeLabel}
           onClose={handleDialogClose}

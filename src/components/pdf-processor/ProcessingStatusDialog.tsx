@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { trackEvent } from "../../lib/analytics";
-import { FeedbackWidget } from "../FeedbackWidget";
 
 export type DialogStatus = "processing" | "success" | "error";
 
@@ -35,7 +34,6 @@ interface ProcessingStatusDialogProps {
   description?: string;
   highlights?: DialogHighlight[];
   donationPrompt?: DonationPrompt | null;
-  sharePrompt?: { dialogMessage: string; shareText: string; actionLabel: string; copiedLabel: string } | null;
   actions?: DialogAction[];
   closeLabel: string;
   onClose: () => void;
@@ -111,43 +109,14 @@ export function ProcessingStatusDialog({
   description,
   highlights,
   donationPrompt,
-  sharePrompt,
   actions,
   closeLabel,
   onClose,
   analyticsContext,
 }: ProcessingStatusDialogProps) {
   const [mounted, setMounted] = useState(false);
-  const [copied, setCopied] = useState(false);
   const previousFocus = useRef<Element | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
-
-  const handleShareClick = async () => {
-    const currentLocale = window.location.pathname.split('/')[1] || 'en';
-    const shareUrl = `https://pdflince.com/${currentLocale}?utm_source=app&utm_medium=share&utm_campaign=user_referral_success`;
-
-    const shareData = {
-      title: 'PDFLince - Free Private PDF Toolkit',
-      text: sharePrompt ? `${sharePrompt.shareText}\n` : undefined,
-      url: shareUrl
-    };
-
-    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-      try {
-        await navigator.share(shareData);
-      } catch {
-        // User aborted
-      }
-    } else {
-      try {
-        await navigator.clipboard.writeText(shareUrl);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      } catch {
-        // Fallback failed
-      }
-    }
-  };
 
   useEffect(() => {
     setMounted(true);
@@ -308,27 +277,6 @@ export function ProcessingStatusDialog({
               </a>
             </div>
           ) : null}
-
-          {status === 'success' && (
-            <div className="border-t border-[var(--ui-2)] pt-4 space-y-4">
-              {sharePrompt && (
-                <div className="rounded-md border border-[var(--ui-3)] bg-[var(--bg-2)] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <p className="text-sm text-[var(--tx-2)] flex-1">{sharePrompt.dialogMessage}</p>
-                  <button
-                    type="button"
-                    onClick={handleShareClick}
-                    className="inline-flex shrink-0 items-center justify-center rounded-md border border-[var(--ui-3)] bg-white px-3 py-1.5 text-sm font-medium text-[var(--tx)] shadow-sm transition hover:bg-[var(--bg-2)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-                  >
-                    <svg className="mr-2 h-4 w-4 text-[var(--tx-3)]" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
-                    </svg>
-                    {copied ? sharePrompt.copiedLabel : sharePrompt.actionLabel}
-                  </button>
-                </div>
-              )}
-              <FeedbackWidget />
-            </div>
-          )}
         </div>
         <div className="flex flex-wrap items-center justify-end gap-3 border-t border-[var(--ui-2)] px-6 py-4">
           {actions?.map(renderAction)}
