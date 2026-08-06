@@ -130,6 +130,7 @@ export async function compressPDF(
       : fileOrData;
     const pdfDoc = await PDFDocument.load(arrayBuffer, {
       ignoreEncryption: true,
+      throwOnInvalidObject: false,
       updateMetadata: options.preserveMetadata !== false
     });
 
@@ -580,7 +581,7 @@ export async function mergePDFs(
       await yieldToMain();
       const input = filesOrData[i];
       const arrayBuffer = isFileLike(input) ? await input.arrayBuffer() : input;
-      const pdf = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+      const pdf = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
       const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
       copiedPages.forEach((page) => mergedPdf.addPage(page));
 
@@ -611,7 +612,7 @@ export async function splitPDF(
 ): Promise<Uint8Array[]> {
   try {
     const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
-    const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+    const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
     const pageCount = pdfDoc.getPageCount();
     const pagesPerFile = options.pagesPerFile || 1;
     const results: Uint8Array[] = [];
@@ -640,7 +641,7 @@ export async function extractPages(
   try {
     if (pageNumbers.length === 0) throw new Error('No pages to extract');
     const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
-    const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+    const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
     const pageCount = pdfDoc.getPageCount();
     const validPageIndices = pageNumbers.map(num => num - 1).filter(idx => idx >= 0 && idx < pageCount).sort((a, b) => a - b);
     if (validPageIndices.length === 0) throw new Error('No valid page numbers provided');
@@ -673,7 +674,7 @@ export async function reorderPages(
   try {
     if (newOrder.length === 0) throw new Error('No page order provided');
     const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
-    const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+    const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
     const pageCount = pdfDoc.getPageCount();
     const validPageIndices = newOrder.map(num => num - 1).filter(idx => idx >= 0 && idx < pageCount);
     if (validPageIndices.length === 0) throw new Error('No valid page numbers in order');
@@ -721,6 +722,7 @@ export async function cropPages(
     const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
     const pdfDoc = await PDFDocument.load(arrayBuffer, {
       ignoreEncryption: true,
+      throwOnInvalidObject: false,
       updateMetadata: options.preserveMetadata !== false,
     });
 
@@ -826,6 +828,7 @@ export async function rotatePages(
 
     const pdfDoc = await PDFDocument.load(arrayBuffer, {
       ignoreEncryption: true,
+      throwOnInvalidObject: false,
       updateMetadata: options.preserveMetadata !== false,
     });
 
@@ -884,11 +887,10 @@ function normalizeRotation(angle: number): 0 | 90 | 180 | 270 {
 
 export async function getPDFPageCount(fileOrData: File | ArrayBuffer | Uint8Array): Promise<number> {
   try {
-    const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
-    const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-    return pdfDoc.getPageCount();
+    const doc = await getCachedPdfDocument(fileOrData);
+    return doc.numPages;
   } catch (error) {
-    console.error('Error getting page count:', error);
+    console.error('Error getting page count via pdfjs-dist:', error);
     return 0;
   }
 }
@@ -897,21 +899,17 @@ export async function getPDFPageDimensions(
   fileOrData: File | ArrayBuffer | Uint8Array,
   pageNumber: number
 ): Promise<{ width: number; height: number }> {
-  const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
-  const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-  const pageCount = pdfDoc.getPageCount();
-  const pageIndex = Math.min(Math.max(pageNumber - 1, 0), Math.max(pageCount - 1, 0));
-  const page = pdfDoc.getPage(pageIndex);
-  
-  const mediaBox = page.getMediaBox();
-  const rotation = page.getRotation().angle;
-  const normalized = ((rotation % 360) + 360) % 360;
-  
-  if (normalized === 90 || normalized === 270) {
-    return { width: mediaBox.height, height: mediaBox.width };
+  try {
+    const doc = await getCachedPdfDocument(fileOrData);
+    const pageCount = doc.numPages;
+    const pageIndex = Math.min(Math.max(pageNumber, 1), pageCount);
+    const page = await doc.getPage(pageIndex);
+    const viewport = page.getViewport({ scale: 1 });
+    return { width: viewport.width, height: viewport.height };
+  } catch (error) {
+    console.error('Error getting page dimensions via pdfjs-dist:', error);
+    return { width: 0, height: 0 };
   }
-  
-  return { width: mediaBox.width, height: mediaBox.height };
 }
 
 const FALLBACK_THUMBNAIL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=';
