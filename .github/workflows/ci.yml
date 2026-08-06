@@ -2,8 +2,6 @@ name: CI and Docker Push
 
 on:
   push:
-    branches:
-      - '**' # Triggers on all branches
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
