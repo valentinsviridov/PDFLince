@@ -63,7 +63,7 @@ test.describe('UI Refinements', () => {
         await expect(dialog).toBeVisible();
 
         // 9. Close the modal by clicking its close button
-        await dialog.getByRole('button').first().click();
+        await page.keyboard.press('Escape');
         
         // Wait for the modal to fully unmount
         await expect(dialog).not.toBeVisible();

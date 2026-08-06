@@ -13,7 +13,8 @@ import {
   PDFNumber,
   degrees,
   rgb,
-  PDFPage,
+  PDFCatalog,
+  PDFPageTree,
 } from 'pdf-lib';
 
 // Type definitions
@@ -142,31 +143,37 @@ async function loadAndRepairPdf(arrayBuffer: ArrayBuffer | Uint8Array, options: 
   });
   
   pageDicts.sort((a, b) => a.ref.objectNumber - b.ref.objectNumber);
+  // Rebuild PageTree in-place
+  const newPagesArray = context.obj(pageDicts.map(p => p.ref));
+  const newPagesTree = context.obj({
+    Type: 'Pages',
+    Count: pageDicts.length,
+    Kids: newPagesArray,
+  });
+  // Cast and upgrade the raw dict into a proper PDFPageTree
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const safePages = pageDicts.map(p => PDFPage.of(p.obj as any, p.ref, pdfDoc));
+  const pdfPageTree = PDFPageTree.fromMapWithContext((newPagesTree as any).dict, context);
+  const newPagesTreeRef = context.register(pdfPageTree);
   
-  // Monkeypatch the corrupt document to bypass broken catalog during copy
-  pdfDoc.getPages = () => safePages;
-  pdfDoc.getPageCount = () => safePages.length;
+  // Update all pages to point to new Parent
+  pageDicts.forEach(p => {
+    p.obj.set(PDFName.of('Parent'), newPagesTreeRef);
+  });
   
-  const newPdf = await PDFDocument.create();
-  const allIndices = safePages.map((_, i) => i);
-  const copiedPages = await newPdf.copyPages(pdfDoc, allIndices);
-  copiedPages.forEach(p => newPdf.addPage(p));
+  // Create new Catalog
+  const newCatalog = context.obj({
+    Type: 'Catalog',
+    Pages: newPagesTreeRef,
+  });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const pdfCatalog = PDFCatalog.fromMapWithContext((newCatalog as any).dict, context);
+  context.trailerInfo.Root = context.register(pdfCatalog);
   
-  // Preserve basic metadata if possible
-  try {
-    const title = pdfDoc.getTitle();
-    const author = pdfDoc.getAuthor();
-    const subject = pdfDoc.getSubject();
-    if (title) newPdf.setTitle(title);
-    if (author) newPdf.setAuthor(author);
-    if (subject) newPdf.setSubject(subject);
-  } catch {
-    // Ignore metadata extraction failures
-  }
+  // Force pdfDoc to use the new catalog
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (pdfDoc as any).catalog = pdfCatalog;
   
-  return newPdf;
+  return pdfDoc;
 }
 
 /**
@@ -211,7 +218,7 @@ export async function compressPDF(
 
     // Save with optimization
     const pdfBytes = await pdfDoc.save({
-      useObjectStreams: true, // Compress object streams
+      useObjectStreams: !pdfDoc.context.trailerInfo.Encrypt, // Compress object streams unless encrypted
       addDefaultPage: false,
       objectsPerTick: compressionLevel === 'high' ? 500 : 50,
     });
@@ -659,7 +666,7 @@ export async function mergePDFs(
       if (options.metadata.keywords) mergedPdf.setKeywords([options.metadata.keywords]);
     }
 
-    return mergedPdf.save({ useObjectStreams: true });
+    return mergedPdf.save({ useObjectStreams: false }); // Always disable for newPdf with potentially encrypted copied streams
   } catch (error) {
     console.error('Error merging PDFs:', error);
     throw new Error(`Failed to merge PDFs: ${error instanceof Error ? error.message : String(error)}`);
@@ -673,6 +680,7 @@ export async function splitPDF(
   try {
     const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
     const pdfDoc = await loadAndRepairPdf(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
+    console.log("Encrypt exists:", !!pdfDoc.context.trailerInfo.Encrypt);
     const pageCount = pdfDoc.getPageCount();
     const pagesPerFile = options.pagesPerFile || 1;
     const results: Uint8Array[] = [];
@@ -684,7 +692,7 @@ export async function splitPDF(
       const pageIndices = Array.from({ length: endPage - i }, (_, idx) => i + idx);
       const copiedPages = await newPdf.copyPages(pdfDoc, pageIndices);
       copiedPages.forEach((page) => newPdf.addPage(page));
-      results.push(await newPdf.save({ useObjectStreams: true }));
+      results.push(await newPdf.save({ useObjectStreams: false }));
     }
     return results;
   } catch (error) {
@@ -702,6 +710,7 @@ export async function extractPages(
     if (pageNumbers.length === 0) throw new Error('No pages to extract');
     const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
     const pdfDoc = await loadAndRepairPdf(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
+    console.log("Encrypt exists:", !!pdfDoc.context.trailerInfo.Encrypt);
     const pageCount = pdfDoc.getPageCount();
     const validPageIndices = pageNumbers.map(num => num - 1).filter(idx => idx >= 0 && idx < pageCount).sort((a, b) => a - b);
     if (validPageIndices.length === 0) throw new Error('No valid page numbers provided');
@@ -719,7 +728,7 @@ export async function extractPages(
       if (subject) newPdf.setSubject(subject);
     }
 
-    return newPdf.save({ useObjectStreams: true });
+    return newPdf.save({ useObjectStreams: false });
   } catch (error) {
     console.error('Error extracting pages:', error);
     throw new Error(`Failed to extract pages: ${error instanceof Error ? error.message : String(error)}`);
@@ -735,6 +744,7 @@ export async function reorderPages(
     if (newOrder.length === 0) throw new Error('No page order provided');
     const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
     const pdfDoc = await loadAndRepairPdf(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
+    console.log("Encrypt exists:", !!pdfDoc.context.trailerInfo.Encrypt);
     const pageCount = pdfDoc.getPageCount();
     const validPageIndices = newOrder.map(num => num - 1).filter(idx => idx >= 0 && idx < pageCount);
     if (validPageIndices.length === 0) throw new Error('No valid page numbers in order');
@@ -752,7 +762,7 @@ export async function reorderPages(
       if (subject) newPdf.setSubject(subject);
     }
 
-    return newPdf.save({ useObjectStreams: true });
+    return newPdf.save({ useObjectStreams: false });
   } catch (error) {
     console.error('Error reordering pages:', error);
     throw new Error(`Failed to reorder pages: ${error instanceof Error ? error.message : String(error)}`);
@@ -786,6 +796,7 @@ export async function cropPages(
       updateMetadata: options.preserveMetadata !== false,
     });
 
+    console.log("Encrypt exists:", !!pdfDoc.context.trailerInfo.Encrypt);
     const pageCount = pdfDoc.getPageCount();
     const validPageIndices = [...new Set(
       pageNumbers
@@ -859,7 +870,7 @@ export async function cropPages(
     }
 
     return pdfDoc.save({
-      useObjectStreams: true,
+      useObjectStreams: !pdfDoc.context.trailerInfo.Encrypt,
       addDefaultPage: false,
     });
   } catch (error) {
@@ -892,6 +903,7 @@ export async function rotatePages(
       updateMetadata: options.preserveMetadata !== false,
     });
 
+    console.log("Encrypt exists:", !!pdfDoc.context.trailerInfo.Encrypt);
     const pageCount = pdfDoc.getPageCount();
 
     const validPageIndices = [...new Set(
@@ -921,7 +933,7 @@ export async function rotatePages(
     }
 
     return pdfDoc.save({
-      useObjectStreams: true,
+      useObjectStreams: !pdfDoc.context.trailerInfo.Encrypt,
       addDefaultPage: false,
     });
   } catch (error) {
@@ -1138,7 +1150,7 @@ export async function convertImagesToPdf(files: File[], options: PDFProcessingOp
     const sf = (options.imageFit === 'cover') ? Math.max(availW / image.size().width, availH / image.size().height) : Math.min(availW / image.size().width, availH / image.size().height);
     page.drawImage(image, { x: (layout.pageWidth - image.size().width * sf) / 2, y: (layout.pageHeight - image.size().height * sf) / 2, width: image.size().width * sf, height: image.size().height * sf });
   }
-  return pdfDoc.save({ useObjectStreams: true });
+  return pdfDoc.save({ useObjectStreams: !pdfDoc.context.trailerInfo.Encrypt });
 }
 
 // Canvas factory for PDF.js in worker environment
