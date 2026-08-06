@@ -115,7 +115,7 @@ type PageLayout = {
   margin: number;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 async function loadPdfWithValidation(arrayBuffer: ArrayBuffer | Uint8Array, options: any): Promise<PDFDocument> {
   const pdfDoc = await PDFDocument.load(arrayBuffer, options);
   let isCorrupt = false;
@@ -982,7 +982,7 @@ async function getCachedPdfDocument(fileOrData: File | ArrayBuffer | Uint8Array)
       const data = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
       // Use absolute URLs for CMap/font loading
       const baseUrl = typeof window !== 'undefined' ? window.location.origin : self.location.origin;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       const isInWorker = typeof (globalThis as any).importScripts === 'function';
       const loadingTask = pdfjsLib.getDocument({
         data,
@@ -1161,7 +1161,7 @@ export async function convertPdfToImages(fileOrData: File | ArrayBuffer | Uint8A
       canvasContext: ctx as unknown as CanvasRenderingContext2D,
       viewport: vp,
       canvasFactory: workerCanvasFactory,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
     } as any).promise;
     const blob = (canvas instanceof OffscreenCanvas) ? await canvas.convertToBlob({ type: `image/${extension === 'jpg' ? 'jpeg' : 'png'}`, quality: options.imageOutputQuality }) : await new Promise<Blob>(r => (canvas as HTMLCanvasElement).toBlob(b => r(b!), `image/${extension === 'jpg' ? 'jpeg' : 'png'}`, options.imageOutputQuality));
     entries.push({ name: `${base}_${String(i).padStart(String(doc.numPages).length, '0')}.${extension}`, blob });
@@ -1201,7 +1201,7 @@ export async function renderPDFThumbnail(file: File, pageNumber: number, targetW
       canvasContext: ctx as unknown as CanvasRenderingContext2D,
       viewport: vp,
       canvasFactory: workerCanvasFactory
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
     } as any).promise;
 
     // Convert to Data URL (OffscreenCanvas needs hack or FileReader)

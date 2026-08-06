@@ -17,15 +17,15 @@ import {
  
 if (typeof self !== 'undefined') {
     // Polyfill window
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     if (!(self as any).window) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         (self as any).window = self;
     }
     // Polyfill document
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     if (!(self as any).document) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+         
         (self as any).document = {
             createElement: (tagName: string) => {
                 if (tagName === 'canvas') {
