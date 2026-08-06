@@ -7,20 +7,26 @@ import { PDFDocument } from 'pdf-lib';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const testFile = path.join(__dirname, 'split-test.pdf');
+let testFile: string;
 
-test.beforeAll(async () => {
+test.beforeAll(async ({}, testInfo) => {
+    testFile = path.join(__dirname, `split-test-${testInfo.workerIndex}.pdf`);
     // Create a 5-page PDF
     const pdfDoc = await PDFDocument.create();
     for (let i = 1; i <= 5; i++) {
         const page = pdfDoc.addPage();
         page.drawText(`Page ${i}`);
     }
+
     fs.writeFileSync(testFile, await pdfDoc.save());
 });
 
 test.afterAll(() => {
-    if (fs.existsSync(testFile)) fs.unlinkSync(testFile);
+    if (testFile && fs.existsSync(testFile)) {
+        try {
+            fs.unlinkSync(testFile);
+        } catch (e) { }
+    }
 });
 
 test('PDF Split Workflow', async ({ page }) => {
@@ -37,7 +43,7 @@ test('PDF Split Workflow', async ({ page }) => {
     await fileInput.setInputFiles(testFile);
 
     // 4. Verify File Appears
-    await expect(page.getByText('split-test.pdf')).toBeVisible();
+    await expect(page.getByText(path.basename(testFile))).toBeVisible();
 
     // 5. Configure Split Options
     // Default is "All pages to individual files" (Split mode)

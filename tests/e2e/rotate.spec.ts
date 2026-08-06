@@ -7,11 +7,11 @@ import { PDFDocument, degrees } from 'pdf-lib';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const testFile = path.join(__dirname, 'rotate-test.pdf');
+let testFile: string;
 
-test.beforeAll(async () => {
+test.beforeAll(async ({}, testInfo) => {
+    testFile = path.join(__dirname, `rotate-test-${testInfo.workerIndex}.pdf`);
     const pdfDoc = await PDFDocument.create();
-
     for (let i = 1; i <= 3; i++) {
         const pdfPage = pdfDoc.addPage([400, 600]);
         pdfPage.drawText(`Rotate Test Page ${i}`, {
@@ -26,7 +26,7 @@ test.beforeAll(async () => {
 });
 
 test.afterAll(() => {
-    if (fs.existsSync(testFile)) {
+    if (testFile && fs.existsSync(testFile)) {
         try {
             fs.unlinkSync(testFile);
         } catch (e) { }

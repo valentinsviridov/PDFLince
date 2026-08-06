@@ -7,9 +7,10 @@ import { PDFDocument } from 'pdf-lib';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const testFile = path.join(__dirname, 'crop-test.pdf');
+let testFile: string;
 
-test.beforeAll(async () => {
+test.beforeAll(async ({}, testInfo) => {
+    testFile = path.join(__dirname, `crop-test-${testInfo.workerIndex}.pdf`);
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage([400, 600]);
     page.drawText('Crop Test Page', {
@@ -22,7 +23,7 @@ test.beforeAll(async () => {
 });
 
 test.afterAll(() => {
-    if (fs.existsSync(testFile)) {
+    if (testFile && fs.existsSync(testFile)) {
         try {
             fs.unlinkSync(testFile);
         } catch (e) { }
@@ -108,5 +109,5 @@ test('PDF Crop Workflow on Corrupt PDF', async ({ page }) => {
     await processButton.click();
 
     // UI should show error after processing fails
-    await expect(page.getByText('This PDF document is corrupted or malformed')).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByText('This PDF document is corrupted or malformed').first()).toBeVisible({ timeout: 30_000 });
 });

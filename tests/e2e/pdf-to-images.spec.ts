@@ -8,9 +8,10 @@ import JSZip from 'jszip';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const testFile = path.join(__dirname, 'pdf-to-images-test.pdf');
+let testFile: string;
 
-test.beforeAll(async () => {
+test.beforeAll(async ({}, testInfo) => {
+    testFile = path.join(__dirname, `pdf-to-images-test-${testInfo.workerIndex}.pdf`);
     // Create a 2-page PDF
     const pdfDoc = await PDFDocument.create();
     pdfDoc.addPage().drawText('Page 1');
@@ -19,7 +20,7 @@ test.beforeAll(async () => {
 });
 
 test.afterAll(() => {
-    if (fs.existsSync(testFile)) {
+    if (testFile && fs.existsSync(testFile)) {
         try {
             fs.unlinkSync(testFile);
         } catch (e) {
@@ -42,7 +43,7 @@ test('PDF to Images Workflow', async ({ page }) => {
     await fileInput.setInputFiles(testFile);
 
     // 4. Verify File Appears
-    await expect(page.getByText('pdf-to-images-test.pdf').first()).toBeVisible();
+    await expect(page.getByText(path.basename(testFile)).first()).toBeVisible();
 
     // 5. Configure Options (Default is PNG + ZIP)
     // We can verify the toggle text or state if needed. 
