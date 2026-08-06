@@ -58,17 +58,20 @@ test.describe('UI Refinements', () => {
         // And "saved in total"
         await expect(page.getByText(/saved in total/i)).toBeVisible();
 
-        // 8. Close the ProcessingStatusDialog modal (it overlays the page)
-        // Press Escape to dismiss — avoids strict mode with multiple Close buttons
-        await page.keyboard.press('Escape');
+        // 8. Wait for the ProcessingStatusDialog modal to fully mount and become visible
+        const dialog = page.getByRole('dialog');
+        await expect(dialog).toBeVisible();
+
+        // 9. Close the modal by clicking its close button
+        await dialog.getByRole('button').first().click();
         
-        // Wait for the dialog to fully unmount to avoid intercepting clicks
-        await expect(page.getByRole('dialog')).not.toBeVisible();
+        // Wait for the modal to fully unmount
+        await expect(dialog).not.toBeVisible();
 
         // 9. Clear All — reset the file list
-        await clearAllButton.click();
+        await clearAllButton.click({ force: true });
 
-        // 9. Verify list is empty
+        // 10. Verify list is empty
         await expect(page.getByTitle('ui-test-1.pdf')).not.toBeVisible();
         // Check for empty state (upload prompt)
         await expect(page.getByText(/Click to select/i)).toBeVisible();

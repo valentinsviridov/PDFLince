@@ -13,6 +13,7 @@ import {
   PDFNumber,
   degrees,
   rgb,
+  PDFPage,
 } from 'pdf-lib';
 
 // Type definitions
@@ -234,11 +235,17 @@ function removeDocumentMetadata(pdfDoc: PDFDocument) {
 }
 
 function stripPageAnnotations(pdfDoc: PDFDocument) {
-  const pages = pdfDoc.getPages();
   const annotsKey = PDFName.of('Annots');
+  const typeKey = PDFName.of('Type');
+  const pageKey = PDFName.of('Page');
 
-  pages.forEach(page => {
-    page.node.delete(annotsKey);
+  const context = pdfDoc.context;
+  context.enumerateIndirectObjects().forEach(([, obj]) => {
+    if (obj instanceof PDFDict) {
+      if (obj.get(typeKey) === pageKey) {
+        obj.delete(annotsKey);
+      }
+    }
   });
 }
 
@@ -699,6 +706,23 @@ export async function reorderPages(
   }
 }
 
+function getPagesSafely(pdfDoc: PDFDocument): PDFPage[] {
+  const context = pdfDoc.context;
+  const typeKey = PDFName.of('Type');
+  const pageKey = PDFName.of('Page');
+  
+  const pageDicts: { ref: PDFRef, obj: PDFDict }[] = [];
+  context.enumerateIndirectObjects().forEach(([ref, obj]) => {
+    if (obj instanceof PDFDict && obj.get(typeKey) === pageKey) {
+      pageDicts.push({ ref, obj });
+    }
+  });
+  
+  pageDicts.sort((a, b) => a.ref.objectNumber - b.ref.objectNumber);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return pageDicts.map(p => PDFPage.of(p.obj as any, p.ref, pdfDoc));
+}
+
 export async function cropPages(
   fileOrData: File | ArrayBuffer | Uint8Array,
   pageNumbers: number[],
@@ -726,7 +750,8 @@ export async function cropPages(
       updateMetadata: options.preserveMetadata !== false,
     });
 
-    const pageCount = pdfDoc.getPageCount();
+    const safePages = getPagesSafely(pdfDoc);
+    const pageCount = safePages.length;
     const validPageIndices = [...new Set(
       pageNumbers
         .map(num => num - 1)
@@ -738,7 +763,7 @@ export async function cropPages(
     }
 
     for (const pageIndex of validPageIndices) {
-      const page = pdfDoc.getPage(pageIndex);
+      const page = safePages[pageIndex];
       const mediaBox = page.getMediaBox();
       const rotationAngle = page.getRotation().angle;
       const normalizedRotation = ((rotationAngle % 360) + 360) % 360;

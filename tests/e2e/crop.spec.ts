@@ -83,3 +83,42 @@ test('PDF Manual Crop Workflow', async ({ page }) => {
 
     fs.unlinkSync(downloadPath);
 });
+
+test('PDF Crop Workflow on Corrupt PDF', async ({ page }) => {
+    test.setTimeout(90_000);
+    const corruptPdfPath = path.join(__dirname, 'fixtures', 'cg-brsvie.pdf');
+
+    await page.goto('/crop', { timeout: 60_000 });
+
+    const fileInput = page.locator('input[type="file"]');
+    await fileInput.setInputFiles(corruptPdfPath);
+
+    // Wait for file parsing to complete (this tests that our custom traversal unblocks the UI)
+    const firstThumbnail = page.locator('.grid.grid-cols-2.sm\\:grid-cols-3.md\\:grid-cols-4.lg\\:grid-cols-5 > div').first();
+    await expect(firstThumbnail).toBeVisible({ timeout: 20_000 });
+    
+    // Select first page
+    await firstThumbnail.click();
+    await expect(page.getByRole('heading', { name: 'Crop', exact: true })).toBeVisible({ timeout: 30_000 });
+
+    // Enter crop margin
+    const topInput = page.locator('input#crop-top');
+    await topInput.fill('10');
+    
+    const processButton = page.getByRole('button', { name: /^Crop \d+ page/ });
+    await expect(processButton).toBeEnabled({ timeout: 20_000 });
+
+    const downloadPromise = page.waitForEvent('download', { timeout: 60_000 });
+    await processButton.click();
+    const download = await downloadPromise;
+
+    expect(download.suggestedFilename()).toMatch(/cropped_PDFLince\.pdf$/);
+
+    const downloadPath = path.join(__dirname, 'downloaded-corrupt-cropped.pdf');
+    await download.saveAs(downloadPath);
+
+    const croppedSize = fs.statSync(downloadPath).size;
+    expect(croppedSize).toBeGreaterThan(0);
+
+    fs.unlinkSync(downloadPath);
+});

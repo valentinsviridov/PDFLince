@@ -238,6 +238,7 @@ export function ProcessingStatusDialog({
       <div
         role="dialog"
         aria-modal="true"
+        aria-label={title}
         className="relative w-full max-w-xl rounded-lg bg-white shadow-xl"
       >
         <div className="flex items-start justify-between border-b border-[var(--ui-2)] px-6 py-4">

@@ -85,3 +85,39 @@ test('PDF Compression Workflow', async ({ page }) => {
     // Cleanup download
     fs.unlinkSync(downloadPath);
 });
+
+test('PDF Compression with Strip Annotations on Corrupt PDF', async ({ page }) => {
+    test.setTimeout(90_000);
+    const corruptPdfPath = path.join(__dirname, 'fixtures', 'cg-brsvie.pdf');
+
+    // 1. Visit Compress Page directly
+    await page.goto('/compress', { timeout: 60_000 });
+
+    // 2. Upload the corrupt file
+    const fileInput = page.locator('input[type="file"]');
+    await fileInput.setInputFiles(corruptPdfPath);
+
+    // 3. Verify File Appears
+    await expect(page.getByText('cg-brsvie.pdf').first()).toBeVisible();
+
+    // 4. Enable "Strip annotations and comments"
+    await page.getByLabel('Strip annotations and comments').check({ force: true });
+
+    // 5. Process
+    const downloadPromise = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'Process 1 file' }).click();
+
+    // 6. Verification
+    const download = await downloadPromise;
+    expect(download.suggestedFilename()).toMatch(/compressed_PDFLince\.pdf$/);
+
+    // Save and assert size
+    const downloadPath = path.join(__dirname, 'downloaded-corrupt-compressed.pdf');
+    await download.saveAs(downloadPath);
+
+    const compressedSize = fs.statSync(downloadPath).size;
+    expect(compressedSize).toBeGreaterThan(0);
+
+    // Cleanup download
+    fs.unlinkSync(downloadPath);
+});
