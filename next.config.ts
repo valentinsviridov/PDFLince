@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  turbopack: {
+    resolveAlias: {
+      'pdf-lib': 'pdf-lib/dist/pdf-lib.min.js',
+    },
+  },
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
