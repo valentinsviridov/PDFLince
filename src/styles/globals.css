@@ -354,9 +354,11 @@ h1, h2, h3, .font-display {
   border-color: var(--btn-active-border);
 }
 .btn-primary:disabled {
-  background: var(--btn-disabled);
+  background: var(--ui-3);
+  color: var(--tx-3);
+  border-color: var(--ui-2);
   cursor: not-allowed;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 /* Input styling */

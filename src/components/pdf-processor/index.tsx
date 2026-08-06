@@ -2411,7 +2411,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
 
         <div className="flex justify-center">
           <button
-            className="btn-primary px-6 py-3 rounded-lg font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            className="btn-primary px-6 py-3 rounded-lg font-medium"
             disabled={
               files.length === 0 ||
               isProcessing ||
