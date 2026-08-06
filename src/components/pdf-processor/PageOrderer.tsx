@@ -101,7 +101,7 @@ export default function PageOrderer({ file, onOrderChangeAction, initialOrder }:
       } catch (err) {
         if (!isMounted) return;
         console.error('Error loading PDF info:', err);
-        setError(ordererStrings.error);
+        setError(err instanceof Error ? err.message : ordererStrings.error);
       } finally {
         if (isMounted) {
           setLoading(false);

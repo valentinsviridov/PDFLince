@@ -984,6 +984,7 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
           let totalOriginalBytes = 0;
           let totalProcessedBytes = 0;
           let totalElapsedSeconds = 0;
+          let lastErrorMessage: string | undefined;
 
           for (let index = 0; index < currentFiles.length; index += 1) {
             await new Promise(resolve => setTimeout(resolve, 0));
@@ -1044,17 +1045,27 @@ export default function PDFProcessor({ initialMode = 'merge' }: { initialMode?: 
                 originalFile: targetFile,
               });
             } catch (fileErr) {
+              const errorMessage = fileErr instanceof Error ? fileErr.message : 'unknown';
+              lastErrorMessage = errorMessage;
               console.error(`Error compressing file ${targetFile.name}:`, fileErr);
               trackProcessorEvent('file_processing_error', {
                 mode: 'compress',
                 file_name: targetFile.name,
-                error: fileErr instanceof Error ? fileErr.message : 'unknown',
+                error: errorMessage,
               });
+              
+              const key = buildPreviewKey(targetFile, processingOptions);
+              if (key) {
+                setCompressionPreviewStates(prev => ({
+                  ...prev,
+                  [key]: { status: 'error', error: errorMessage },
+                }));
+              }
             }
           }
 
           if (compressionEntriesBuffer.length === 0) {
-            showErrorDialog(errorStrings.noFiles);
+            showErrorDialog(lastErrorMessage || errorStrings.noFiles);
             trackProcessorEvent('operation_error', { reason: 'compress_no_results' });
             return;
           }

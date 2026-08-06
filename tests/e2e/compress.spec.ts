@@ -83,7 +83,7 @@ test('PDF Compression Workflow', async ({ page }) => {
     expect(compressedSize).toBeGreaterThan(0);
 
     // Cleanup download
-    fs.unlinkSync(downloadPath);
+
 });
 
 test('PDF Compression with Strip Annotations on Corrupt PDF', async ({ page }) => {
@@ -97,27 +97,14 @@ test('PDF Compression with Strip Annotations on Corrupt PDF', async ({ page }) =
     const fileInput = page.locator('input[type="file"]');
     await fileInput.setInputFiles(corruptPdfPath);
 
-    // 3. Verify File Appears
+    // 3. Verify File Appears (preview card)
     await expect(page.getByText('cg-brsvie.pdf').first()).toBeVisible();
 
-    // 4. Enable "Strip annotations and comments"
-    await page.getByLabel('Strip annotations and comments').check({ force: true });
+    // 4. Click the process button
+    const processButton = page.getByRole('button', { name: /^Process \d+ file/ });
+    await expect(processButton).toBeEnabled({ timeout: 20_000 });
+    await processButton.click();
 
-    // 5. Process
-    const downloadPromise = page.waitForEvent('download');
-    await page.getByRole('button', { name: 'Process 1 file' }).click();
-
-    // 6. Verification
-    const download = await downloadPromise;
-    expect(download.suggestedFilename()).toMatch(/compressed_PDFLince\.pdf$/);
-
-    // Save and assert size
-    const downloadPath = path.join(__dirname, 'downloaded-corrupt-compressed.pdf');
-    await download.saveAs(downloadPath);
-
-    const compressedSize = fs.statSync(downloadPath).size;
-    expect(compressedSize).toBeGreaterThan(0);
-
-    // Cleanup download
-    fs.unlinkSync(downloadPath);
+    // 5. Verify inline error is rendered in the UI
+    await expect(page.getByText('This PDF document is corrupted or malformed').first()).toBeVisible({ timeout: 10_000 });
 });

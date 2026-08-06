@@ -52,7 +52,7 @@ export default function PageSelector({
       } catch (err) {
         if (!isMounted) return;
         console.error('Error loading PDF info:', err);
-        setError(selectorStrings.error);
+        setError(err instanceof Error ? err.message : selectorStrings.error);
       } finally {
         if (isMounted) {
           setLoading(false);

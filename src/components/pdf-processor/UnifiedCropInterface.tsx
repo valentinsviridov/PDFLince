@@ -107,7 +107,7 @@ export default function UnifiedCropInterface({
       } catch (err) {
         if (!isMounted) return;
         console.error('Error loading crop preview:', err);
-        setError(cropStrings.manual.error);
+        setError(err instanceof Error ? err.message : cropStrings.manual.error);
       } finally {
         if (isMounted) setIsLoading(false);
       }

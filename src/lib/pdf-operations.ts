@@ -13,8 +13,6 @@ import {
   PDFNumber,
   degrees,
   rgb,
-  PDFCatalog,
-  PDFPageTree,
 } from 'pdf-lib';
 
 // Type definitions
@@ -118,7 +116,7 @@ type PageLayout = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function loadAndRepairPdf(arrayBuffer: ArrayBuffer | Uint8Array, options: any): Promise<PDFDocument> {
+async function loadPdfWithValidation(arrayBuffer: ArrayBuffer | Uint8Array, options: any): Promise<PDFDocument> {
   const pdfDoc = await PDFDocument.load(arrayBuffer, options);
   let isCorrupt = false;
   try {
@@ -128,51 +126,10 @@ async function loadAndRepairPdf(arrayBuffer: ArrayBuffer | Uint8Array, options: 
     isCorrupt = true;
   }
   
-  if (!isCorrupt) return pdfDoc;
+  if (isCorrupt) {
+    throw new Error('This PDF document is corrupted or malformed and cannot be safely processed. Please repair the file before using it.');
+  }
 
-  // Rebuild the corrupt document by creating a new valid catalog
-  const context = pdfDoc.context;
-  const typeKey = PDFName.of('Type');
-  const pageKey = PDFName.of('Page');
-  
-  const pageDicts: { ref: PDFRef, obj: PDFDict }[] = [];
-  context.enumerateIndirectObjects().forEach(([ref, obj]) => {
-    if (obj instanceof PDFDict && obj.get(typeKey) === pageKey) {
-      pageDicts.push({ ref, obj });
-    }
-  });
-  
-  pageDicts.sort((a, b) => a.ref.objectNumber - b.ref.objectNumber);
-  // Rebuild PageTree in-place
-  const newPagesArray = context.obj(pageDicts.map(p => p.ref));
-  const newPagesTree = context.obj({
-    Type: 'Pages',
-    Count: pageDicts.length,
-    Kids: newPagesArray,
-  });
-  // Cast and upgrade the raw dict into a proper PDFPageTree
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const pdfPageTree = PDFPageTree.fromMapWithContext((newPagesTree as any).dict, context);
-  const newPagesTreeRef = context.register(pdfPageTree);
-  
-  // Update all pages to point to new Parent
-  pageDicts.forEach(p => {
-    p.obj.set(PDFName.of('Parent'), newPagesTreeRef);
-  });
-  
-  // Create new Catalog
-  const newCatalog = context.obj({
-    Type: 'Catalog',
-    Pages: newPagesTreeRef,
-  });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const pdfCatalog = PDFCatalog.fromMapWithContext((newCatalog as any).dict, context);
-  context.trailerInfo.Root = context.register(pdfCatalog);
-  
-  // Force pdfDoc to use the new catalog
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (pdfDoc as any).catalog = pdfCatalog;
-  
   return pdfDoc;
 }
 
@@ -189,7 +146,7 @@ export async function compressPDF(
     const arrayBuffer = isFileLike(fileOrData)
       ? await fileOrData.arrayBuffer()
       : fileOrData;
-    const pdfDoc = await loadAndRepairPdf(arrayBuffer, {
+    const pdfDoc = await loadPdfWithValidation(arrayBuffer, {
       ignoreEncryption: true,
       throwOnInvalidObject: false,
       updateMetadata: options.preserveMetadata !== false
@@ -648,7 +605,7 @@ export async function mergePDFs(
       await yieldToMain();
       const input = filesOrData[i];
       const arrayBuffer = isFileLike(input) ? await input.arrayBuffer() : input;
-      const pdf = await loadAndRepairPdf(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
+      const pdf = await loadPdfWithValidation(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
       const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
       copiedPages.forEach((page) => mergedPdf.addPage(page));
 
@@ -679,8 +636,7 @@ export async function splitPDF(
 ): Promise<Uint8Array[]> {
   try {
     const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
-    const pdfDoc = await loadAndRepairPdf(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
-    console.log("Encrypt exists:", !!pdfDoc.context.trailerInfo.Encrypt);
+    const pdfDoc = await loadPdfWithValidation(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
     const pageCount = pdfDoc.getPageCount();
     const pagesPerFile = options.pagesPerFile || 1;
     const results: Uint8Array[] = [];
@@ -709,8 +665,7 @@ export async function extractPages(
   try {
     if (pageNumbers.length === 0) throw new Error('No pages to extract');
     const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
-    const pdfDoc = await loadAndRepairPdf(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
-    console.log("Encrypt exists:", !!pdfDoc.context.trailerInfo.Encrypt);
+    const pdfDoc = await loadPdfWithValidation(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
     const pageCount = pdfDoc.getPageCount();
     const validPageIndices = pageNumbers.map(num => num - 1).filter(idx => idx >= 0 && idx < pageCount).sort((a, b) => a - b);
     if (validPageIndices.length === 0) throw new Error('No valid page numbers provided');
@@ -743,8 +698,7 @@ export async function reorderPages(
   try {
     if (newOrder.length === 0) throw new Error('No page order provided');
     const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
-    const pdfDoc = await loadAndRepairPdf(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
-    console.log("Encrypt exists:", !!pdfDoc.context.trailerInfo.Encrypt);
+    const pdfDoc = await loadPdfWithValidation(arrayBuffer, { ignoreEncryption: true, throwOnInvalidObject: false });
     const pageCount = pdfDoc.getPageCount();
     const validPageIndices = newOrder.map(num => num - 1).filter(idx => idx >= 0 && idx < pageCount);
     if (validPageIndices.length === 0) throw new Error('No valid page numbers in order');
@@ -790,13 +744,12 @@ export async function cropPages(
     const bottom = Math.max(0, margins.bottom ?? 0);
 
     const arrayBuffer = isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
-    const pdfDoc = await loadAndRepairPdf(arrayBuffer, {
+    const pdfDoc = await loadPdfWithValidation(arrayBuffer, {
       ignoreEncryption: true,
       throwOnInvalidObject: false,
       updateMetadata: options.preserveMetadata !== false,
     });
 
-    console.log("Encrypt exists:", !!pdfDoc.context.trailerInfo.Encrypt);
     const pageCount = pdfDoc.getPageCount();
     const validPageIndices = [...new Set(
       pageNumbers
@@ -897,13 +850,12 @@ export async function rotatePages(
     const arrayBuffer =
       isFileLike(fileOrData) ? await fileOrData.arrayBuffer() : fileOrData;
 
-    const pdfDoc = await loadAndRepairPdf(arrayBuffer, {
+    const pdfDoc = await loadPdfWithValidation(arrayBuffer, {
       ignoreEncryption: true,
       throwOnInvalidObject: false,
       updateMetadata: options.preserveMetadata !== false,
     });
 
-    console.log("Encrypt exists:", !!pdfDoc.context.trailerInfo.Encrypt);
     const pageCount = pdfDoc.getPageCount();
 
     const validPageIndices = [...new Set(
