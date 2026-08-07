@@ -1,5 +1,9 @@
 # Instructions for AI Assistants (Gemini)
 
+## 📖 Project Context
+**CRITICAL**: Before performing any complex task or modifying the codebase, you MUST read the `README.md` file to understand the global architecture, the monolithic `pdf-processor` layout, and the overall project organization.
+
+
 ## 🏗️ Development Best Practices
 When contributing to this project, adhere to the following best practices for our tech stack:
 - **Bun**: Use `bun` for all package management (`bun install`) and script execution (`bun run`). Do not use `npm` or `yarn`.
